@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const Home(title: 'Busca Patas'),
+      home: Home(false,title: "Página Inicial",),
     );
   }
 }

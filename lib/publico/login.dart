@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:buscapatas/publico/esqueceu-senha.dart';
+import 'package:buscapatas/publico/nao-implementado.dart';
+import 'package:buscapatas/publico/cadastro-usuario.dart';
+import 'package:buscapatas/home.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key, required this.title});
@@ -31,68 +35,161 @@ class _LoginState extends State<Login> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Material(
-      child: SingleChildScrollView(
+        child: SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(30.0, 10, 30.0, 10.0),
         child: Column(
           children: <Widget>[
-            const Padding( padding: EdgeInsets.fromLTRB(0, 120.0, 0, 0),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(0, 60.0, 0, 0),
             ),
             Image.asset(
               "imagens/Logo.png",
               //fit: BoxFit.cover,
               fit: BoxFit.contain,
-              height: 120,
-            ),
-            Padding( 
-              padding: const EdgeInsets.fromLTRB(30.0, 60.0, 30.0, 10.0),
-              child:
-                campoInput("E-mail", emailController, TextInputType.emailAddress, false),            
-            ),
-            Padding( 
-              padding: const EdgeInsets.fromLTRB(30.0, 0 , 30.0, 10.0),
-              child:
-                campoInput("Senha", senhaController, TextInputType.visiblePassword, true),            
+              width: 180,
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(30.0, 20 , 30.0, 10.0),
-              child: SizedBox(
-              width: double.infinity,
-              height: 50,
-              child:
-                ElevatedButton(
+              padding: const EdgeInsets.fromLTRB(0, 50.0, 0, 10.0),
+              child: campoInput(
+                  "E-mail", emailController, TextInputType.emailAddress, false),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 10.0),
+              child: campoInput("Senha", senhaController,
+                  TextInputType.visiblePassword, true),
+            ),
+            SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
                   style: const ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll<Color>(Colors.green),
-                    ),
+                    backgroundColor: MaterialStatePropertyAll<Color>(
+                        Color.fromARGB(255, 126, 107, 107)),
+                  ),
                   onPressed: () {
+                    _entrar();
                   },
                   child: const Text(
                     "Entrar",
                     style: TextStyle(color: Colors.white, fontSize: 20.0),
                   ),
-                )
-              ),
+                )),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(0, 20.0, 0, 15.0),
+              child: Text("OU",
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 126, 107, 107), fontSize: 20)),
             ),
-            
+            FractionallySizedBox(
+                widthFactor: 1,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => NaoImplementado(
+                              title:
+                                  'Busca Patas - Funcionalidade ainda não implementada')),
+                    );
+                  },
+                  child: Image.asset(
+                    "imagens/entrar-com-google2.png",
+                    fit: BoxFit.contain,
+                  ),
+                )),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(0, 50.0, 0, 40.0),
+                child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => EsqueceuSenha(
+                                title: 'Busca Patas - Esqueci minha senha')),
+                      );
+                    },
+                    child: Ink(
+                      width: double.infinity,
+                      height: 30,
+                      child: Center(
+                        child: RichText(
+                          text: const TextSpan(
+                            text: "Esqueceu sua senha? ",
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              color: Color.fromARGB(255, 126, 107, 107),
+                              fontSize: 16.0,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ))),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          CadastroUsuario(title: 'Novo usuário')),
+                );
+              },
+              child: Ink(
+                width: double.infinity,
+                height: 30,
+                child: Center(
+                    child: RichText(
+                        text: const TextSpan(
+                  text: "Não possui conta? ",
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 126, 107, 107),
+                    fontSize: 16.0,
+                  ),
+                  children: <TextSpan>[
+                    TextSpan(
+                        text: 'Cadastre-se',
+                        style: TextStyle(
+                          decoration: TextDecoration.underline,
+                          color: Color.fromARGB(255, 126, 107, 107),
+                          fontSize: 16.0,
+                        )),
+                    // can add more TextSpans here...
+                  ],
+                ))),
+              ),
+            )
           ],
-          
         ),
       ),
-      
+    ));
+  }
 
+  void _entrar() {
+    bool autorizado = false;
+    String email = emailController.text;
+    String senha = senhaController.text;
+    if (email.isNotEmpty && senha.isNotEmpty) {
+      autorizado = true;
+    } else {
+      senhaController.text = "";
+    }
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => Home(autorizado, title: "Página inicial")),
     );
   }
 
-  Widget campoInput(String label, TextEditingController controller, TextInputType tipoCampo, bool oculto){
-    return
-      TextFormField(
-        keyboardType: tipoCampo,
-        decoration: InputDecoration(
-          labelText: label,
-          border: const OutlineInputBorder(),       
-        ),
-        controller: controller,
-        obscureText: oculto,
-    ); 
-
+  Widget campoInput(String label, TextEditingController controller,
+      TextInputType tipoCampo, bool oculto) {
+    return TextFormField(
+      keyboardType: tipoCampo,
+      decoration: InputDecoration(
+        labelText: label,
+        border: const OutlineInputBorder(),
+      ),
+      controller: controller,
+      obscureText: oculto,
+    );
   }
-
 }

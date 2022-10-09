@@ -3,24 +3,16 @@ import 'package:buscapatas/publico/login.dart';
 
 //OBS: Essa página é temporária e está simulando a página inicial
 class Home extends StatefulWidget {
-  const Home({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
+  bool autorizado;
+  Home(bool usuario,{super.key, required this.title}):  this.autorizado = usuario;
+   
   final String title;
 
   @override
   State<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends State<Home>{
   int _counter = 0;
 
   void _incrementCounter() {
@@ -35,6 +27,10 @@ class _HomeState extends State<Home> {
   }
 
   @override
+  void initState(){
+  }
+
+  @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
@@ -42,8 +38,26 @@ class _HomeState extends State<Home> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    if(true){
+    if(!widget.autorizado){
       return Login(title: 'Busca Patas - Login');
+    } else{
+      return Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+            title: const Text("Busca Patas"),
+            centerTitle: true,
+            backgroundColor:const Color.fromARGB(255, 126, 107, 107)),
+    
+        body:SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(30.0, 50 , 30.0, 10.0),
+          child: Column(
+            children: <Widget>[
+              const Text("Página inicial ainda não implementada", style: TextStyle(color: Color.fromARGB(255, 126, 107, 107),fontSize: 20)),
+            ],
+          ),
+        )
+
+      );
     }
   }
 }
