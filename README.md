@@ -1,16 +1,18 @@
-# buscapatas
+# Buscapatas
 
-A new Flutter project.
+Projeto desenvolvido para a disciplina de Dispositivos Móveis do curso de Tecnologia da Informação da UFRN
 
-## Getting Started
+## 😥 Problema
 
-This project is a starting point for a Flutter application.
+De acordo com a Pesquisa Nacional de Saúde (PNS) de 2019 realizada pelo IBGE 47,9 milhões de domicílios do país têm no mínimo um cão ou gato.
 
-A few resources to get you started if this is your first Flutter project:
+Com frequência os animais podem sair de casa sem supervisão em razão de algum descuido do tutor, acabar se afastando da vizinhança e não conseguir voltar sozinhos.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Comumente, a busca pelo pet consiste em divulgar posts em redes sociais com foto do animal e informações de contato do tutor, na esperança que alcance alguém que tenha visto o animal, o que não é muito eficiente. É necessário que haja uma forma mais eficaz para que as pessoas que avistam animais perdidos tenham acesso a informações sobre animais perdidos e seus tutores.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 💡 Proposta de Solução
+
+Aplicativo para dispositivos móveis que possibilite a colaboração nas buscas por animais perdidos.
+
+- Os tutores de animais perdidos poderão registrar informações sobre o animal e o sistema usará dados de geolocalização para alertar outros usuários sobre animais perdidos nas proximidades, possibilitando que outros usuário reconheçam um animal perdido e possam colaborar para reuni-lo ao tutor.
+- Os usuários também poderá registrar informações sobre animais avistados para que tutores de animais perdidos possam verificar se seus animais foram encontrados, quando e onde, facilitando na recuperação dos animais.
