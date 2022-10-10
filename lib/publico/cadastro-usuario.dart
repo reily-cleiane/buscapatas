@@ -34,11 +34,11 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
 
           child: Column(
             children: [
-              campoInput("Nome",nomeController,TextInputType.text),
-              campoInput("Email",emailController,TextInputType.text),
-              campoInput("Telefone",telefoneController,TextInputType.text),
-              campoInput("Senha",senhaController,TextInputType.text),
-              campoInput("Confirmar senha",repetirsenhaController,TextInputType.text),
+              campoInput("Nome",nomeController,TextInputType.name),
+              campoInput("Email",emailController,TextInputType.emailAddress),
+              campoInput("Telefone",telefoneController,TextInputType.phone),
+              campoInput("Senha",senhaController,TextInputType.visiblePassword),
+              campoInput("Confirmar senha",repetirsenhaController,TextInputType.visiblePassword),
               
               const Padding(padding: EdgeInsets.fromLTRB(0, 20 , 0, 1.0)),
               
