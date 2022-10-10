@@ -1,17 +1,15 @@
-import 'package:buscapatas/publico/usuario-cadastrado-sucesso.dart';
 import 'package:flutter/material.dart';
-import 'package:buscapatas/publico/login.dart';
 
-class CadastroUsuario extends StatefulWidget {
-  const CadastroUsuario({super.key, required this.title});
+class CadastroPost extends StatefulWidget {
+  const CadastroPost({super.key, required this.title});
 
   final String title;
 
   @override
-  State<CadastroUsuario> createState() => _CadastroUsuarioState();
+  State<CadastroPost> createState() => _CadastroPostState();
 }
 
-class _CadastroUsuarioState extends State<CadastroUsuario> {
+class _CadastroPostState extends State<CadastroPost> {
   TextEditingController nomeController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController telefoneController = TextEditingController();
@@ -36,8 +34,8 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
               campoInput("Nome",nomeController,TextInputType.name),
               campoInput("Email",emailController,TextInputType.emailAddress),
               campoInput("Telefone",telefoneController,TextInputType.phone),
-              campoInputObscuro("Senha",senhaController,TextInputType.visiblePassword),
-              campoInputObscuro("Confirmar senha",repetirsenhaController,TextInputType.visiblePassword),
+              campoInput("Senha",senhaController,TextInputType.visiblePassword),
+              campoInput("Confirmar senha",repetirsenhaController,TextInputType.visiblePassword),
               
               const Padding(padding: EdgeInsets.fromLTRB(0, 20 , 0, 1.0)),
               
@@ -82,18 +80,11 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
     && telefoneController.text.isNotEmpty && senhaController.text.isNotEmpty
     && repetirsenhaController.text.isNotEmpty
     && senhaController.text == repetirsenhaController.text){
-      Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (context) => UsuarioCadastradoSucesso(title: 'Usuário Cadastrado com sucesso')));    
+      //Navigator.pushReplacement(context,
+      //  MaterialPageRoute(builder: (context) => UsuarioCadastradoSucesso(title: 'Usuário Cadastrado com sucesso')));    
     }
 
   }
-/*
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => Login(title: 'Busca Patas - Login')),
-    );
-    */
   
   Widget campoInput(String label, TextEditingController controller, TextInputType tipoCampo){
     return
@@ -111,21 +102,5 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
     ); 
   }
 
-  Widget campoInputObscuro(String label, TextEditingController controller, TextInputType tipoCampo){
-    return
-    Padding( 
-      padding: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
-      child:
-      TextFormField(
-        keyboardType: tipoCampo,
-        decoration: InputDecoration(
-          labelText: label,
-          border: const OutlineInputBorder(),       
-        ),
-        controller: controller,
-        obscureText: true,
-      )
-    ); 
-  }
 }
 
