@@ -11,10 +11,8 @@ class CadastroPost extends StatefulWidget {
 
 class _CadastroPostState extends State<CadastroPost> {
   TextEditingController nomeController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController telefoneController = TextEditingController();
-  TextEditingController senhaController = TextEditingController();
-  TextEditingController repetirsenhaController = TextEditingController();
+  TextEditingController racaController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +20,7 @@ class _CadastroPostState extends State<CadastroPost> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-            title: const Text("Cadastro de Usuário"),
+            title: const Text("Cadastro de Animal"),
             centerTitle: true,
             backgroundColor:Color.fromARGB(255, 126, 107, 107)),
     
@@ -31,11 +29,8 @@ class _CadastroPostState extends State<CadastroPost> {
 
           child: Column(
             children: [
-              campoInput("Nome",nomeController,TextInputType.name),
-              campoInput("Email",emailController,TextInputType.emailAddress),
-              campoInput("Telefone",telefoneController,TextInputType.phone),
-              campoInput("Senha",senhaController,TextInputType.visiblePassword),
-              campoInput("Confirmar senha",repetirsenhaController,TextInputType.visiblePassword),
+              campoInput("Nome do pet",nomeController,TextInputType.name),
+              campoInput("Raça",racaController,TextInputType.emailAddress),
               
               const Padding(padding: EdgeInsets.fromLTRB(0, 20 , 0, 1.0)),
               
@@ -48,7 +43,7 @@ class _CadastroPostState extends State<CadastroPost> {
                         backgroundColor: MaterialStatePropertyAll<Color>(Color.fromARGB(255, 126, 107, 107)),
                       ),
                     onPressed: () {
-                      _cadastrarUsuario();                  
+                      _cadastrarAnimal();                  
                     },
                     child: const Text(
                       "Cadastrar",
@@ -75,14 +70,7 @@ class _CadastroPostState extends State<CadastroPost> {
   */
 
   
-  void _cadastrarUsuario(){
-    if(nomeController.text.isNotEmpty && emailController.text.isNotEmpty
-    && telefoneController.text.isNotEmpty && senhaController.text.isNotEmpty
-    && repetirsenhaController.text.isNotEmpty
-    && senhaController.text == repetirsenhaController.text){
-      //Navigator.pushReplacement(context,
-      //  MaterialPageRoute(builder: (context) => UsuarioCadastradoSucesso(title: 'Usuário Cadastrado com sucesso')));    
-    }
+  void _cadastrarAnimal(){
 
   }
   

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:buscapatas/publico/login.dart';
+import 'package:buscapatas/cadastros/cadastro-post.dart';
 
 //OBS: Essa página é temporária e está simulando a página inicial
 class Home extends StatefulWidget {
@@ -53,6 +54,23 @@ class _HomeState extends State<Home>{
           child: Column(
             children: <Widget>[
               const Text("Página inicial ainda não implementada", style: TextStyle(color: Color.fromARGB(255, 126, 107, 107),fontSize: 20)),
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  style: const ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll<Color>(
+                        Color.fromARGB(255, 126, 107, 107)),
+                  ),
+                  onPressed: () {
+                    _cadastrarAnimal();
+                  },
+                  child: const Text(
+                    "Cadastrar Animal",
+                    style: TextStyle(color: Colors.white, fontSize: 20.0),
+                  ),
+                )
+                ),
             ],
           ),
         )
@@ -60,4 +78,14 @@ class _HomeState extends State<Home>{
       );
     }
   }
+
+  void _cadastrarAnimal() {
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => CadastroPost(title: "Cadastrar Animal")),
+    );
+  }
+
 }

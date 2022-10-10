@@ -74,7 +74,8 @@ class _LoginState extends State<Login> {
                     "Entrar",
                     style: TextStyle(color: Colors.white, fontSize: 20.0),
                   ),
-                )),
+                )
+                ),
             const Padding(
               padding: EdgeInsets.fromLTRB(0, 20.0, 0, 15.0),
               child: Text("OU",
