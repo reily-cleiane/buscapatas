@@ -37,8 +37,8 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
               campoInput("Nome",nomeController,TextInputType.name),
               campoInput("Email",emailController,TextInputType.emailAddress),
               campoInput("Telefone",telefoneController,TextInputType.phone),
-              campoInput("Senha",senhaController,TextInputType.visiblePassword),
-              campoInput("Confirmar senha",repetirsenhaController,TextInputType.visiblePassword),
+              campoInputObscuro("Senha",senhaController,TextInputType.visiblePassword),
+              campoInputObscuro("Confirmar senha",repetirsenhaController,TextInputType.visiblePassword),
               
               const Padding(padding: EdgeInsets.fromLTRB(0, 20 , 0, 1.0)),
               
@@ -112,6 +112,23 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
           border: const OutlineInputBorder(),       
         ),
         controller: controller,
+      )
+    ); 
+  }
+
+  Widget campoInputObscuro(String label, TextEditingController controller, TextInputType tipoCampo){
+    return
+    Padding( 
+      padding: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
+      child:
+      TextFormField(
+        keyboardType: tipoCampo,
+        decoration: InputDecoration(
+          labelText: label,
+          border: const OutlineInputBorder(),       
+        ),
+        controller: controller,
+        obscureText: true,
       )
     ); 
   }
