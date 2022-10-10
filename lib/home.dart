@@ -54,6 +54,7 @@ class _HomeState extends State<Home>{
           child: Column(
             children: <Widget>[
               const Text("Página inicial ainda não implementada", style: TextStyle(color: Color.fromARGB(255, 126, 107, 107),fontSize: 20)),
+              Padding(padding: const EdgeInsets.fromLTRB(0, 10 , 0, 10.0)),
               SizedBox(
                 width: double.infinity,
                 height: 50,
