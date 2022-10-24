@@ -70,11 +70,10 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
   }
 
   void _cadastrarUsuario() async {
-/*
+
     if (emailController.text.isNotEmpty) {
       _usuarioExistente = await _emailJaCadastrado();
     }
-*/
       print("CHEGOU AQUI NO CADASTRAR");
       if (_formKey.currentState!.validate() &&
           senhaController.text == repetirSenhaController.text) {
@@ -85,6 +84,7 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
 
         _addUsuario(nome, email, senha, telefone, context);
       }
+
   }
 
   Future<bool> _emailJaCadastrado() async {
@@ -141,7 +141,7 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
 
   void _addUsuario(String nome, String email, String senha, String telefone,
       BuildContext context) async {
-    var url = "http://localhost:8080/addusuario";
+    var url = "http://localhost:8080/users";
 
     var response = await http.post(
       Uri.parse(url),
@@ -192,7 +192,6 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
                 return "O campo E-mail deve ser preenchido com um e-mail válido";
                 
               } else if (controller == emailController) {
-                _emailJaCadastrado();
                 if (_usuarioExistente == true) {
                   return "Já existe usuário cadastrado com esse e-mail";
                 }
