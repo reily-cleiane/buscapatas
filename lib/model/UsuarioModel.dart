@@ -8,25 +8,22 @@ String usuarioModelToJson(UsuarioModel data) => json.encode(data.toJson());
 class UsuarioModel {
   int? id;
   String? nome;
-  String email;
-  String senha;
+  String? email;
+  String? senha;
   String? telefone;
 
-  UsuarioModel(
-      {required this.id,
-      required this.nome,
-      required this.email,
-      required this.senha,
-      required this.telefone});
+  UsuarioModel({this.id, this.nome, this.email, this.senha, this.telefone});
 
   UsuarioModel.emailSenha(this.email, this.senha);
 
-  factory UsuarioModel.fromJson(Map<String, dynamic> json) => UsuarioModel(
-      id: json["id"],
-      nome: json["nome"],
-      email: json["email"],
-      senha: json["senha"],
-      telefone: json["telefone"]);
+  factory UsuarioModel.fromJson(Map<String, dynamic> json) {
+    return UsuarioModel(
+        id: json["id"],
+        nome: json["nome"],
+        email: json["email"],
+        senha: json["senha"],
+        telefone: json["telefone"]);
+  }
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -35,5 +32,4 @@ class UsuarioModel {
         "senha": senha,
         "telefone": telefone,
       };
-      
 }

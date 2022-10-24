@@ -4,6 +4,7 @@ import 'package:buscapatas/publico/nao-implementado.dart';
 import 'package:buscapatas/publico/cadastro-usuario.dart';
 import 'package:buscapatas/home.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
+import 'package:flutter_session/flutter_session.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -29,7 +30,7 @@ class _LoginState extends State<Login> {
   TextEditingController emailController = TextEditingController();
   TextEditingController senhaController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  bool _usuarioExistente = false;
+  bool _usuarioAutorizado = false;
 
   @override
   Widget build(BuildContext context) {
@@ -172,43 +173,62 @@ class _LoginState extends State<Login> {
     ));
   }
 
-  void _entrar() async{
-    if ( _formKey.currentState!.validate()) {
-      String email = emailController.text;
-      String senha = senhaController.text;
-      UsuarioModel usuario = UsuarioModel.emailSenha(email,senha);
-      await _existeUsuario(usuario);
+  void _entrar() async {
+    UsuarioModel? usuarioLogado;
+    if (emailController.text.isNotEmpty && senhaController.text.isNotEmpty) {
+      usuarioLogado = await _verificarUsuarioAutorizado();
+    }
 
-      bool autorizado = false;
-      if(_usuarioExistente){
-        autorizado = true;
+    if (_formKey.currentState!.validate()) {
+      if(_usuarioAutorizado){
+        await FlutterSession().set("sessao_usuarioLogado", usuarioLogado);
       }
       
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => Home(autorizado, title: "Página inicial")),
+            builder: (context) =>
+                Home(_usuarioAutorizado, title: "Página inicial")),
       );
     }
+    
   }
 
-   Future<bool> _existeUsuario(UsuarioModel usuario) async {
-    var url = "http://localhost:8080/findbyemailandsenha";
+  Future<UsuarioModel?> _verificarUsuarioAutorizado() async {
+    var url =
+        "http://localhost:8080/usuarioautorizado?email=${emailController.text}&senha=${senhaController.text}";
 
-    http.Response response = await http.get(Uri.parse(url));
-    var resposta = json.decode(response.body);
+    var response = await http.get(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
 
-    if (resposta.isNotEmpty()) {
-      setState(() {
-        _usuarioExistente = true;
-      });
-      return true;
+    UsuarioModel? usuarioLogado;
+
+    if (response.statusCode == 200) {
+      var resposta = json.decode(response.body);
+      
+      for (var usuario in resposta) {
+        if (usuario['email'].isNotEmpty) {
+          usuarioLogado = UsuarioModel(
+              id: usuario['id'],
+              nome: usuario['nome'],
+              email: usuario['email'],
+              senha: usuario['senha'],
+              telefone: usuario['telefone']);
+          setState(() {
+            _usuarioAutorizado = true;
+          });
+          break;
+        }
+      }
+      //print(jsonDecode(response.body));
     } else {
-      setState(() {
-        _usuarioExistente = false;
-      });
-      return false;
+      throw Exception('Falha no servidor ao carregar usuários');
     }
+    return usuarioLogado;
   }
 
   Widget campoInput(String label, TextEditingController controller,
@@ -223,6 +243,8 @@ class _LoginState extends State<Login> {
       validator: (texto) {
         if (controller.text.isEmpty) {
           return "O campo deve ser preenchido";
+        } else if (!_usuarioAutorizado) {
+          return "Não foi possível encontrar um usuário cadastrado com esse email/senha";
         } else {
           return null;
         }

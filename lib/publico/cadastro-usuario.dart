@@ -70,24 +70,21 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
   }
 
   void _cadastrarUsuario() async {
-
     if (emailController.text.isNotEmpty) {
-      _usuarioExistente = await _emailJaCadastrado();
+      _usuarioExistente = await _verificarEmailJaCadastrado();
     }
-      print("CHEGOU AQUI NO CADASTRAR");
-      if (_formKey.currentState!.validate() &&
-          senhaController.text == repetirSenhaController.text) {
-        String nome = nomeController.text;
-        String email = emailController.text;
-        String senha = senhaController.text;
-        String telefone = telefoneController.text;
+    if (_formKey.currentState!.validate() &&
+        senhaController.text == repetirSenhaController.text) {
+      String nome = nomeController.text;
+      String email = emailController.text;
+      String senha = senhaController.text;
+      String telefone = telefoneController.text;
 
-        _addUsuario(nome, email, senha, telefone, context);
-      }
-
+      _addUsuario(nome, email, senha, telefone, context);
+    }
   }
 
-  Future<bool> _emailJaCadastrado() async {
+  Future<bool> _verificarEmailJaCadastrado() async {
     var url = "http://localhost:8080/findbyemail?email=${emailController.text}";
     //http.Response response = await http.get(Uri.parse(url));
 
@@ -97,44 +94,32 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-    UsuarioModel usuario;
-    if (response.statusCode == 200) {
-      //print(jsonDecode(response.body));
-    } else {
-      throw Exception('Failed to load album');
-    }
 
-    var resposta = json.decode(response.body);
-
-    List<UsuarioModel> usuarios = [];
     bool _jaExisteUsuario = false;
 
-   // print("resposta ${resposta}");
-    for (var singleUser in resposta) {
-      //print("for ${singleUser}");
-      if(singleUser['email'].isNotEmpty){
-        _jaExisteUsuario = true;
+    if (response.statusCode == 200) {
+      var resposta = json.decode(response.body);
+      
+      for (var usuario in resposta) {
+        if (usuario['email'].isNotEmpty) {
+          _jaExisteUsuario = true;
+          break;
+        }
       }
-
-      //UsuarioModel user =
-      //    UsuarioModel.emailSenha(singleUser['email'], singleUser['senha']);
-      //Adding user to the list.
-      //usuarios.add(user);
+      //print(jsonDecode(response.body));
+    } else {
+      throw Exception('Falha no servidor ao carregar usuários');
     }
-
-    //print(usuarios[0].id);
 
     if (_jaExisteUsuario) {
       setState(() {
         _usuarioExistente = true;
       });
-      //print("CHEGOU AQUI");
       return true;
     } else {
       setState(() {
         _usuarioExistente = false;
       });
-      //print("CHEGOU NO ELSE");
       return false;
     }
   }
@@ -186,11 +171,10 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
               } else if (controller == telefoneController &&
                   telefoneController.text.length != 11) {
                 return "O campo Telefone deve ser preenchido com um número válido de 11 dígitos";
-                } else if (controller == emailController &&
+              } else if (controller == emailController &&
                   (!(emailController.text.contains('@')) ||
                       !(emailController.text.contains('.')))) {
                 return "O campo E-mail deve ser preenchido com um e-mail válido";
-                
               } else if (controller == emailController) {
                 if (_usuarioExistente == true) {
                   return "Já existe usuário cadastrado com esse e-mail";
