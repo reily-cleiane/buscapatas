@@ -3,6 +3,9 @@ import 'package:buscapatas/publico/esqueceu-senha.dart';
 import 'package:buscapatas/publico/nao-implementado.dart';
 import 'package:buscapatas/publico/cadastro-usuario.dart';
 import 'package:buscapatas/home.dart';
+import 'package:buscapatas/model/UsuarioModel.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Login extends StatefulWidget {
   const Login({super.key, required this.title});
@@ -25,6 +28,8 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   TextEditingController emailController = TextEditingController();
   TextEditingController senhaController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  bool _usuarioExistente = false;
 
   @override
   Widget build(BuildContext context) {
@@ -36,149 +41,174 @@ class _LoginState extends State<Login> {
     // than having to individually change instances of widgets.
     return Material(
         child: SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(30.0, 10, 30.0, 10.0),
-        child: Column(
-          children: <Widget>[
-            const Padding(
-              padding: EdgeInsets.fromLTRB(0, 60.0, 0, 0),
-            ),
-            Image.asset(
-              "imagens/Logo.png",
-              //fit: BoxFit.cover,
-              fit: BoxFit.contain,
-              width: 180,
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 50.0, 0, 10.0),
-              child: campoInput(
-                  "E-mail", emailController, TextInputType.emailAddress, false),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 10.0),
-              child: campoInput("Senha", senhaController,
-                  TextInputType.visiblePassword, true),
-            ),
-            SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  style: const ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll<Color>(
-                        Color.fromARGB(255, 126, 107, 107)),
-                  ),
-                  onPressed: () {
-                    _entrar();
-                  },
-                  child: const Text(
-                    "Entrar",
-                    style: TextStyle(color: Colors.white, fontSize: 20.0),
-                  ),
-                )
+      padding: const EdgeInsets.fromLTRB(30.0, 10, 30.0, 10.0),
+      child: Column(
+        children: <Widget>[
+          Form(
+              key: _formKey,
+              child: Column(children: <Widget>[
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(0, 60.0, 0, 0),
                 ),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(0, 20.0, 0, 15.0),
-              child: Text("OU",
-                  style: TextStyle(
-                      color: Color.fromARGB(255, 126, 107, 107), fontSize: 20)),
-            ),
-            FractionallySizedBox(
-                widthFactor: 1,
-                child: InkWell(
+                Image.asset(
+                  "imagens/Logo.png",
+                  //fit: BoxFit.cover,
+                  fit: BoxFit.contain,
+                  width: 180,
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 50.0, 0, 10.0),
+                  child: campoInput("E-mail", emailController,
+                      TextInputType.emailAddress, false),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 10.0),
+                  child: campoInput("Senha", senhaController,
+                      TextInputType.visiblePassword, true),
+                ),
+                SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(
+                      style: const ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll<Color>(
+                            Color.fromARGB(255, 126, 107, 107)),
+                      ),
+                      onPressed: () {
+                        _entrar();
+                      },
+                      child: const Text(
+                        "Entrar",
+                        style: TextStyle(color: Colors.white, fontSize: 20.0),
+                      ),
+                    )),
+              ])),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(0, 20.0, 0, 15.0),
+            child: Text("OU",
+                style: TextStyle(
+                    color: Color.fromARGB(255, 126, 107, 107), fontSize: 20)),
+          ),
+          FractionallySizedBox(
+              widthFactor: 1,
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => NaoImplementado(
+                            title:
+                                'Busca Patas - Funcionalidade ainda não implementada')),
+                  );
+                },
+                child: Image.asset(
+                  "imagens/entrar-com-google.png",
+                  fit: BoxFit.contain,
+                  width: 180,
+                ),
+              )),
+          Padding(
+              padding: const EdgeInsets.fromLTRB(0, 50.0, 0, 40.0),
+              child: InkWell(
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => NaoImplementado(
-                              title:
-                                  'Busca Patas - Funcionalidade ainda não implementada')),
+                          builder: (context) => EsqueceuSenha(
+                              title: 'Busca Patas - Esqueci minha senha')),
                     );
                   },
-                  child: Image.asset(
-                    "imagens/entrar-com-google2.png",
-                    fit: BoxFit.contain,
-                  ),
-                )),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(0, 50.0, 0, 40.0),
-                child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => EsqueceuSenha(
-                                title: 'Busca Patas - Esqueci minha senha')),
-                      );
-                    },
-                    child: Ink(
-                      width: double.infinity,
-                      height: 30,
-                      child: Center(
-                        child: RichText(
-                          text: const TextSpan(
-                            text: "Esqueceu sua senha? ",
-                            style: TextStyle(
-                              decoration: TextDecoration.underline,
-                              color: Color.fromARGB(255, 126, 107, 107),
-                              fontSize: 16.0,
-                            ),
+                  child: Ink(
+                    width: double.infinity,
+                    height: 30,
+                    child: Center(
+                      child: RichText(
+                        text: const TextSpan(
+                          text: "Esqueceu sua senha? ",
+                          style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            color: Color.fromARGB(255, 126, 107, 107),
+                            fontSize: 16.0,
                           ),
                         ),
                       ),
-                    ))),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          CadastroUsuario(title: 'Novo usuário')),
-                );
-              },
-              child: Ink(
-                width: double.infinity,
-                height: 30,
-                child: Center(
-                    child: RichText(
-                        text: const TextSpan(
-                  text: "Não possui conta? ",
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 126, 107, 107),
-                    fontSize: 16.0,
-                  ),
-                  children: <TextSpan>[
-                    TextSpan(
-                        text: 'Cadastre-se',
-                        style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          color: Color.fromARGB(255, 126, 107, 107),
-                          fontSize: 16.0,
-                        )),
-                    // can add more TextSpans here...
-                  ],
-                ))),
-              ),
-            )
-          ],
-        ),
+                    ),
+                  ))),
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        CadastroUsuario(title: 'Novo usuário')),
+              );
+            },
+            child: Ink(
+              width: double.infinity,
+              height: 30,
+              child: Center(
+                  child: RichText(
+                      text: const TextSpan(
+                text: "Não possui conta? ",
+                style: TextStyle(
+                  color: Color.fromARGB(255, 126, 107, 107),
+                  fontSize: 16.0,
+                ),
+                children: <TextSpan>[
+                  TextSpan(
+                      text: 'Cadastre-se',
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        color: Color.fromARGB(255, 126, 107, 107),
+                        fontSize: 16.0,
+                      )),
+                  // can add more TextSpans here...
+                ],
+              ))),
+            ),
+          )
+        ],
       ),
     ));
   }
 
-  void _entrar() {
-    bool autorizado = false;
-    String email = emailController.text;
-    String senha = senhaController.text;
-    if (email.isNotEmpty && senha.isNotEmpty) {
-      autorizado = true;
-    } else {
-      senhaController.text = "";
+  void _entrar() async{
+    if ( _formKey.currentState!.validate()) {
+      String email = emailController.text;
+      String senha = senhaController.text;
+      UsuarioModel usuario = UsuarioModel.emailSenha(email,senha);
+      await _existeUsuario(usuario);
+
+      bool autorizado = false;
+      if(_usuarioExistente){
+        autorizado = true;
+      }
+      
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Home(autorizado, title: "Página inicial")),
+      );
     }
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => Home(autorizado, title: "Página inicial")),
-    );
+  }
+
+   Future<bool> _existeUsuario(UsuarioModel usuario) async {
+    var url = "http://localhost:8080/findbyemailandsenha";
+
+    http.Response response = await http.get(Uri.parse(url));
+    var resposta = json.decode(response.body);
+
+    if (resposta.isNotEmpty()) {
+      setState(() {
+        _usuarioExistente = true;
+      });
+      return true;
+    } else {
+      setState(() {
+        _usuarioExistente = false;
+      });
+      return false;
+    }
   }
 
   Widget campoInput(String label, TextEditingController controller,
@@ -190,6 +220,13 @@ class _LoginState extends State<Login> {
         border: const OutlineInputBorder(),
       ),
       controller: controller,
+      validator: (texto) {
+        if (controller.text.isEmpty) {
+          return "O campo deve ser preenchido";
+        } else {
+          return null;
+        }
+      },
       obscureText: oculto,
     );
   }
