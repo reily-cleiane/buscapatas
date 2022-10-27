@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
 class NaoImplementado extends StatefulWidget {
   const NaoImplementado({super.key, required this.title});
@@ -19,7 +20,7 @@ class _NaoImplementadoState extends State<NaoImplementado> {
       child: Padding(
         padding: EdgeInsets.fromLTRB(30.0, 120 , 30.0, 10.0),
         child:
-        Text("Funcionalidade ainda não implementada", style: TextStyle(color: Color.fromARGB(255, 126, 107, 107),fontSize: 20)),
+        Text("Funcionalidade ainda não implementada", style: TextStyle(color: estilo.corprimaria,fontSize: 20)),
      
       ),
       );

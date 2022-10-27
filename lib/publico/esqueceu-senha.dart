@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
 class EsqueceuSenha extends StatefulWidget {
   const EsqueceuSenha({super.key, required this.title});
@@ -19,7 +20,7 @@ class _EsqueceuSenhaState extends State<EsqueceuSenha> {
       child: Padding(
         padding: EdgeInsets.fromLTRB(30.0, 120 , 30.0, 10.0),
         child:
-        Text("Contate um administrador para recuperar sua senha", style: TextStyle(color: Color.fromARGB(255, 126, 107, 107),fontSize: 20)),
+        Text("Contate um administrador para recuperar sua senha", style: TextStyle(color: estilo.corprimaria,fontSize: 20)),
      
       ),
     );

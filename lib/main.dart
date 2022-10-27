@@ -1,6 +1,7 @@
 import 'package:buscapatas/cadastros/cadastro-post.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/home.dart';
+import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
 
 void main() {

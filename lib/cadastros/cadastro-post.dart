@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
 class CadastroPost extends StatefulWidget {
   const CadastroPost({super.key, required this.title});
@@ -49,7 +50,7 @@ class _CadastroPostState extends State<CadastroPost> {
       appBar: AppBar(
           title: const Text("Cadastro de Animal"),
           centerTitle: true,
-          backgroundColor: Color.fromARGB(255, 126, 107, 107)),
+          backgroundColor: estilo.corprimaria),
       body: SingleChildScrollView(
         padding: EdgeInsets.fromLTRB(30.0, 50, 30.0, 10.0),
         child: Column(
@@ -65,7 +66,7 @@ class _CadastroPostState extends State<CadastroPost> {
                 labelText: "Espécie",
                 border: const OutlineInputBorder(),
               ),
-              style: const TextStyle(color: Color.fromARGB(255, 126, 107, 107)),
+              style: const TextStyle(color: estilo.corprimaria),
               onChanged: (String? value) {
                 // This is called when the user selects an item.
                 setState(() {
@@ -83,13 +84,13 @@ class _CadastroPostState extends State<CadastroPost> {
             campoInput("Raça", racaController, TextInputType.name, "Ex: Labrador, Siamês"),
             Text("Sexo:",
                 style: TextStyle(
-                    color: Color.fromARGB(255, 126, 107, 107), fontSize: 20)),
+                    color: estilo.corprimaria, fontSize: 20)),
             RadioListTile(
               visualDensity: const VisualDensity(horizontal: -4.0),
               dense: true,
               title: const Text("Macho",
                   style: TextStyle(
-                      color: Color.fromARGB(255, 126, 107, 107), fontSize: 16)),
+                      color: estilo.corprimaria, fontSize: 16)),
               value: "macho",
               groupValue: grupoSexo,
               onChanged: (value) {
@@ -103,7 +104,7 @@ class _CadastroPostState extends State<CadastroPost> {
               dense: true,
               title: const Text("Fêmea",
                   style: TextStyle(
-                      color: Color.fromARGB(255, 126, 107, 107), fontSize: 16)),
+                      color: estilo.corprimaria, fontSize: 16)),
               value: "femea",
               groupValue: grupoSexo,
               onChanged: (value) {
@@ -115,7 +116,7 @@ class _CadastroPostState extends State<CadastroPost> {
             const Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 1.0)),
             Text("Cor:",
                 style: TextStyle(
-                    color: Color.fromARGB(255, 126, 107, 107), fontSize: 20)),
+                    color: estilo.corprimaria, fontSize: 20)),
             FractionallySizedBox(
               widthFactor: 0.6,
               child: ListView(
@@ -124,7 +125,7 @@ class _CadastroPostState extends State<CadastroPost> {
                     return CheckboxListTile(
                       controlAffinity: ListTileControlAffinity.leading,
                       title: new Text(key, style: TextStyle(
-                    color: Color.fromARGB(255, 126, 107, 107), fontSize: 16)),
+                    color: estilo.corprimaria, fontSize: 16)),
                       value: listaCores[key],
                       onChanged: (bool? value) {
                         setState(() {
@@ -141,13 +142,13 @@ class _CadastroPostState extends State<CadastroPost> {
 
             Text("Estava de coleira:",
                 style: TextStyle(
-                    color: Color.fromARGB(255, 126, 107, 107), fontSize: 20)),
+                    color: estilo.corprimaria, fontSize: 20)),
             RadioListTile(
               visualDensity: const VisualDensity(horizontal: -4.0),
               dense: true,
               title: const Text("Sim",
                   style: TextStyle(
-                      color: Color.fromARGB(255, 126, 107, 107), fontSize: 16)),
+                      color: estilo.corprimaria, fontSize: 16)),
               value: "sim",
               groupValue: grupoColeira,
               onChanged: (value) {
@@ -161,7 +162,7 @@ class _CadastroPostState extends State<CadastroPost> {
               dense: true,
               title: const Text("Não",
                   style: TextStyle(
-                      color: Color.fromARGB(255, 126, 107, 107), fontSize: 16)),
+                      color: estilo.corprimaria, fontSize: 16)),
               value: "nao",
               groupValue: grupoColeira,
               onChanged: (value) {
@@ -185,7 +186,7 @@ class _CadastroPostState extends State<CadastroPost> {
                 child: ElevatedButton(
                   style: const ButtonStyle(
                     backgroundColor: MaterialStatePropertyAll<Color>(
-                        Color.fromARGB(255, 126, 107, 107)),
+                        estilo.corprimaria),
                   ),
                   onPressed: () {
                     _cadastrarAnimal();
@@ -235,7 +236,7 @@ class _CadastroPostState extends State<CadastroPost> {
             hintStyle: TextStyle(fontSize: 14.0, color:  Color.fromARGB(255, 187, 179, 179)),
             floatingLabelBehavior:FloatingLabelBehavior.always,
             floatingLabelStyle: const TextStyle(
-                      color: Color.fromARGB(255, 126, 107, 107), fontSize: 16)),
+                      color: estilo.corprimaria, fontSize: 16)),
           
           controller: controller,
           maxLines: 4,

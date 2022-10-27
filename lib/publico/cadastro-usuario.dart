@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
 import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:buscapatas/publico/login.dart';
@@ -30,7 +31,7 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
       appBar: AppBar(
           title: const Text("Cadastro de Usuário"),
           centerTitle: true,
-          backgroundColor: Color.fromARGB(255, 126, 107, 107)),
+          backgroundColor: estilo.corprimaria),
       body: SingleChildScrollView(
         padding: EdgeInsets.fromLTRB(30.0, 50, 30.0, 10.0),
         child: Form(
@@ -52,7 +53,7 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
                   child: ElevatedButton(
                     style: const ButtonStyle(
                       backgroundColor: MaterialStatePropertyAll<Color>(
-                          Color.fromARGB(255, 126, 107, 107)),
+                          estilo.corprimaria),
                     ),
                     onPressed: () {
                       _cadastrarUsuario();
@@ -230,7 +231,7 @@ class MyAlertDialog extends StatelessWidget {
         ElevatedButton(
             style: const ButtonStyle(
               backgroundColor: MaterialStatePropertyAll<Color>(
-                  Color.fromARGB(255, 126, 107, 107)),
+                  estilo.corprimaria),
             ),
             onPressed: () {
               Navigator.pushReplacement(
