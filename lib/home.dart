@@ -6,6 +6,7 @@ import 'package:buscapatas/cadastros/cadastro-post.dart';
 import 'package:buscapatas/perfil-usuario.dart';
 import 'package:flutter_session/flutter_session.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
+import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
 //OBS: Essa página é temporária e está simulando a página inicial
 class Home extends StatefulWidget {
@@ -41,14 +42,14 @@ class _HomeState extends State<Home> {
           appBar: AppBar(
               title: const Text("Busca Patas"),
               centerTitle: true,
-              backgroundColor: const Color.fromARGB(255, 126, 107, 107)),
+              backgroundColor: estilo.corprimaria),
           body: SingleChildScrollView(
             padding: const EdgeInsets.fromLTRB(30.0, 50, 30.0, 10.0),
             child: Column(
               children: <Widget>[
                 const Text("Página inicial ainda não implementada",
                     style: TextStyle(
-                        color: Color.fromARGB(255, 126, 107, 107),
+                        color: estilo.corprimaria,
                         fontSize: 20)),
                 Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10.0)),
                 SizedBox(
@@ -57,7 +58,7 @@ class _HomeState extends State<Home> {
                     child: ElevatedButton(
                       style: const ButtonStyle(
                         backgroundColor: MaterialStatePropertyAll<Color>(
-                            Color.fromARGB(255, 126, 107, 107)),
+                            estilo.corprimaria),
                       ),
                       onPressed: () {
                         _cadastrarAnimal();
@@ -74,7 +75,7 @@ class _HomeState extends State<Home> {
                     child: ElevatedButton(
                       style: const ButtonStyle(
                         backgroundColor: MaterialStatePropertyAll<Color>(
-                            Color.fromARGB(255, 126, 107, 107)),
+                            estilo.corprimaria),
                       ),
                       onPressed: () {
                         _cadastrarAnimalAvistado();
@@ -91,7 +92,7 @@ class _HomeState extends State<Home> {
                     child: ElevatedButton(
                       style: const ButtonStyle(
                         backgroundColor: MaterialStatePropertyAll<Color>(
-                            Color.fromARGB(255, 126, 107, 107)),
+                            estilo.corprimaria),
                       ),
                       onPressed: () {
                         _infoPostAvistado();

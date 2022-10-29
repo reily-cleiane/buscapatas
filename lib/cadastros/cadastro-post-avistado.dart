@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
 class CadastroPostAvistado extends StatefulWidget {
   const CadastroPostAvistado({super.key, required this.title});
@@ -46,7 +47,7 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
       appBar: AppBar(
           title: const Text("Cadastrar animal avistado"),
           centerTitle: true,
-          backgroundColor: Color.fromARGB(255, 126, 107, 107)),
+          backgroundColor: estilo.corprimaria),
       body: SingleChildScrollView(
         padding: EdgeInsets.fromLTRB(30.0, 50, 30.0, 10.0),
         child: Column(
@@ -61,7 +62,7 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
                 labelText: "Espécie",
                 border: const OutlineInputBorder(),
               ),
-              style: const TextStyle(color: Color.fromARGB(255, 126, 107, 107)),
+              style: const TextStyle(color: estilo.corprimaria),
               onChanged: (String? value) {
                 // This is called when the user selects an item.
                 setState(() {
@@ -80,13 +81,13 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
                 "Ex: Labrador, Siamês"),
             Text("Sexo:",
                 style: TextStyle(
-                    color: Color.fromARGB(255, 126, 107, 107), fontSize: 20)),
+                    color: estilo.corprimaria, fontSize: 20)),
             RadioListTile(
               visualDensity: const VisualDensity(horizontal: -4.0),
               dense: true,
               title: const Text("Macho",
                   style: TextStyle(
-                      color: Color.fromARGB(255, 126, 107, 107), fontSize: 16)),
+                      color: estilo.corprimaria, fontSize: 16)),
               value: "macho",
               groupValue: grupoSexo,
               onChanged: (value) {
@@ -100,7 +101,7 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
               dense: true,
               title: const Text("Fêmea",
                   style: TextStyle(
-                      color: Color.fromARGB(255, 126, 107, 107), fontSize: 16)),
+                      color: estilo.corprimaria, fontSize: 16)),
               value: "femea",
               groupValue: grupoSexo,
               onChanged: (value) {
@@ -112,7 +113,7 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
             const Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 1.0)),
             Text("Cor:",
                 style: TextStyle(
-                    color: Color.fromARGB(255, 126, 107, 107), fontSize: 20)),
+                    color: estilo.corprimaria, fontSize: 20)),
             FractionallySizedBox(
               widthFactor: 0.6,
               child: ListView(
@@ -122,7 +123,7 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
                     controlAffinity: ListTileControlAffinity.leading,
                     title: new Text(key,
                         style: TextStyle(
-                            color: Color.fromARGB(255, 126, 107, 107),
+                            color: estilo.corprimaria,
                             fontSize: 16)),
                     value: listaCores[key],
                     onChanged: (bool? value) {
@@ -137,13 +138,13 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
             const Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 10.0)),
             Text("Estava de coleira:",
                 style: TextStyle(
-                    color: Color.fromARGB(255, 126, 107, 107), fontSize: 20)),
+                    color: estilo.corprimaria, fontSize: 20)),
             RadioListTile(
               visualDensity: const VisualDensity(horizontal: -4.0),
               dense: true,
               title: const Text("Sim",
                   style: TextStyle(
-                      color: Color.fromARGB(255, 126, 107, 107), fontSize: 16)),
+                      color: estilo.corprimaria, fontSize: 16)),
               value: "sim",
               groupValue: grupoColeira,
               onChanged: (value) {
@@ -157,7 +158,7 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
               dense: true,
               title: const Text("Não",
                   style: TextStyle(
-                      color: Color.fromARGB(255, 126, 107, 107), fontSize: 16)),
+                      color: estilo.corprimaria, fontSize: 16)),
               value: "nao",
               groupValue: grupoColeira,
               onChanged: (value) {
@@ -168,13 +169,13 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
             ),
             Text("Deu lar temporário:",
                 style: TextStyle(
-                    color: Color.fromARGB(255, 126, 107, 107), fontSize: 20)),
+                    color: estilo.corprimaria, fontSize: 20)),
             RadioListTile(
               visualDensity: const VisualDensity(horizontal: -4.0),
               dense: true,
               title: const Text("Sim",
                   style: TextStyle(
-                      color: Color.fromARGB(255, 126, 107, 107), fontSize: 16)),
+                      color: estilo.corprimaria, fontSize: 16)),
               value: "sim",
               groupValue: grupoLarTemporario,
               onChanged: (value) {
@@ -188,7 +189,7 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
               dense: true,
               title: const Text("Não",
                   style: TextStyle(
-                      color: Color.fromARGB(255, 126, 107, 107), fontSize: 16)),
+                      color: estilo.corprimaria, fontSize: 16)),
               value: "nao",
               groupValue: grupoLarTemporario,
               onChanged: (value) {
@@ -209,7 +210,7 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
                 child: ElevatedButton(
                   style: const ButtonStyle(
                     backgroundColor: MaterialStatePropertyAll<Color>(
-                        Color.fromARGB(255, 126, 107, 107)),
+                        estilo.corprimaria),
                   ),
                   onPressed: () {
                     _cadastrarAnimal();
@@ -260,7 +261,7 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
                   fontSize: 14.0, color: Color.fromARGB(255, 187, 179, 179)),
               floatingLabelBehavior: FloatingLabelBehavior.always,
               floatingLabelStyle: const TextStyle(
-                  color: Color.fromARGB(255, 126, 107, 107), fontSize: 16)),
+                  color: estilo.corprimaria, fontSize: 16)),
           controller: controller,
           maxLines: 4,
         ));

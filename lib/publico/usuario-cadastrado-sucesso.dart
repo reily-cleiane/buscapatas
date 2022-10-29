@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:buscapatas/publico/login.dart';
+import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
 class UsuarioCadastradoSucesso extends StatefulWidget {
   UsuarioCadastradoSucesso({super.key, required this.title});
@@ -30,7 +31,7 @@ class _UsuarioCadastradoSucessoState extends State<UsuarioCadastradoSucesso> {
           child:
             ElevatedButton(
               style: const ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll<Color>(Color.fromARGB(255, 126, 107, 107)),
+                  backgroundColor: MaterialStatePropertyAll<Color>(estilo.corprimaria),
                 ),
               onPressed: () {
                 _redirecionar();

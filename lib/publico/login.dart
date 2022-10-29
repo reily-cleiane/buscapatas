@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 import 'package:buscapatas/publico/esqueceu-senha.dart';
 import 'package:buscapatas/publico/nao-implementado.dart';
 import 'package:buscapatas/publico/cadastro-usuario.dart';
@@ -10,15 +11,6 @@ import 'dart:convert';
 
 class Login extends StatefulWidget {
   const Login({super.key, required this.title});
-
-  // This widget is the Login page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -73,7 +65,7 @@ class _LoginState extends State<Login> {
                     child: ElevatedButton(
                       style: const ButtonStyle(
                         backgroundColor: MaterialStatePropertyAll<Color>(
-                            Color.fromARGB(255, 126, 107, 107)),
+                            estilo.corprimaria),
                       ),
                       onPressed: () {
                         _entrar();
@@ -88,7 +80,7 @@ class _LoginState extends State<Login> {
             padding: EdgeInsets.fromLTRB(0, 20.0, 0, 15.0),
             child: Text("OU",
                 style: TextStyle(
-                    color: Color.fromARGB(255, 126, 107, 107), fontSize: 20)),
+                    color: estilo.corprimaria, fontSize: 20)),
           ),
           FractionallySizedBox(
               widthFactor: 1,
@@ -128,7 +120,7 @@ class _LoginState extends State<Login> {
                           text: "Esqueceu sua senha? ",
                           style: TextStyle(
                             decoration: TextDecoration.underline,
-                            color: Color.fromARGB(255, 126, 107, 107),
+                            color: estilo.corprimaria,
                             fontSize: 16.0,
                           ),
                         ),
@@ -152,7 +144,7 @@ class _LoginState extends State<Login> {
                       text: const TextSpan(
                 text: "Não possui conta? ",
                 style: TextStyle(
-                  color: Color.fromARGB(255, 126, 107, 107),
+                  color: estilo.corprimaria,
                   fontSize: 16.0,
                 ),
                 children: <TextSpan>[
@@ -160,7 +152,7 @@ class _LoginState extends State<Login> {
                       text: 'Cadastre-se',
                       style: TextStyle(
                         decoration: TextDecoration.underline,
-                        color: Color.fromARGB(255, 126, 107, 107),
+                        color: estilo.corprimaria,
                         fontSize: 16.0,
                       )),
                   // can add more TextSpans here...

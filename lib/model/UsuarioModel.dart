@@ -14,6 +14,8 @@ class UsuarioModel {
 
   UsuarioModel({this.id, this.nome, this.email, this.senha, this.telefone});
 
+  UsuarioModel.id(this.id);
+
   UsuarioModel.emailSenha(this.email, this.senha);
 
   factory UsuarioModel.fromJson(Map<String, dynamic> json) {
