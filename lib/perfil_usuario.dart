@@ -57,6 +57,7 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
             Padding(
               padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 20.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
@@ -118,7 +119,7 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
                     backgroundColor: Color(0xFFD7FFE2),
                   ),
                   const SizedBox(height: 25),
-                  Column(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
                       Text(
