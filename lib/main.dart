@@ -1,6 +1,7 @@
 import 'package:buscapatas/cadastros/cadastro-post.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/home.dart';
+import 'package:material_color_generator/material_color_generator.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,11 +25,11 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: generateMaterialColor(color: Color.fromARGB(234, 234, 184, 184)),
       ),
       //home: CadastroPost(title: "Cadastro de animal"),
       // home: CadastroPost(title: "Página Inicial"),
-      home: Home(true, title: "Página Inicial"),
+      home: Home(false, title: "Página Inicial"),
     );
   }
 }
