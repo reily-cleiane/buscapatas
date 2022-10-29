@@ -37,42 +37,6 @@ class _HomeState extends State<Home> {
       return Login(title: 'Busca Patas - Login');
     } else {
       return Scaffold(
-<<<<<<< HEAD
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-            title: const Text("Busca Patas"),
-            centerTitle: true,
-            backgroundColor:estilo.corprimaria),
-    
-        body:SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(30.0, 50 , 30.0, 10.0),
-          child: Column(
-            children: <Widget>[
-              const Text("Página inicial ainda não implementada", style: TextStyle(color: estilo.corprimaria,fontSize: 20)),
-              Padding(padding: const EdgeInsets.fromLTRB(0, 10 , 0, 10.0)),
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  style: const ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll<Color>(
-                        estilo.corprimaria),
-                  ),
-                  onPressed: () {
-                    _cadastrarAnimal();
-                  },
-                  child: const Text(
-                    "Cadastrar Animal",
-                    style: TextStyle(color: Colors.white, fontSize: 20.0),
-                  ),
-                )
-                ),
-            ],
-          ),
-        )
-
-      );
-=======
           backgroundColor: Colors.white,
           appBar: AppBar(
               title: const Text("Busca Patas"),
@@ -140,7 +104,6 @@ class _HomeState extends State<Home> {
               ],
             ),
           ));
->>>>>>> 4353b861326b1c11809e8bfab19bd0567574b4f9
     }
   }
 
