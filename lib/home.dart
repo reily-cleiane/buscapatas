@@ -3,6 +3,7 @@ import 'package:buscapatas/visualizacoes/info-post-avistado.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/publico/login.dart';
 import 'package:buscapatas/cadastros/cadastro-post.dart';
+import 'package:buscapatas/perfil-usuario.dart';
 import 'package:flutter_session/flutter_session.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
 
@@ -100,6 +101,23 @@ class _HomeState extends State<Home> {
                         style: TextStyle(color: Colors.white, fontSize: 20.0),
                       ),
                     )),
+                Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10.0)),
+                SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(
+                      style: const ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll<Color>(
+                            Color.fromARGB(255, 126, 107, 107)),
+                      ),
+                      onPressed: () {
+                        _visualizarPerfil();
+                      },
+                      child: const Text(
+                        "Perfil do usuário",
+                        style: TextStyle(color: Colors.white, fontSize: 20.0),
+                      ),
+                    )),
               ],
             ),
           ));
@@ -128,6 +146,14 @@ class _HomeState extends State<Home> {
       context,
       MaterialPageRoute(
           builder: (context) => InfoPostAvistado(title: "Animal Avistado")),
+    );
+  }
+
+  void _visualizarPerfil() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => VisualizarPerfil(title: "Perfil")),
     );
   }
 }
