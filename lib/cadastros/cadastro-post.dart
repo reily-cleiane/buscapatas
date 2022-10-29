@@ -39,7 +39,6 @@ class _CadastroPostState extends State<CadastroPost> {
     'Cinza': false,
     'Marrom': false,
     'Laranja': false,
-
   };
 
   @override
@@ -55,7 +54,8 @@ class _CadastroPostState extends State<CadastroPost> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            campoInput("Nome do do animal", nomeController, TextInputType.name, "Nome ou apelido"),
+            campoInput("Nome do do animal", nomeController, TextInputType.name,
+                "Nome ou apelido"),
             DropdownButtonFormField<String>(
               hint: const Text("Selecione"),
               value: especie,
@@ -80,7 +80,8 @@ class _CadastroPostState extends State<CadastroPost> {
                 );
               }).toList(),
             ),
-            campoInput("Raça", racaController, TextInputType.name, "Ex: Labrador, Siamês"),
+            campoInput("Raça", racaController, TextInputType.name,
+                "Ex: Labrador, Siamês"),
             Text("Sexo:",
                 style: TextStyle(
                     color: Color.fromARGB(255, 126, 107, 107), fontSize: 20)),
@@ -121,24 +122,23 @@ class _CadastroPostState extends State<CadastroPost> {
               child: ListView(
                 shrinkWrap: true,
                 children: listaCores.keys.map((String key) {
-                    return CheckboxListTile(
-                      controlAffinity: ListTileControlAffinity.leading,
-                      title: new Text(key, style: TextStyle(
-                    color: Color.fromARGB(255, 126, 107, 107), fontSize: 16)),
-                      value: listaCores[key],
-                      onChanged: (bool? value) {
-                        setState(() {
-                          listaCores[key] = value!;
-                        });
-                      },
-                    );
-
+                  return CheckboxListTile(
+                    controlAffinity: ListTileControlAffinity.leading,
+                    title: new Text(key,
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 126, 107, 107),
+                            fontSize: 16)),
+                    value: listaCores[key],
+                    onChanged: (bool? value) {
+                      setState(() {
+                        listaCores[key] = value!;
+                      });
+                    },
+                  );
                 }).toList(),
               ),
             ),
-
             const Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 10.0)),
-
             Text("Estava de coleira:",
                 style: TextStyle(
                     color: Color.fromARGB(255, 126, 107, 107), fontSize: 20)),
@@ -170,15 +170,19 @@ class _CadastroPostState extends State<CadastroPost> {
                 });
               },
             ),
-            
-            campoInputLongo("Outras informações", outrasinformacoesController, TextInputType.multiline, "Outras características para ajudar na identificação do animal"),
-
-            campoInputLongo("Orientações gerais", orientacoesController, TextInputType.multiline, "Temperamento do animal e outras instruções importantes"),
-
-            campoInput("Recompensa", recompensaController, TextInputType.number, "R\$ 0"),
-            
+            campoInputLongo(
+                "Outras informações",
+                outrasinformacoesController,
+                TextInputType.multiline,
+                "Outras características para ajudar na identificação do animal"),
+            campoInputLongo(
+                "Orientações gerais",
+                orientacoesController,
+                TextInputType.multiline,
+                "Temperamento do animal e outras instruções importantes"),
+            campoInput("Recompensa", recompensaController, TextInputType.number,
+                "R\$ 0"),
             const Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 10)),
-
             SizedBox(
                 width: double.infinity,
                 height: 50,
@@ -202,11 +206,10 @@ class _CadastroPostState extends State<CadastroPost> {
     );
   }
 
-
   void _cadastrarAnimal() {}
 
-  Widget campoInput(
-      String label, TextEditingController controller, TextInputType tipoCampo, String placeholder) {
+  Widget campoInput(String label, TextEditingController controller,
+      TextInputType tipoCampo, String placeholder) {
     return Padding(
         padding: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
         child: TextFormField(
@@ -214,32 +217,32 @@ class _CadastroPostState extends State<CadastroPost> {
           decoration: InputDecoration(
             labelText: label,
             hintText: placeholder,
-            hintStyle: TextStyle(fontSize: 14.0, color: Color.fromARGB(255, 187, 179, 179)),
+            hintStyle: TextStyle(
+                fontSize: 14.0, color: Color.fromARGB(255, 187, 179, 179)),
             border: const OutlineInputBorder(),
-            floatingLabelBehavior:FloatingLabelBehavior.always,
+            floatingLabelBehavior: FloatingLabelBehavior.always,
           ),
           controller: controller,
         ));
   }
 
-  Widget campoInputLongo(
-      String label, TextEditingController controller, TextInputType tipoCampo, String placeholder) {
+  Widget campoInputLongo(String label, TextEditingController controller,
+      TextInputType tipoCampo, String placeholder) {
     return Padding(
         padding: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
         child: TextFormField(
           keyboardType: tipoCampo,
           decoration: InputDecoration(
-            labelText: label,
-            border: const OutlineInputBorder(),
-            hintText: placeholder,
-            hintStyle: TextStyle(fontSize: 14.0, color:  Color.fromARGB(255, 187, 179, 179)),
-            floatingLabelBehavior:FloatingLabelBehavior.always,
-            floatingLabelStyle: const TextStyle(
-                      color: Color.fromARGB(255, 126, 107, 107), fontSize: 16)),
-          
+              labelText: label,
+              border: const OutlineInputBorder(),
+              hintText: placeholder,
+              hintStyle: TextStyle(
+                  fontSize: 14.0, color: Color.fromARGB(255, 187, 179, 179)),
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+              floatingLabelStyle: const TextStyle(
+                  color: Color.fromARGB(255, 126, 107, 107), fontSize: 16)),
           controller: controller,
           maxLines: 4,
         ));
   }
-
 }
