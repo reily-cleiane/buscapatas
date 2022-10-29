@@ -1,6 +1,7 @@
 import 'package:buscapatas/publico/cadastro-usuario.dart';
 import 'package:buscapatas/publico/esqueceu-senha.dart';
 import 'package:flutter/material.dart';
+import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
 class InfoPostAvistado extends StatefulWidget {
   const InfoPostAvistado({super.key, required this.title});
@@ -24,7 +25,7 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
         appBar: AppBar(
             title: const Text("Animal Avistado"),
             centerTitle: true,
-            backgroundColor: const Color.fromARGB(255, 126, 107, 107)),
+            backgroundColor: estilo.corprimaria),
         body: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(30.0, 30, 30.0, 10.0),
           child: Column(
@@ -101,7 +102,7 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
                               text: "Entrar em contato ",
                               style: TextStyle(
                                 decoration: TextDecoration.underline,
-                                color: Color.fromARGB(255, 126, 107, 107),
+                                color: estilo.corprimaria,
                                 fontSize: 16.0,
                               ),
                             ),
