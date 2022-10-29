@@ -1,6 +1,7 @@
 import 'package:buscapatas/cadastros/cadastro-post.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/home.dart';
+import 'package:buscapatas/cadastros/cadastro-post.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
 
@@ -29,7 +30,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       //home: CadastroPost(title: "Cadastro de animal"),
-      home: Home(false,title: "Página Inicial"),
+      //home: Home(false,title: "Página Inicial"),
+      home: CadastroPost(title: "Página Inicial"),
     );
   }
 }

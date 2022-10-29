@@ -74,8 +74,7 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
     if (emailController.text.isNotEmpty) {
       _usuarioExistente = await _verificarEmailJaCadastrado();
     }
-    if (_formKey.currentState!.validate() &&
-        senhaController.text == repetirSenhaController.text) {
+    if (_formKey.currentState!.validate()) {
       String nome = nomeController.text;
       String email = emailController.text;
       String senha = senhaController.text;
