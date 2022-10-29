@@ -48,17 +48,15 @@ class _HomeState extends State<Home> {
             child: Column(
               children: <Widget>[
                 const Text("Página inicial ainda não implementada",
-                    style: TextStyle(
-                        color: estilo.corprimaria,
-                        fontSize: 20)),
+                    style: TextStyle(color: estilo.corprimaria, fontSize: 20)),
                 Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10.0)),
                 SizedBox(
                     width: double.infinity,
                     height: 50,
                     child: ElevatedButton(
                       style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll<Color>(
-                            estilo.corprimaria),
+                        backgroundColor:
+                            MaterialStatePropertyAll<Color>(estilo.corprimaria),
                       ),
                       onPressed: () {
                         _cadastrarAnimal();
@@ -74,8 +72,8 @@ class _HomeState extends State<Home> {
                     height: 50,
                     child: ElevatedButton(
                       style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll<Color>(
-                            estilo.corprimaria),
+                        backgroundColor:
+                            MaterialStatePropertyAll<Color>(estilo.corprimaria),
                       ),
                       onPressed: () {
                         _cadastrarAnimalAvistado();
@@ -91,8 +89,8 @@ class _HomeState extends State<Home> {
                     height: 50,
                     child: ElevatedButton(
                       style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll<Color>(
-                            estilo.corprimaria),
+                        backgroundColor:
+                            MaterialStatePropertyAll<Color>(estilo.corprimaria),
                       ),
                       onPressed: () {
                         _infoPostAvistado();
@@ -108,14 +106,14 @@ class _HomeState extends State<Home> {
                     height: 50,
                     child: ElevatedButton(
                       style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll<Color>(
-                            Color.fromARGB(255, 126, 107, 107)),
+                        backgroundColor:
+                            MaterialStatePropertyAll<Color>(estilo.corprimaria),
                       ),
                       onPressed: () {
                         _visualizarPerfil();
                       },
                       child: const Text(
-                        "Perfil do usuário",
+                        "Visualizar perfil",
                         style: TextStyle(color: Colors.white, fontSize: 20.0),
                       ),
                     )),

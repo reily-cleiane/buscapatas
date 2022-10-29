@@ -27,8 +27,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       //home: CadastroPost(title: "Cadastro de animal"),
-      //home: Home(false,title: "Página Inicial"),
-      home: CadastroPost(title: "Página Inicial"),
+      // home: CadastroPost(title: "Página Inicial"),
+      home: Home(true, title: "Página Inicial"),
     );
   }
 }
