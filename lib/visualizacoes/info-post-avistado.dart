@@ -1,5 +1,7 @@
+import 'package:buscapatas/perfil_usuario.dart';
 import 'package:buscapatas/publico/cadastro-usuario.dart';
 import 'package:buscapatas/publico/esqueceu-senha.dart';
+import 'package:buscapatas/visualizacoes/contato.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
@@ -75,14 +77,9 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Container(
-                    width: 40.0,
-                    height: 40.0,
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                            fit: BoxFit.fill,
-                            image: AssetImage('imagens/animal.jpg'))),
+                  const CircleAvatar(
+                    radius: 20,
+                    backgroundImage: AssetImage('imagens/salsicha.jpg'),
                   ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(10, 0, 0, 0.0),
@@ -91,9 +88,7 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => EsqueceuSenha(
-                                    title:
-                                        'Busca Patas - Esqueci minha senha')),
+                                builder: (context) => PerfilUsuario(title: "Perfil")),
                           );
                         },
                         child: Ink(
