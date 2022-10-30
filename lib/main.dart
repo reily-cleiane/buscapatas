@@ -4,6 +4,7 @@ import 'package:buscapatas/home.dart';
 import 'package:material_color_generator/material_color_generator.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 import 'package:buscapatas/publico/login.dart';
+import 'package:buscapatas/publico/nao-implementado.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,11 +28,11 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: generateMaterialColor(color: estilo.corsecundaria),
       ),
       //home: CadastroPost(title: "Cadastro de animal"),
-      //home: Home(true, title: "Página Inicial"),
-      home: Login(title: "Login - BuscaPatas"),
+      home: Home(true, title: "Página Inicial"),
+      //home: NaoImplementado(title: "Login - BuscaPatas"),
     );
   }
 }
