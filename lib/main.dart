@@ -1,6 +1,7 @@
 import 'package:buscapatas/cadastros/cadastro-post.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/home.dart';
+import 'package:buscapatas/publico/login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,8 +28,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       //home: CadastroPost(title: "Cadastro de animal"),
-      // home: CadastroPost(title: "Página Inicial"),
-      home: Home(true, title: "Página Inicial"),
+      //home: Home(true, title: "Página Inicial"),
+      home: Login(title: "Login - BuscaPatas"),
     );
   }
 }

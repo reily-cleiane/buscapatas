@@ -1,5 +1,6 @@
 import 'package:buscapatas/model/EspecieModel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_session/flutter_session.dart';
 import 'dart:convert';
 import 'package:buscapatas/home.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
@@ -24,7 +25,6 @@ class _CadastroPostState extends State<CadastroPost> {
   TextEditingController recompensaController = TextEditingController();
 
   bool valorColeiraMarcado = false;
-  bool corMarcada = false;
   String valorSexoMarcado = "";
   String? valorEspecieSelecionado;
   String? valorRacaSelecionado;
@@ -32,17 +32,16 @@ class _CadastroPostState extends State<CadastroPost> {
   List<dynamic> listaEspecies = [];
   List<dynamic> listaRacas = [];
 
-  Map<String, bool> listaCores = {
-    'Preto': false,
-    'Branco': false,
-    'Cinza': false,
-    'Marrom': false,
-    'Laranja': false,
-  };
+  Map<String, bool> mapaCoresNomeBool = {};
+  Map<String, int> mapaCoresNomeId = {};
+  List<int> listaCoresSelecionadas = [];
+  UsuarioModel usuarioLogado = UsuarioModel();
 
   @override
   void initState() {
     getEspecies();
+    getCores();
+    getUsuarioLogado();
     super.initState();
   }
 
@@ -50,7 +49,7 @@ class _CadastroPostState extends State<CadastroPost> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text("Cadastro de Animal"),
+          title: const Text("Cadastro de Animal Perdido"),
           centerTitle: true,
           backgroundColor: estilo.corprimaria),
       body: SingleChildScrollView(
@@ -62,8 +61,8 @@ class _CadastroPostState extends State<CadastroPost> {
               children: [
                 campoInput("Nome do animal", nomeController, TextInputType.name,
                     "Nome ou apelido"),
-                campoSelect(
-                    "Espécie", valorEspecieSelecionado, listaEspecies, selecionarEspecie),
+                campoSelect("Espécie", valorEspecieSelecionado, listaEspecies,
+                    selecionarEspecie),
                 campoSelect(
                     "Raça", valorRacaSelecionado, listaRacas, selecionarRaca),
                 const Text("Sexo:",
@@ -103,16 +102,21 @@ class _CadastroPostState extends State<CadastroPost> {
                   widthFactor: 0.6,
                   child: ListView(
                     shrinkWrap: true,
-                    children: listaCores.keys.map((String key) {
+                    children: mapaCoresNomeBool.keys.map((String key) {
                       return CheckboxListTile(
                         controlAffinity: ListTileControlAffinity.leading,
                         title: new Text(key,
                             style: TextStyle(
                                 color: estilo.corprimaria, fontSize: 16)),
-                        value: listaCores[key],
+                        value: mapaCoresNomeBool[key],
                         onChanged: (bool? value) {
                           setState(() {
-                            listaCores[key] = value!;
+                            mapaCoresNomeBool[key] = value!;
+                            if(mapaCoresNomeBool[key] == true){
+                              listaCoresSelecionadas.add(mapaCoresNomeId[key]!);
+                            }else{
+                              listaCoresSelecionadas.remove(mapaCoresNomeId[key]);
+                            }
                           });
                         },
                       );
@@ -186,6 +190,10 @@ class _CadastroPostState extends State<CadastroPost> {
     );
   }
 
+  void getUsuarioLogado() async{
+    usuarioLogado = UsuarioModel.fromJson( await(FlutterSession().get("sessao_usuarioLogado")));
+  }
+  
   void getEspecies() async {
     const request = "http://localhost:8080/especies";
 
@@ -202,13 +210,36 @@ class _CadastroPostState extends State<CadastroPost> {
         listaEspecies = especiesTemp;
       });
     } else {
-      throw Exception('Falha no servidor ao carregar usuários');
+      throw Exception('Falha no servidor ao carregar espécies');
+    }
+  }
+
+  void getCores() async {
+    const request = "http://localhost:8080/cores";
+
+    http.Response response = await http.get(Uri.parse(request));
+
+    if (response.statusCode == 200) {
+      var resposta = json.decode(utf8.decode(response.bodyBytes));
+      Map<String, bool> coresTempNome = {};
+      Map<String, int> coresTempNomeId = {};
+
+      for (var cor in resposta) {
+        coresTempNome[cor["nome"]] = false;
+        coresTempNomeId[cor["nome"]] = cor["id"];
+      }
+      setState(() {
+        mapaCoresNomeBool = coresTempNome;
+        mapaCoresNomeId = coresTempNomeId;
+      });
+    } else {
+      throw Exception('Falha no servidor ao carregar cores');
     }
   }
 
   void getRacas() async {
     setState(() {
-      valorRacaSelecionado = null;   
+      valorRacaSelecionado = null;
     });
     var request =
         "http://localhost:8080/racas/especie/${valorEspecieSelecionado}";
@@ -227,45 +258,47 @@ class _CadastroPostState extends State<CadastroPost> {
         listaRacas = racasTemp;
       });
     } else {
-      throw Exception('Falha no servidor ao carregar usuários');
+      throw Exception('Falha no servidor ao carregar raças');
     }
   }
 
   void _cadastrarPost() {
     // Colocar a validação depois
     //if (_formKey.currentState!.validate())
-    _addPost(context);
+    _addPost();
   }
 
-  void _addPost(BuildContext context) async {
+  void _addPost() async {
     var url = "http://localhost:8080/posts";
 
-    CorModel cor1 = CorModel.id(1);
-    CorModel cor2 = CorModel.id(2);
-    List<CorModel> cores = [cor1, cor2];
+    List<CorModel> cores = [];
 
+    for (int corId in listaCoresSelecionadas) {
+      CorModel corSelecionada = CorModel.id(corId);
+      cores.add(corSelecionada);
+    }
+    
     var response = await http.post(Uri.parse(url),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, dynamic>{
-          "outrasInformacoes": outrasinformacoesController.text,
-          "orientacoesGerais": orientacoesController.text,
-          "recompensa": int.parse(recompensaController.text),
-//ajustar quando pegar latitude
+          if(outrasinformacoesController.text.isNotEmpty) "outrasInformacoes": outrasinformacoesController.text,
+          if(orientacoesController.text.isNotEmpty) "orientacoesGerais": orientacoesController.text,
+          if(recompensaController.text.isNotEmpty) "recompensa": int.parse(recompensaController.text),
+          //ajustar quando pegar latitude
           "latitude": 987,
-//ajustar quando pegar longitude
+          //ajustar quando pegar longitude
           "longitude": 9632,
-          "nomeAnimal": nomeController.text,
+          if(nomeController.text.isNotEmpty) "nomeAnimal": nomeController.text,
           "coleira": valorColeiraMarcado,
-          "especieAnimal": {"id": (valorEspecieSelecionado == null)? null: int.parse(valorEspecieSelecionado!)},
-          "racaAnimal": {"id": (valorRacaSelecionado == null)? null: int.parse(valorRacaSelecionado!)},
-//ajustar quando pegar cor
+          if(valorEspecieSelecionado != null) "especieAnimal": {"id": int.parse(valorEspecieSelecionado!)},
+          if(valorRacaSelecionado != null) "racaAnimal": {"id": int.parse(valorRacaSelecionado!)},
           "coresAnimal": cores,
-          "sexoAnimal": valorSexoMarcado,
+          if(valorSexoMarcado.isNotEmpty) "sexoAnimal": valorSexoMarcado,
           "tipoPost": "ANIMAL_PERDIDO",
 //ajustar quando pegar usuario
-          "usuario": UsuarioModel.id(1),
+          "usuario": usuarioLogado,
         }));
 
     if (response.statusCode == 200) {
@@ -278,6 +311,7 @@ class _CadastroPostState extends State<CadastroPost> {
         },
       );
     }
+
   }
 
   void selecionarRaca(String racaSelecionada) {
