@@ -3,7 +3,7 @@ import 'package:buscapatas/visualizacoes/info-post-avistado.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/publico/login.dart';
 import 'package:buscapatas/cadastros/cadastro-post.dart';
-import 'package:buscapatas/perfil-usuario.dart';
+import 'package:buscapatas/perfil_usuario.dart';
 import 'package:flutter_session/flutter_session.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
