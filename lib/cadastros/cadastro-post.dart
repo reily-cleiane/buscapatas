@@ -1,3 +1,4 @@
+import 'package:buscapatas/model/EspecieModel.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:buscapatas/home.dart';
@@ -16,28 +17,20 @@ class CadastroPost extends StatefulWidget {
 }
 
 class _CadastroPostState extends State<CadastroPost> {
+  final _formKey = GlobalKey<FormState>();
   TextEditingController nomeController = TextEditingController();
-  TextEditingController racaController = TextEditingController();
-
   TextEditingController outrasinformacoesController = TextEditingController();
   TextEditingController orientacoesController = TextEditingController();
-
   TextEditingController recompensaController = TextEditingController();
 
-  String valorSexoMarcado = "";
   bool valorColeiraMarcado = false;
-  String? valorEspecieSelecionado;
-
   bool corMarcada = false;
+  String valorSexoMarcado = "";
+  String? valorEspecieSelecionado;
+  String? valorRacaSelecionado;
 
-  final _formKey = GlobalKey<FormState>();
-
-  List<String> listaEspecies = <String>[
-    'Gato',
-    'Cachorro',
-    'Hamster',
-    'Cacatua',
-  ];
+  List<dynamic> listaEspecies = [];
+  List<dynamic> listaRacas = [];
 
   Map<String, bool> listaCores = {
     'Preto': false,
@@ -46,6 +39,12 @@ class _CadastroPostState extends State<CadastroPost> {
     'Marrom': false,
     'Laranja': false,
   };
+
+  @override
+  void initState() {
+    getEspecies();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,34 +62,10 @@ class _CadastroPostState extends State<CadastroPost> {
               children: [
                 campoInput("Nome do animal", nomeController, TextInputType.name,
                     "Nome ou apelido"),
-                DropdownButtonFormField<String>(
-                  hint: const Text("Selecione"),
-                  value: valorEspecieSelecionado,
-                  icon: const Icon(Icons.arrow_drop_down_rounded),
-                  elevation: 16,
-                  decoration: const InputDecoration(
-                    labelText: "Espécie",
-                    labelStyle:
-                        TextStyle(fontSize: 21, color: estilo.corprimaria),
-                    border: OutlineInputBorder(),
-                  ),
-                  style: const TextStyle(color: estilo.corprimaria),
-                  onChanged: (String? value) {
-                    // This is called when the user selects an item.
-                    setState(() {
-                      valorEspecieSelecionado = value!;
-                    });
-                  },
-                  items: listaEspecies
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
-                campoInput("Raça", racaController, TextInputType.name,
-                    "Ex: Labrador, Siamês"),
+                campoSelect(
+                    "Espécie", valorEspecieSelecionado, listaEspecies, selecionarEspecie),
+                campoSelect(
+                    "Raça", valorRacaSelecionado, listaRacas, selecionarRaca),
                 const Text("Sexo:",
                     style: TextStyle(color: estilo.corprimaria, fontSize: 16)),
                 RadioListTile(
@@ -99,7 +74,7 @@ class _CadastroPostState extends State<CadastroPost> {
                   title: const Text("Macho",
                       style:
                           TextStyle(color: estilo.corprimaria, fontSize: 16)),
-                  value: "MACHO",
+                  value: "M",
                   groupValue: valorSexoMarcado,
                   onChanged: (value) {
                     setState(() {
@@ -113,7 +88,7 @@ class _CadastroPostState extends State<CadastroPost> {
                   title: const Text("Fêmea",
                       style:
                           TextStyle(color: estilo.corprimaria, fontSize: 16)),
-                  value: "FEMEA",
+                  value: "F",
                   groupValue: valorSexoMarcado,
                   onChanged: (value) {
                     setState(() {
@@ -211,6 +186,51 @@ class _CadastroPostState extends State<CadastroPost> {
     );
   }
 
+  void getEspecies() async {
+    const request = "http://localhost:8080/especies";
+
+    http.Response response = await http.get(Uri.parse(request));
+
+    if (response.statusCode == 200) {
+      var resposta = json.decode(utf8.decode(response.bodyBytes));
+      List<dynamic> especiesTemp = [];
+
+      for (var especie in resposta) {
+        especiesTemp.add(especie);
+      }
+      setState(() {
+        listaEspecies = especiesTemp;
+      });
+    } else {
+      throw Exception('Falha no servidor ao carregar usuários');
+    }
+  }
+
+  void getRacas() async {
+    setState(() {
+      valorRacaSelecionado = null;   
+    });
+    var request =
+        "http://localhost:8080/racas/especie/${valorEspecieSelecionado}";
+
+    http.Response response = await http.get(Uri.parse(request));
+
+    if (response.statusCode == 200) {
+      var resposta = json.decode(utf8.decode(response.bodyBytes));
+      List<dynamic> racasTemp = [];
+
+      for (var raca in resposta) {
+        racasTemp.add({"id": raca["id"], "nome": raca["nome"]});
+      }
+      setState(() {
+        listaRacas.clear();
+        listaRacas = racasTemp;
+      });
+    } else {
+      throw Exception('Falha no servidor ao carregar usuários');
+    }
+  }
+
   void _cadastrarPost() {
     // Colocar a validação depois
     //if (_formKey.currentState!.validate())
@@ -219,42 +239,34 @@ class _CadastroPostState extends State<CadastroPost> {
 
   void _addPost(BuildContext context) async {
     var url = "http://localhost:8080/posts";
-    
+
     CorModel cor1 = CorModel.id(1);
     CorModel cor2 = CorModel.id(2);
-    List<CorModel> cores = [cor1,cor2];
+    List<CorModel> cores = [cor1, cor2];
 
-    var response = await http.post(
-      Uri.parse(url),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-
-      body: jsonEncode(<String, dynamic>{
-
-        "outrasInformacoes": outrasinformacoesController.text,
-        "orientacoesGerais": orientacoesController.text,
-        "recompensa": int.parse(recompensaController.text),
+    var response = await http.post(Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, dynamic>{
+          "outrasInformacoes": outrasinformacoesController.text,
+          "orientacoesGerais": orientacoesController.text,
+          "recompensa": int.parse(recompensaController.text),
 //ajustar quando pegar latitude
-        "latitude": 987,
+          "latitude": 987,
 //ajustar quando pegar longitude
-        "longitude": 9632,
-        "nomeAnimal": nomeController.text,
-//Conveter o valor para true ou false
-        "coleira": false,
-//ajustar quando pegar espécie
-        "especieAnimal": {"id":1},
-//ajustar quando pegar raça
-        "racaAnimal": {"id":1},
+          "longitude": 9632,
+          "nomeAnimal": nomeController.text,
+          "coleira": valorColeiraMarcado,
+          "especieAnimal": {"id": (valorEspecieSelecionado == null)? null: int.parse(valorEspecieSelecionado!)},
+          "racaAnimal": {"id": (valorRacaSelecionado == null)? null: int.parse(valorRacaSelecionado!)},
 //ajustar quando pegar cor
-        "coresAnimal": cores,
-        "sexoAnimal": valorSexoMarcado,
-        "tipoPost": "ANIMAL_PERDIDO",
+          "coresAnimal": cores,
+          "sexoAnimal": valorSexoMarcado,
+          "tipoPost": "ANIMAL_PERDIDO",
 //ajustar quando pegar usuario
-        "usuario": UsuarioModel.id(1),
-
-      })
-    );
+          "usuario": UsuarioModel.id(1),
+        }));
 
     if (response.statusCode == 200) {
       showDialog(
@@ -268,6 +280,48 @@ class _CadastroPostState extends State<CadastroPost> {
     }
   }
 
+  void selecionarRaca(String racaSelecionada) {
+    setState(() {
+      valorRacaSelecionado = racaSelecionada;
+    });
+  }
+
+  void selecionarEspecie(String especieSelecionada) {
+    setState(() {
+      valorEspecieSelecionado = especieSelecionada;
+      valorRacaSelecionado = null;
+    });
+    getRacas();
+  }
+
+  Widget campoSelect(String label, var valorSelecionado, var listaItens,
+      Function funcaoOnChange) {
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(0, 20.0, 0, 20.0),
+        child: DropdownButtonFormField<String>(
+          hint: const Text("Selecione"),
+          value: valorSelecionado,
+          icon: const Icon(Icons.arrow_drop_down_rounded),
+          elevation: 16,
+          decoration: InputDecoration(
+            labelText: label,
+            labelStyle:
+                const TextStyle(fontSize: 21, color: estilo.corprimaria),
+            border: OutlineInputBorder(),
+          ),
+          style: const TextStyle(color: estilo.corprimaria),
+          onChanged: (String? valor) {
+            funcaoOnChange(valor);
+          },
+          items: listaItens.map<DropdownMenuItem<String>>((mapa) {
+            return DropdownMenuItem<String>(
+              value: mapa["id"].toString(),
+              child: Text(mapa["nome"]),
+            );
+          }).toList(),
+        ));
+  }
+
   Widget campoInput(String label, TextEditingController controller,
       TextInputType tipoCampo, String placeholder) {
     return Padding(
@@ -276,7 +330,8 @@ class _CadastroPostState extends State<CadastroPost> {
           keyboardType: tipoCampo,
           decoration: InputDecoration(
             labelText: label,
-            labelStyle: const TextStyle(fontSize: 21, color: estilo.corprimaria),
+            labelStyle:
+                const TextStyle(fontSize: 21, color: estilo.corprimaria),
             hintText: placeholder,
             hintStyle: const TextStyle(
                 fontSize: 14.0, color: Color.fromARGB(255, 187, 179, 179)),
@@ -295,7 +350,8 @@ class _CadastroPostState extends State<CadastroPost> {
           keyboardType: tipoCampo,
           decoration: InputDecoration(
               labelText: label,
-              labelStyle: const TextStyle(fontSize: 21, color: estilo.corprimaria),
+              labelStyle:
+                  const TextStyle(fontSize: 21, color: estilo.corprimaria),
               border: const OutlineInputBorder(),
               hintText: placeholder,
               hintStyle: const TextStyle(
@@ -307,7 +363,6 @@ class _CadastroPostState extends State<CadastroPost> {
           maxLines: 4,
         ));
   }
- 
 }
 
 class MyAlertDialog extends StatelessWidget {
@@ -329,15 +384,14 @@ class MyAlertDialog extends StatelessWidget {
       actions: <Widget>[
         ElevatedButton(
             style: const ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll<Color>(
-                  estilo.corprimaria),
+              backgroundColor:
+                  MaterialStatePropertyAll<Color>(estilo.corprimaria),
             ),
             onPressed: () {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          Home(false,title: 'Busca Patas')));
+                      builder: (context) => Home(true, title: 'Busca Patas')));
 
               //Navigator.of(context).pop();
             },
@@ -353,4 +407,3 @@ class MyAlertDialog extends StatelessWidget {
     );
   }
 }
-
