@@ -3,6 +3,7 @@ import 'package:buscapatas/visualizacoes/info-post-avistado.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/publico/login.dart';
 import 'package:buscapatas/cadastros/cadastro-post.dart';
+import 'package:buscapatas/perfil-usuario.dart';
 import 'package:flutter_session/flutter_session.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
@@ -47,17 +48,15 @@ class _HomeState extends State<Home> {
             child: Column(
               children: <Widget>[
                 const Text("Página inicial ainda não implementada",
-                    style: TextStyle(
-                        color: estilo.corprimaria,
-                        fontSize: 20)),
+                    style: TextStyle(color: estilo.corprimaria, fontSize: 20)),
                 Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10.0)),
                 SizedBox(
                     width: double.infinity,
                     height: 50,
                     child: ElevatedButton(
                       style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll<Color>(
-                            estilo.corprimaria),
+                        backgroundColor:
+                            MaterialStatePropertyAll<Color>(estilo.corprimaria),
                       ),
                       onPressed: () {
                         _cadastrarAnimal();
@@ -73,8 +72,8 @@ class _HomeState extends State<Home> {
                     height: 50,
                     child: ElevatedButton(
                       style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll<Color>(
-                            estilo.corprimaria),
+                        backgroundColor:
+                            MaterialStatePropertyAll<Color>(estilo.corprimaria),
                       ),
                       onPressed: () {
                         _cadastrarAnimalAvistado();
@@ -90,14 +89,31 @@ class _HomeState extends State<Home> {
                     height: 50,
                     child: ElevatedButton(
                       style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll<Color>(
-                            estilo.corprimaria),
+                        backgroundColor:
+                            MaterialStatePropertyAll<Color>(estilo.corprimaria),
                       ),
                       onPressed: () {
                         _infoPostAvistado();
                       },
                       child: const Text(
                         "Informação Post Avistado",
+                        style: TextStyle(color: Colors.white, fontSize: 20.0),
+                      ),
+                    )),
+                Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10.0)),
+                SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(
+                      style: const ButtonStyle(
+                        backgroundColor:
+                            MaterialStatePropertyAll<Color>(estilo.corprimaria),
+                      ),
+                      onPressed: () {
+                        _visualizarPerfil();
+                      },
+                      child: const Text(
+                        "Visualizar perfil",
                         style: TextStyle(color: Colors.white, fontSize: 20.0),
                       ),
                     )),
@@ -129,6 +145,14 @@ class _HomeState extends State<Home> {
       context,
       MaterialPageRoute(
           builder: (context) => InfoPostAvistado(title: "Animal Avistado")),
+    );
+  }
+
+  void _visualizarPerfil() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => VisualizarPerfil(title: "Perfil")),
     );
   }
 }
