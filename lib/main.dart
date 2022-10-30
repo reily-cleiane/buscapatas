@@ -1,6 +1,8 @@
 import 'package:buscapatas/cadastros/cadastro-post.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/home.dart';
+import 'package:material_color_generator/material_color_generator.dart';
+import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 import 'package:buscapatas/publico/login.dart';
 
 void main() {
