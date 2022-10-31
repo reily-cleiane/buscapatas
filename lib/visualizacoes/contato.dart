@@ -19,6 +19,7 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
       appBar: AppBar(
               title: const Text("Visualizar Perfil",style: TextStyle(color: Colors.white),),
               centerTitle: true,
+              foregroundColor: Colors.white,
               backgroundColor: const Color.fromARGB(255, 126, 107, 107)),
       body: SingleChildScrollView(
         child: Column(

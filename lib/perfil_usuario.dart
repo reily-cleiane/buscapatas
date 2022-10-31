@@ -1,3 +1,4 @@
+import 'package:buscapatas/visualizacoes/editar-perfil.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/components/navbar.dart';
 import 'package:buscapatas/components/animal_card.dart';
@@ -32,24 +33,33 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(10, 10, 10, 10.0),
                 child: Row(
-                  children: const [
-                    Expanded(
+                  children: [
+                    const Expanded(
                       flex: 7,
                       child: Text(
                         "Luan Gustavo Cláudio dos Santos",
                         style: TextStyle(fontSize: 24),
                       ),
                     ),
-                    SizedBox(width: 10),
-                    Expanded(
-                      flex: 3,
-                      child: Center(
-                        child: CircleAvatar(
-                          radius: 50,
-                          backgroundImage: AssetImage('imagens/homem.jpg'),
+                    const SizedBox(width: 10),
+                    Material(
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const EditarPerfil(title: "Editar Perfil")),
+                            );
+                          },
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20.0),
+                              child: const CircleAvatar(
+                                radius: 50,
+                                backgroundImage: AssetImage('imagens/homem.jpg'),
+                              ),
+                          ),
                         ),
-                      ),
-                    )
+                    ),
                   ],
                 ),
               ),
