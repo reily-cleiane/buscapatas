@@ -36,7 +36,11 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 10.0),
                 child: Center(
-                    child: Image.asset('imagens/animal.jpg', fit: BoxFit.fill)),
+                  child: CircleAvatar(
+                    radius: 250,
+                    backgroundImage: AssetImage('imagens/animal.jpg'),
+                  ),
+                ),
               ),
               Center(
                   child: Column(
@@ -88,7 +92,8 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => PerfilUsuario(title: "Perfil")),
+                                builder: (context) =>
+                                    PerfilUsuario(title: "Perfil")),
                           );
                         },
                         child: Ink(

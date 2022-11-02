@@ -1,5 +1,6 @@
 import 'package:buscapatas/cadastros/cadastro-post-avistado.dart';
 import 'package:buscapatas/visualizacoes/info-post-avistado.dart';
+import 'package:buscapatas/visualizacoes/lista-post-avistado.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/publico/login.dart';
 import 'package:buscapatas/cadastros/cadastro-post.dart';
@@ -117,6 +118,23 @@ class _HomeState extends State<Home> {
                         style: TextStyle(color: Colors.white, fontSize: 20.0),
                       ),
                     )),
+                Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10.0)),
+                SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(
+                      style: const ButtonStyle(
+                        backgroundColor:
+                            MaterialStatePropertyAll<Color>(estilo.corprimaria),
+                      ),
+                      onPressed: () {
+                        _listaPostAvistado();
+                      },
+                      child: const Text(
+                        "Lista Animais Avistados",
+                        style: TextStyle(color: Colors.white, fontSize: 20.0),
+                      ),
+                    )),
               ],
             ),
           ));
@@ -153,6 +171,15 @@ class _HomeState extends State<Home> {
       context,
       MaterialPageRoute(
           builder: (context) => VisualizarPerfil(title: "Perfil")),
+    );
+  }
+
+  void _listaPostAvistado() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              ListaPostAvistado(title: "Lista Animais Avistados")),
     );
   }
 }
