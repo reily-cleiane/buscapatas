@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:buscapatas/home.dart';
 
+import '../perfil_usuario.dart';
+
 class BuscapatasNavBar extends StatefulWidget {
   const BuscapatasNavBar({super.key, required this.selectedIndex});
 
@@ -18,6 +20,8 @@ class BuscapatasNavBarState extends State<BuscapatasNavBar> {
       switch (index) {
         case 0:
           return _home();
+        case 2:
+          return _visualizarPerfil();
         default:
       }
     });
@@ -28,6 +32,14 @@ class BuscapatasNavBarState extends State<BuscapatasNavBar> {
       context,
       MaterialPageRoute(
           builder: (context) => Home(true, title: "Cadastrar Animal")),
+    );
+  }
+
+  void _visualizarPerfil() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => VisualizarPerfil(title: "Perfil")),
     );
   }
 

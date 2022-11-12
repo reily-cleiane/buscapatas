@@ -70,6 +70,7 @@ flutter:
     - imagens/homem.jpg
     - imagens/salsicha.jpg
     - imagens/br.jpg
+    - imagens/mapa_holder.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
