@@ -1,5 +1,6 @@
 import 'package:buscapatas/components/campo-texto.dart';
 import 'package:buscapatas/publico/esqueceu-senha.dart';
+import 'package:buscapatas/visualizacoes/editar-numero.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 import 'package:flutter/services.dart';
@@ -85,6 +86,28 @@ class _EditarPerfilState extends State<EditarPerfil> {
                     style: TextStyle(color: Colors.white, fontSize: 20.0),
                   ),
                 )),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: ElevatedButton(
+                    style: const ButtonStyle(
+                      backgroundColor: MaterialStatePropertyAll<Color>(
+                          estilo.corprimaria),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const EditarNumero(
+                                title: 'Mudar numero')),
+                      );
+                    },
+                    child: const Text(
+                      "Mudar Numero",
+                      style: TextStyle(color: Colors.white, fontSize: 20.0),
+                    ),
+                  )),
             ],
           ),
         ),

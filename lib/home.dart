@@ -1,6 +1,6 @@
 import 'package:buscapatas/components/animal_card.dart';
 import 'package:buscapatas/visualizacoes/info-post-avistado.dart';
-import 'package:buscapatas/visualizacoes/info_post_perdido_avistar.dart';
+import 'package:buscapatas/visualizacoes/info-post-perdido-avistar.dart';
 import 'package:buscapatas/visualizacoes/lista-post-avistado.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
