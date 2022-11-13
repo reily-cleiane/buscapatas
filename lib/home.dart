@@ -1,6 +1,8 @@
-import 'package:buscapatas/cadastros/cadastro-post-avistado.dart';
+import 'package:buscapatas/components/animal_card.dart';
 import 'package:buscapatas/visualizacoes/info-post-avistado.dart';
+import 'package:buscapatas/visualizacoes/info-post-perdido-avistar.dart';
 import 'package:buscapatas/visualizacoes/lista-post-avistado.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/publico/login.dart';
 import 'package:buscapatas/cadastros/cadastro-post.dart';
@@ -8,6 +10,7 @@ import 'package:buscapatas/perfil_usuario.dart';
 import 'package:flutter_session/flutter_session.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
+import 'package:buscapatas/components/navbar.dart';
 
 //OBS: Essa página é temporária e está simulando a página inicial
 class Home extends StatefulWidget {
@@ -40,121 +43,100 @@ class _HomeState extends State<Home> {
     } else {
       return Scaffold(
           backgroundColor: Colors.white,
-          appBar: AppBar(
-              title: const Text("Busca Patas"),
-              centerTitle: true,
-              backgroundColor: estilo.corprimaria),
-          body: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(30.0, 50, 30.0, 10.0),
-            child: Column(
-              children: <Widget>[
-                const Text("Página inicial ainda não implementada",
-                    style: TextStyle(color: estilo.corprimaria, fontSize: 20)),
-                Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10.0)),
-                SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: ElevatedButton(
-                      style: const ButtonStyle(
-                        backgroundColor:
-                            MaterialStatePropertyAll<Color>(estilo.corprimaria),
-                      ),
-                      onPressed: () {
-                        _cadastrarAnimal();
-                      },
-                      child: const Text(
-                        "Cadastrar Animal",
-                        style: TextStyle(color: Colors.white, fontSize: 20.0),
-                      ),
-                    )),
-                Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10.0)),
-                SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: ElevatedButton(
-                      style: const ButtonStyle(
-                        backgroundColor:
-                            MaterialStatePropertyAll<Color>(estilo.corprimaria),
-                      ),
-                      onPressed: () {
-                        _cadastrarAnimalAvistado();
-                      },
-                      child: const Text(
-                        "Cadastrar Animal Avistado",
-                        style: TextStyle(color: Colors.white, fontSize: 20.0),
-                      ),
-                    )),
-                Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10.0)),
-                SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: ElevatedButton(
-                      style: const ButtonStyle(
-                        backgroundColor:
-                            MaterialStatePropertyAll<Color>(estilo.corprimaria),
-                      ),
-                      onPressed: () {
-                        _infoPostAvistado();
-                      },
-                      child: const Text(
-                        "Informação Post Avistado",
-                        style: TextStyle(color: Colors.white, fontSize: 20.0),
-                      ),
-                    )),
-                Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10.0)),
-                SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: ElevatedButton(
-                      style: const ButtonStyle(
-                        backgroundColor:
-                            MaterialStatePropertyAll<Color>(estilo.corprimaria),
-                      ),
-                      onPressed: () {
-                        _visualizarPerfil();
-                      },
-                      child: const Text(
-                        "Visualizar perfil",
-                        style: TextStyle(color: Colors.white, fontSize: 20.0),
-                      ),
-                    )),
-                Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10.0)),
-                SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: ElevatedButton(
-                      style: const ButtonStyle(
-                        backgroundColor:
-                            MaterialStatePropertyAll<Color>(estilo.corprimaria),
-                      ),
-                      onPressed: () {
-                        _listaPostAvistado();
-                      },
-                      child: const Text(
-                        "Lista Animais Avistados",
-                        style: TextStyle(color: Colors.white, fontSize: 20.0),
-                      ),
-                    )),
-              ],
-            ),
+          bottomNavigationBar: const BuscapatasNavBar(selectedIndex: 0),
+          body: Column(
+            children: <Widget>[
+              SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(30.0, 50, 30.0, 10.0),
+                child: Column(
+                  children: <Widget>[
+                    const Image(
+                      image: AssetImage('imagens/mapa_holder.PNG'),
+                    ),
+                    SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: ElevatedButton(
+                            style: const ButtonStyle(
+                              backgroundColor: MaterialStatePropertyAll<Color>(
+                                  estilo.corsecundaria),
+                            ),
+                            onPressed: () {
+                              _cadastrarAnimalPerdido();
+                            },
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "Animais perdidos",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 20.0),
+                                    )),
+                                Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Icon(Icons.add))
+                              ],
+                            ))),
+                  ],
+                ),
+              ),
+              Expanded(
+                  child: SingleChildScrollView(
+                      padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 20.0),
+                      child: Column(
+                        children: <Widget>[
+                          const SizedBox(height: 10),
+                          ElevatedButton(
+                            onPressed: () {
+                              _infoPostPerdidoAvistar();
+                            },
+                            child: AnimalCard()
+                            ),
+                          const SizedBox(height: 10),
+                          ElevatedButton(
+                            onPressed: () {
+                              _infoPostPerdidoAvistar();
+                            },
+                            child: AnimalCard()
+                            ),
+                          const SizedBox(height: 10),
+                          ElevatedButton(
+                            onPressed: () {
+                              _infoPostAvistado();
+                            },
+                            child: AnimalCard.avistado()
+                            ),
+                          const SizedBox(height: 10),
+                          ElevatedButton(
+                            onPressed: () {
+                              _infoPostAvistado();
+                            },
+                            child: AnimalCard.avistado()
+                            ),
+                        ],
+                      )))
+            ],
           ));
     }
   }
 
-  void _cadastrarAnimal() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => CadastroPost(title: "Cadastrar Animal")),
-    );
-  }
-
-  void _cadastrarAnimalAvistado() {
+  void _cadastrarAnimalPerdido() {
     Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) =>
-              CadastroPostAvistado(title: "Cadastrar Animal Avistado")),
+              CadastroPost(title: "Cadastrar Animal Perdido")),
+    );
+  }
+
+  void _infoPostPerdidoAvistar() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => InfoPostPerdidoAvistar(title: "Animal Perdido")),
     );
   }
 
@@ -166,20 +148,4 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void _visualizarPerfil() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => VisualizarPerfil(title: "Perfil")),
-    );
-  }
-
-  void _listaPostAvistado() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) =>
-              ListaPostAvistado(title: "Lista Animais Avistados")),
-    );
-  }
 }

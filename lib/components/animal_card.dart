@@ -12,6 +12,17 @@ class AnimalCard extends StatefulWidget {
     this.image = 'imagens/animal.jpg',
   });
 
+  const AnimalCard.avistado({
+    super.key,
+    this.title = "Cachorrinho desaparecido",
+    this.details =
+        "Gente por favor me ajudem! Meu cachorrinho viu o portão de casa aberto e fugiu",
+    this.timestamp = "Postado há 3h",
+    this.distance = 10,
+    this.backgroundColor = const Color(0xFFA7FFA7),
+    this.image = 'imagens/animal.jpg',
+  });
+
   final String title;
   final String details;
   final String timestamp;
