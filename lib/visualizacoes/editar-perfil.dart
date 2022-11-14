@@ -1,6 +1,8 @@
 import 'package:buscapatas/components/campo-texto.dart';
+import 'package:buscapatas/model/test-user.dart';
 import 'package:buscapatas/publico/esqueceu-senha.dart';
 import 'package:buscapatas/visualizacoes/editar-numero.dart';
+import 'package:buscapatas/utils/mock_usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 import 'package:flutter/services.dart';
@@ -15,7 +17,7 @@ class EditarPerfil extends StatefulWidget {
 }
 
 class _EditarPerfilState extends State<EditarPerfil> {
-
+  User usuario = MockUsuario.getUser();
   // TextEditingController nomeController = TextEditingController();
   // TextEditingController emailController = TextEditingController();
   // TextEditingController telefoneController = TextEditingController();
@@ -45,10 +47,15 @@ class _EditarPerfilState extends State<EditarPerfil> {
                   ],
                 ),
               ),
-              const CampoTexto(label: 'Nome', text: 'Luan Gustavo Cláudio dos Santos'),
-              const CampoTexto(label: 'Usuário', text: 'Luan Gustavo'),
-              const CampoTexto(label: 'Email', text: 'luang@gmail.com'),
-              const CampoTexto(label: 'Telefone', text: '+55 (84) 98998-9236'),
+              CampoTexto(label: 'Nome', 
+              text: usuario.nome, 
+              onChanged: (nome) => usuario = usuario.copy(nome: nome)),
+              CampoTexto(label: 'Email', 
+              text: usuario.email, 
+              onChanged: (email) => usuario = usuario.copy(email: email)),
+              CampoTexto(label: 'Telefone', 
+              text: usuario.telefone, 
+              onChanged: (telefone) => usuario = usuario.copy(telefone: telefone)),
               const SizedBox(height: 20),
               SizedBox(
                 width: double.infinity,
@@ -73,21 +80,6 @@ class _EditarPerfilState extends State<EditarPerfil> {
                 )),
                 const SizedBox(height: 20),
                 SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  style: const ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll<Color>(
-                        estilo.corprimaria),
-                  ),
-                  onPressed: () {},
-                  child: const Text(
-                    "Salvar",
-                    style: TextStyle(color: Colors.white, fontSize: 20.0),
-                  ),
-                )),
-                const SizedBox(height: 20),
-                SizedBox(
                   width: double.infinity,
                   height: 50,
                   child: ElevatedButton(
@@ -107,7 +99,27 @@ class _EditarPerfilState extends State<EditarPerfil> {
                       "Mudar Numero",
                       style: TextStyle(color: Colors.white, fontSize: 20.0),
                     ),
-                  )),
+                  )
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  style: const ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll<Color>(
+                        estilo.corprimaria),
+                  ),
+                  onPressed: () {
+                    MockUsuario.setUser(usuario);
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text(
+                    "Salvar",
+                    style: TextStyle(color: Colors.white, fontSize: 20.0),
+                  ),
+                )
+              ),
             ],
           ),
         ),

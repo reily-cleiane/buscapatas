@@ -1,5 +1,6 @@
 import 'package:buscapatas/cadastros/cadastro-post-avistado.dart';
 import 'package:buscapatas/cadastros/cadastro-post.dart';
+import 'package:buscapatas/utils/mock_usuario.dart';
 import 'package:buscapatas/visualizacoes/editar-perfil.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/components/navbar.dart';
@@ -17,6 +18,8 @@ class VisualizarPerfil extends StatefulWidget {
 class _VisualizarPerfilState extends State<VisualizarPerfil> {
   @override
   Widget build(BuildContext context) {
+    final usuario = MockUsuario.getUser();
+
     return Scaffold(
       backgroundColor: Colors.white,
       bottomNavigationBar: const BuscapatasNavBar(selectedIndex: 2),
@@ -36,29 +39,29 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
                 padding: const EdgeInsets.fromLTRB(10, 10, 10, 10.0),
                 child: Row(
                   children: [
-                    const Expanded(
+                    Expanded(
                       flex: 7,
                       child: Text(
-                        "Luan Gustavo Cláudio dos Santos",
-                        style: TextStyle(fontSize: 24),
+                        usuario.nome,
+                        style: const TextStyle(fontSize: 24),
                       ),
                     ),
                     const SizedBox(width: 10),
                     Material(
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
+                        child: InkWell(
+                          onTap: () async {
+                            await Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    const EditarPerfil(title: "Editar Perfil")),
-                          );
-                        },
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20.0),
-                          child: const CircleAvatar(
-                            radius: 50,
-                            backgroundImage: AssetImage('imagens/homem.jpg'),
+                                builder: (context) => const EditarPerfil(title: "Editar Perfil")),
+                            );
+                            setState(() {});
+                          },
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20.0),
+                              child: CircleAvatar(
+                                radius: 50,
+                                backgroundImage: AssetImage(usuario.imagem),
                           ),
                         ),
                       ),
