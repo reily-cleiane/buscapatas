@@ -102,20 +102,6 @@ class _HomeState extends State<Home> {
                             },
                             child: AnimalCard()
                             ),
-                          const SizedBox(height: 10),
-                          ElevatedButton(
-                            onPressed: () {
-                              _infoPostAvistado();
-                            },
-                            child: AnimalCard.avistado()
-                            ),
-                          const SizedBox(height: 10),
-                          ElevatedButton(
-                            onPressed: () {
-                              _infoPostAvistado();
-                            },
-                            child: AnimalCard.avistado()
-                            ),
                         ],
                       )))
             ],
