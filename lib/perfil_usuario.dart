@@ -1,3 +1,5 @@
+import 'package:buscapatas/cadastros/cadastro-post-avistado.dart';
+import 'package:buscapatas/cadastros/cadastro-post.dart';
 import 'package:buscapatas/visualizacoes/editar-perfil.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/components/navbar.dart';
@@ -43,22 +45,23 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
                     ),
                     const SizedBox(width: 10),
                     Material(
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const EditarPerfil(title: "Editar Perfil")),
-                            );
-                          },
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20.0),
-                              child: const CircleAvatar(
-                                radius: 50,
-                                backgroundImage: AssetImage('imagens/homem.jpg'),
-                              ),
+                                builder: (context) =>
+                                    const EditarPerfil(title: "Editar Perfil")),
+                          );
+                        },
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20.0),
+                          child: const CircleAvatar(
+                            radius: 50,
+                            backgroundImage: AssetImage('imagens/homem.jpg'),
                           ),
                         ),
+                      ),
                     ),
                   ],
                 ),
@@ -79,7 +82,9 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
                               color: Color(0xFFA8BFA1),
                             ),
                           ),
-                          onPressed: () => {},
+                          onPressed: () => {
+                            _cadastroPostAnimalAvistado(),
+                          },
                           child: const Padding(
                             padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
                             child: Text(
@@ -100,7 +105,9 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
                               color: Color(0xFFBF7D7D),
                             ),
                           ),
-                          onPressed: () => {},
+                          onPressed: () => {
+                            _cadastroPostAnimalPerdido(),
+                          },
                           child: const Padding(
                             padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
                             child: Text(
@@ -144,6 +151,23 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
           ],
         ),
       ),
+    );
+  }
+
+  void _cadastroPostAnimalAvistado() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              CadastroPostAvistado(title: "Cadastro Animal Avistado")),
+    );
+  }
+
+  void _cadastroPostAnimalPerdido() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => CadastroPost(title: "Cadastro Animal perdido")),
     );
   }
 }
