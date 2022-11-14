@@ -4,14 +4,14 @@ class CampoTexto extends StatefulWidget {
   final int maxLines;
   final String label;
   final String text;
-  //final ValueChanged<String> onChanged;
+  final ValueChanged<String> onChanged;
 
   const CampoTexto({
     Key? key,
     this.maxLines = 1,
     required this.label,
     required this.text,
-    //required this.onChanged,
+    required this.onChanged,
   }) : super(key: key);
 
   @override
@@ -48,7 +48,7 @@ class _CampoTextoState extends State<CampoTexto> {
                 borderRadius: BorderRadius.circular(5),
               ),
             ),
-            maxLines: widget.maxLines,
+            onChanged: widget.onChanged,
           ),
         ],
       );

@@ -35,7 +35,12 @@ dependencies:
   flutter_session: ^0.1.1
 
   google_sign_in: ^5.0.0
+
+  # generate specific colors
   material_color_generator: ^1.1.0
+
+  # persist locally data
+  shared_preferences: ^0.5.8
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
@@ -71,7 +76,7 @@ flutter:
     - imagens/homem.jpg
     - imagens/salsicha.jpg
     - imagens/br.jpg
-    - imagens/mapa_holder.png
+    - imagens/mapa_holder.PNG
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

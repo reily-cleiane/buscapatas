@@ -1,5 +1,6 @@
 //Apagar depois dos testes, está aqui só para facilitar os testes da tela
 import 'package:buscapatas/cadastros/cadastro-post.dart';
+import 'package:buscapatas/utils/mock_usuario.dart';
 import 'package:flutter/material.dart';
 //Verificar a necessidade de apagar depois dos testes, se der para manter sessão pode iniciar na home em vez de login
 import 'package:buscapatas/home.dart';
@@ -9,7 +10,10 @@ import 'package:buscapatas/publico/login.dart';
 //Apagar depois dos testes, está aqui só para facilitar os testes da tela
 import 'package:buscapatas/publico/nao-implementado.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await MockUsuario.init();
+
   runApp(const MyApp());
 }
 
