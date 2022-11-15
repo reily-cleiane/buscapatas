@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 EspecieModel usuairoModelJson(String str) =>
     EspecieModel.fromJson(json.decode(str));
@@ -23,4 +24,23 @@ class EspecieModel {
         "id": id,
         "nome": nome,
       };
+
+  static Future<List<dynamic>> getEspecies() async {
+    const request = "http://localhost:8080/especies";
+
+    http.Response response = await http.get(Uri.parse(request));
+
+    if (response.statusCode == 200) {
+      var resposta = json.decode(utf8.decode(response.bodyBytes));
+      List<dynamic> especies = [];
+
+      for (var especie in resposta) {
+        especies.add(especie);
+      }
+
+      return especies;
+    } else {
+      throw Exception('Falha no servidor ao carregar espécies');
+    }
+  }
 }

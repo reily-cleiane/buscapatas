@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 CorModel usuairoModelJson(String str) =>
     CorModel.fromJson(json.decode(str));
@@ -23,4 +24,24 @@ class CorModel {
         "id": id,
         "nome": nome,
       };
+
+  
+   static Future<Map<String, int>> getCores() async {
+    const request = "http://localhost:8080/cores";
+
+    http.Response response = await http.get(Uri.parse(request));
+
+    if (response.statusCode == 200) {
+      var resposta = json.decode(utf8.decode(response.bodyBytes));
+      Map<String, int> coresNomeId = {};
+
+      for (var cor in resposta) {
+        coresNomeId[cor["nome"]] = cor["id"];
+      }
+      return coresNomeId;
+    } else {
+      throw Exception('Falha no servidor ao carregar cores');
+    }
+  }
+
 }

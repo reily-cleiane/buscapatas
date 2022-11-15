@@ -29,8 +29,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: generateMaterialColor(color: estilo.corsecundaria),
       ),
-      //home: CadastroPostPerdido(title: "Cadastro de animal"),
-      home: Home(true, title: "Página Inicial"),
+      home: CadastroPostPerdido(title: "Cadastro de animal"),
+      //home: Home(true, title: "Página Inicial"),
       //home: Login(title: "Login - BuscaPatas"),
       //home: NaoImplementado(title: "Não implementado"),
       //home: InfoPostAvistado(title: 'Post avistado'),
