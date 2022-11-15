@@ -23,7 +23,7 @@ class _EsqueceuSenhaState extends State<EsqueceuSenha> {
           title: const Text("Mudar Senha", style: TextStyle(color: Colors.white)),
           centerTitle: true,
           foregroundColor: Colors.white,
-          backgroundColor: const Color.fromARGB(255, 126, 107, 107)),
+          backgroundColor: estilo.corprimaria),
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(30.0, 50, 30.0, 10.0),
         child: Column(
@@ -32,7 +32,7 @@ class _EsqueceuSenhaState extends State<EsqueceuSenha> {
             const Text(
               'Digite o seu email e enviaremos um link para você mudar sua senha atual.',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 126, 107, 107))),
+              style: TextStyle(fontSize: 20, color: estilo.corprimaria)),
             const Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 1.0)),
 
             campoInput("Email", emailController, TextInputType.emailAddress),
@@ -44,7 +44,7 @@ class _EsqueceuSenhaState extends State<EsqueceuSenha> {
                 child: ElevatedButton(
                   style: const ButtonStyle(
                     backgroundColor: MaterialStatePropertyAll<Color>(
-                        Color.fromARGB(255, 126, 107, 107)),
+                        estilo.corprimaria),
                   ),
                   onPressed: () {
                   },
