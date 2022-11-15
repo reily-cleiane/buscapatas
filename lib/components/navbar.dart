@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:buscapatas/home.dart';
+import 'package:buscapatas/listagens/lista-posts-avistados.dart';
+import 'package:buscapatas/listagens/lista-posts-perdidos.dart';
 
 import '../perfil_usuario.dart';
 
@@ -43,17 +45,39 @@ class BuscapatasNavBarState extends State<BuscapatasNavBar> {
     );
   }
 
+  void _listarAnimaisAvistados() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => ListaPostsAvistados(title: "Animais avistados")),
+    );
+  }
+
+  void _listarAnimaisPerdidos() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => ListaPostsPerdidos(title: "Animais avistados")),
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
           label: 'Página inicial',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.notifications),
-          label: 'Atividade',
+          icon: Icon(Icons.search),
+          label: 'Animais perdidos',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.search),
+          label: 'Animais avistados',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),

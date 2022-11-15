@@ -1,22 +1,18 @@
 import 'package:buscapatas/components/animal_card.dart';
 import 'package:buscapatas/components/navbar.dart';
-import 'package:buscapatas/perfil_usuario.dart';
-import 'package:buscapatas/publico/cadastro-usuario.dart';
-import 'package:buscapatas/publico/esqueceu-senha.dart';
-import 'package:buscapatas/visualizacoes/contato.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
-class ListaPostAvistado extends StatefulWidget {
-  const ListaPostAvistado({super.key, required this.title});
+class ListaPostsPerdidos extends StatefulWidget {
+  const ListaPostsPerdidos({super.key, required this.title});
 
   final String title;
 
   @override
-  State<ListaPostAvistado> createState() => _ListaPostAvistado();
+  State<ListaPostsPerdidos> createState() => _ListaPostsPerdidos();
 }
 
-class _ListaPostAvistado extends State<ListaPostAvistado> {
+class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
   List<String> listaPostAvistados = [];
   TextEditingController buscaController = TextEditingController();
 
