@@ -1,5 +1,7 @@
 
 import 'package:buscapatas/components/animal_card.dart';
+import 'package:buscapatas/visualizacoes/info-post-avistado.dart';
+import 'package:buscapatas/visualizacoes/info-post-perdido-avistar.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
@@ -61,60 +63,49 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
             Padding(
               padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 20.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('Informações de contato',
+                    children: const [
+                      Text('Informações de contato',
                             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: estilo.corprimaria)),
-                      const SizedBox(height: 5),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text('Número de celular: ', style: TextStyle(fontSize: 16),),
-                              Row(
-                                children: [
-                                  const Image(
-                                    image: AssetImage('imagens/br.jpg'),
-                                    height: 20,
-                                    width: 20,
-                                  ),
-                                  Row(
-                                    children: const [
-                                      SizedBox(width: 5),
-                                      Text('+55 (84) 98998-9236',style: TextStyle(fontSize: 16)),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 10,),
-                              const Text('Email: ',style: TextStyle(fontSize: 16)),
-                              const Text.rich(TextSpan(
-                                text: "salsicha@gmail.com",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  decoration: TextDecoration.underline,
-                                ),
-                              ))
-                            ],
-                      ),
-                  const SizedBox(height: 25),
+                      SizedBox(height: 5),
+                      Text('Número de celular: ', style: TextStyle(fontSize: 16),),
+                      SizedBox(width: 5),
+                      Text('(84)989989236',style: TextStyle(fontSize: 16)),
+                      SizedBox(height: 10,),
+                      Text('Email: ',style: TextStyle(fontSize: 16)),
+                      Text.rich(TextSpan(
+                        text: "salsicha@gmail.com",
+                        style: TextStyle(
+                          fontSize: 16,
+                          decoration: TextDecoration.underline,
+                        ),
+                      )),
+                      SizedBox(height: 25),
                     ],
                   ),
                   Column(
-                    children: const [
-                      Text(
+                    children: [
+                      const Text(
                         "Atividade recente",
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: estilo.corprimaria),
                       ),
-                      SizedBox(height: 10),
-                      AnimalCard(),
-                      SizedBox(height: 10),
-                      AnimalCard(
-                        title: "Animal encontrado",
-                        details:
-                            "Gente, encontrei esse cachorrinho perto da ponte, tava virando uma lata de lixo.",
-                        backgroundColor: Color(0xFFD7FFE2),
+                      const SizedBox(height: 10),
+                      GestureDetector(
+                          child: Column(
+                            children: [
+                              creatCard ("Cachorrinho desaparecido",
+                              "Preciso de ajuda para achar meu cachorrinho!", 
+                              estilo.corperdido,
+                              const InfoPostPerdidoAvistar(title: "Animal Avistado")),
+                              creatCard ("Cachorro avistado",
+                              "Gente, encontrei esse cachorrinho perto da ponte, tava virando uma lata de lixo.",
+                              estilo.coravistado,
+                              const InfoPostAvistado(title: "Animal Perdido"))
+                            ],
+                          ) 
                       ),
                     ],
                   )
@@ -127,5 +118,30 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
         ),
       ),
     );
+  }
+  Widget creatCard (String texto, String mensagem, Color cor, infoPost) {
+    return Card(
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.zero,
+          minimumSize: Size.zero,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+            side: BorderSide.none,
+          ),
+        ),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => infoPost),
+          );
+        },
+        child: AnimalCard.avistado(
+          title: texto,
+          details: mensagem,
+          backgroundColor: cor,
+        ),
+      ));
   }
 }
