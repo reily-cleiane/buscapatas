@@ -1,6 +1,9 @@
 import 'package:buscapatas/cadastros/cadastro-post-avistado.dart';
 import 'package:buscapatas/cadastros/cadastro-post-perdido.dart';
 import 'package:buscapatas/utils/mock_usuario.dart';
+import 'package:buscapatas/publico/login.dart';
+import 'package:flutter_session/flutter_session.dart';
+import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 import 'package:buscapatas/visualizacoes/editar-perfil.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/components/navbar.dart';
@@ -22,7 +25,7 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      bottomNavigationBar: const BuscapatasNavBar(selectedIndex: 2),
+      bottomNavigationBar: const BuscapatasNavBar(selectedIndex: 3),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -80,7 +83,7 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
                       Expanded(
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFE0FFD6),
+                            backgroundColor: estilo.coravistado,
                             side: const BorderSide(
                               color: Color(0xFFA8BFA1),
                             ),
@@ -103,9 +106,9 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
                       Expanded(
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFFFA7A7),
+                            backgroundColor:estilo.corperdido,
                             side: const BorderSide(
-                              color: Color(0xFFBF7D7D),
+                              color: Color.fromARGB(255, 238, 212, 176),
                             ),
                           ),
                           onPressed: () => {
@@ -136,18 +139,37 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
                     title: "Animal encontrado",
                     details:
                         "Gente, encontrei esse cachorrinho perto da ponte, tava virando uma lata de lixo.",
-                    backgroundColor: Color(0xFFD7FFE2),
+                    backgroundColor: estilo.coravistado,
                   ),
                   const SizedBox(height: 25),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text(
-                        "Sair da conta",
-                        style: TextStyle(color: Colors.red),
+                  Padding(
+              padding: const EdgeInsets.fromLTRB(0, 20.0, 0, 40.0),
+              child: InkWell(
+                  onTap: () {
+                    _deslogar();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Login(
+                              title: 'Login - BuscaPatas')),
+                    );
+                  },
+                  child: Ink(
+                    width: double.infinity,
+                    height: 30,
+                    child: Center(
+                      child: RichText(
+                        text: const TextSpan(
+                          text: "Sair da conta",
+                          style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            color: Colors.red,
+                            fontSize: 16.0,
+                          ),
+                        ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ))),
                 ],
               ),
             ),
@@ -157,12 +179,16 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
     );
   }
 
+  void _deslogar() async{
+    await FlutterSession().set("sessao_usuarioLogado", null);
+  }
+
   void _cadastroPostAnimalAvistado() {
     Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) =>
-              CadastroPostAvistado(title: "Cadastro Animal Avistado")),
+              CadastroPostAvistado(title: "Cadastro de Animal Avistado")),
     );
   }
 
@@ -170,7 +196,7 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => CadastroPostPerdido(title: "Cadastro Animal perdido")),
+          builder: (context) => CadastroPostPerdido(title: "Cadastro de Animal Perdido")),
     );
   }
 }
