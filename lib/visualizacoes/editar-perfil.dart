@@ -36,6 +36,7 @@ class _EditarPerfilState extends State<EditarPerfil> {
           padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
           child: Column(
             children: [
+              const SizedBox(height: 20),
               Center(
                 child: Stack(
                   children: [
@@ -47,14 +48,21 @@ class _EditarPerfilState extends State<EditarPerfil> {
                   ],
                 ),
               ),
+              // const SizedBox(height: 20),
               CampoTexto(label: 'Nome', 
               text: usuario.nome, 
+              tipoCampo: TextInputType.name,
+              enableEdit: true,
               onChanged: (nome) => usuario = usuario.copy(nome: nome)),
               CampoTexto(label: 'Email', 
               text: usuario.email, 
+              tipoCampo: TextInputType.emailAddress,
+              enableEdit: true,
               onChanged: (email) => usuario = usuario.copy(email: email)),
               CampoTexto(label: 'Telefone', 
               text: usuario.telefone, 
+              tipoCampo: TextInputType.phone,
+              enableEdit: false,
               onChanged: (telefone) => usuario = usuario.copy(telefone: telefone)),
               const SizedBox(height: 20),
               SizedBox(

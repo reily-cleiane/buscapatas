@@ -114,6 +114,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  form_validator:
+    dependency: "direct main"
+    description:
+      name: form_validator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   google_sign_in:
     dependency: "direct main"
     description:

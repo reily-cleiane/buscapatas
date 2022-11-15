@@ -12,8 +12,7 @@ class MockUsuario {
         'imagens/homem.jpg',
     nome: 'Luan Gustavo Cláudio dos Santos',
     email: 'luansantos@gmail.com',
-    telefone:
-        '+55 (84) 9 89989236'
+    telefone: '(84)998786543'
   );
 
   static Future init() async => 
