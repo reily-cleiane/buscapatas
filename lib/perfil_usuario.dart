@@ -50,23 +50,11 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
                       ),
                     ),
                     const SizedBox(width: 10),
-                    Material(
-                        child: InkWell(
-                          onTap: () async {
-                            await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const EditarPerfil(title: "Editar Perfil")),
-                            );
-                            setState(() {});
-                          },
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20.0),
-                              child: CircleAvatar(
-                                radius: 50,
-                                backgroundImage: AssetImage(usuario.imagem),
-                          ),
-                        ),
+                    ClipRRect(
+                          borderRadius: BorderRadius.circular(20.0),
+                          child: CircleAvatar(
+                            radius: 50,
+                            backgroundImage: AssetImage(usuario.imagem),
                       ),
                     ),
                   ],
@@ -142,34 +130,69 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
                     backgroundColor: estilo.coravistado,
                   ),
                   const SizedBox(height: 25),
-                  Padding(
-              padding: const EdgeInsets.fromLTRB(0, 20.0, 0, 40.0),
-              child: InkWell(
-                  onTap: () {
-                    _deslogar();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Login(
-                              title: 'Login - BuscaPatas')),
-                    );
-                  },
-                  child: Ink(
-                    width: double.infinity,
-                    height: 30,
-                    child: Center(
-                      child: RichText(
-                        text: const TextSpan(
-                          text: "Sair da conta",
-                          style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            color: Colors.red,
-                            fontSize: 16.0,
-                          ),
-                        ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      const Icon(Icons.create_rounded, size: 18, color: estilo.corprimaria,),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(10, 0, 0, 0.0),
+                        child: InkWell(
+                            onTap: () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        EditarPerfil(title: "Editar Perfil")),
+                              );
+                              setState(() {});
+                            },
+                            child: Ink(
+                              child: RichText(
+                                text: const TextSpan(
+                                  text: "Editar Perfil",
+                                  style: TextStyle(
+                                    decoration: TextDecoration.none,
+                                    color: estilo.corprimaria,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
+                            )),
                       ),
-                    ),
-                  ))),
+                    ],
+                  ),
+                  const SizedBox(height: 25),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      const Icon(Icons.logout, size: 18, color: Colors.red,),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(10, 0, 0, 0.0),
+                        child: InkWell(
+                            onTap: () {
+                              _deslogar();
+                              Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const Login(title: 'Login - BuscaPatas')),
+                              );
+                            },
+                            child: Ink(
+                              child: RichText(
+                                text: const TextSpan(
+                                  text: "Sair da conta",
+                                  style: TextStyle(
+                                    decoration: TextDecoration.none,
+                                    color: Colors.red,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
+                            )),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
