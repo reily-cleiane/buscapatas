@@ -25,6 +25,7 @@ class _InfoPostPerdidoAvistarState extends State<InfoPostPerdidoAvistar> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+          foregroundColor: Colors.white,
             title: const Text("Animal Perdido",style: TextStyle(
               color: Colors.white
             )),

@@ -27,6 +27,7 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
         appBar: AppBar(
             title: const Text("Animal Avistado"),
             centerTitle: true,
+            foregroundColor: Colors.white,
             backgroundColor: estilo.corprimaria),
         body: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(30.0, 30, 30.0, 10.0),
