@@ -1,3 +1,6 @@
+import 'package:buscapatas/components/campo-texto.dart';
+import 'package:buscapatas/model/test-user.dart';
+import 'package:buscapatas/utils/mock_usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
@@ -14,8 +17,9 @@ class _EsqueceuSenhaState extends State<EsqueceuSenha> {
 
   @override
   Widget build(BuildContext context) {
-   
-    TextEditingController emailController = TextEditingController();
+    User usuario = MockUsuario.getUser();
+    
+    // TextEditingController emailController = TextEditingController();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -35,7 +39,11 @@ class _EsqueceuSenhaState extends State<EsqueceuSenha> {
               style: TextStyle(fontSize: 20, color: estilo.corprimaria)),
             const Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 1.0)),
 
-            campoInput("Email", emailController, TextInputType.emailAddress),
+            CampoTexto(label: 'Email', 
+              text: usuario.email, 
+              tipoCampo: TextInputType.emailAddress,
+              enableEdit: true,
+              onChanged: (email) => usuario = usuario.copy(email: email)),
             
             const Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 1.0)),
             SizedBox(
@@ -57,30 +65,6 @@ class _EsqueceuSenhaState extends State<EsqueceuSenha> {
         ),
         ),
       );
-  }
-
-  Widget campoInput(
-      String label, TextEditingController controller, TextInputType tipoCampo) {
-    return Padding(
-        padding: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
-        child: TextFormField(
-            keyboardType: tipoCampo,
-            decoration: InputDecoration(
-              labelText: label,
-              border: const OutlineInputBorder(),
-              //errorText: validarCamposObrigatorios(controller.text),
-            ),
-            controller: controller,
-            validator: (texto) {
-              if (controller.text.isEmpty) {
-                return "O campo deve ser preenchido";
-              } else if (!(controller.text.contains('@')) ||
-                      !(controller.text.contains('.'))){
-                return "O campo E-mail deve ser preenchido com um e-mail válido";
-              } else {
-                return null;
-              }
-            }));
   }
 
 }
