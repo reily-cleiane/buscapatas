@@ -4,6 +4,7 @@ import 'package:flutter_session/flutter_session.dart';
 import 'dart:convert';
 import 'package:buscapatas/home.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
+import 'package:buscapatas/model/RacaModel.dart';
 import 'package:buscapatas/model/CorModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
@@ -42,8 +43,7 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
 
   @override
   void initState() {
-    getEspecies();
-    getCores();
+    cargaInicialBD();
     getUsuarioLogado();
     getPosicao();
     super.initState();
@@ -200,72 +200,32 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
         await (FlutterSession().get("sessao_usuarioLogado")));
   }
 
-  void getEspecies() async {
-    const request = "http://localhost:8080/especies";
+  void cargaInicialBD() async {
+    List<dynamic> especiesTemp = await EspecieModel.getEspecies();
+    Map<String, int> coresNomeIdTemp = await CorModel.getCores();
+    Map<String, bool> coresTempNomeBool = {};
 
-    http.Response response = await http.get(Uri.parse(request));
-
-    if (response.statusCode == 200) {
-      var resposta = json.decode(utf8.decode(response.bodyBytes));
-      List<dynamic> especiesTemp = [];
-
-      for (var especie in resposta) {
-        especiesTemp.add(especie);
-      }
-      setState(() {
-        listaEspecies = especiesTemp;
-      });
-    } else {
-      throw Exception('Falha no servidor ao carregar espécies');
+    for (var cor in coresNomeIdTemp.entries) {
+      coresTempNomeBool[cor.key] = false;
     }
-  }
-
-  void getCores() async {
-    const request = "http://localhost:8080/cores";
-
-    http.Response response = await http.get(Uri.parse(request));
-
-    if (response.statusCode == 200) {
-      var resposta = json.decode(utf8.decode(response.bodyBytes));
-      Map<String, bool> coresTempNome = {};
-      Map<String, int> coresTempNomeId = {};
-
-      for (var cor in resposta) {
-        coresTempNome[cor["nome"]] = false;
-        coresTempNomeId[cor["nome"]] = cor["id"];
-      }
-      setState(() {
-        mapaCoresNomeBool = coresTempNome;
-        mapaCoresNomeId = coresTempNomeId;
-      });
-    } else {
-      throw Exception('Falha no servidor ao carregar cores');
-    }
+    setState(() {
+      listaEspecies = especiesTemp;
+      mapaCoresNomeId = coresNomeIdTemp;
+      mapaCoresNomeBool = coresTempNomeBool;
+    });
   }
 
   void getRacas() async {
     setState(() {
       valorRacaSelecionado = null;
     });
-    var request =
-        "http://localhost:8080/racas/especie/${valorEspecieSelecionado}";
 
-    http.Response response = await http.get(Uri.parse(request));
-
-    if (response.statusCode == 200) {
-      var resposta = json.decode(utf8.decode(response.bodyBytes));
-      List<dynamic> racasTemp = [];
-
-      for (var raca in resposta) {
-        racasTemp.add({"id": raca["id"], "nome": raca["nome"]});
-      }
-      setState(() {
-        listaRacas.clear();
-        listaRacas = racasTemp;
-      });
-    } else {
-      throw Exception('Falha no servidor ao carregar raças');
-    }
+    List<dynamic> racasTemp = await RacaModel.getRacasByEspecie(valorEspecieSelecionado);
+    
+    setState(() {
+      listaRacas.clear();
+      listaRacas = racasTemp;
+    });
   }
 
   void _cadastrarPost() {

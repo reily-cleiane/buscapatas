@@ -2,8 +2,7 @@ import 'dart:convert';
 import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:buscapatas/model/CorModel.dart';
 
-PostModel usuairoModelJson(String str) =>
-    PostModel.fromJson(json.decode(str));
+PostModel usuairoModelJson(String str) => PostModel.fromJson(json.decode(str));
 
 String postModelToJson(PostModel data) => json.encode(data.toJson());
 
@@ -28,11 +27,22 @@ class PostModel {
   List<CorModel>? coresAnimal;
   String? sexoAnimal;
 
-
-  PostModel({this.id, this.outrasInformacoes, this. orientacoesGerais, this.recompensa, 
-  this.larTemporario, this.latitude, this.longitude, this.nomeAnimal,
-  this.coleira, this.especieAnimal, this.racaAnimal, this.coresAnimal, this.sexoAnimal,
-  this.tipoPost, this.usuario});
+  PostModel(
+      {this.id,
+      this.outrasInformacoes,
+      this.orientacoesGerais,
+      this.recompensa,
+      this.larTemporario,
+      this.latitude,
+      this.longitude,
+      this.nomeAnimal,
+      this.coleira,
+      this.especieAnimal,
+      this.racaAnimal,
+      this.coresAnimal,
+      this.sexoAnimal,
+      this.tipoPost,
+      this.usuario});
 
   factory PostModel.fromJson(Map<String, dynamic> json) {
     return PostModel(
@@ -50,9 +60,7 @@ class PostModel {
         coresAnimal: json["coresAnimal"],
         sexoAnimal: json["sexo"],
         tipoPost: json["tipoPost"],
-        usuario: json["usuario"]
-        
-        );
+        usuario: json["usuario"]);
   }
 
   Map<String, dynamic> toJson() => {
@@ -71,6 +79,7 @@ class PostModel {
         "sexoAnimal": sexoAnimal,
         "tipoPost": tipoPost,
         "usuario": jsonEncode(usuario),
-
       };
+
+  
 }
