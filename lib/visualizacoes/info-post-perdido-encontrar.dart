@@ -25,7 +25,8 @@ class _InfoPostPerdidoEncontrarState extends State<InfoPostPerdidoEncontrar> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-            title: const Text("Animal Perdido"),
+            title: const Text("Animal Perdido",style: TextStyle(
+              color: Colors.white)),
             centerTitle: true,
             backgroundColor: estilo.corprimaria),
         body: SingleChildScrollView(
