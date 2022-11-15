@@ -34,4 +34,19 @@ class UsuarioModel {
         "senha": senha,
         "telefone": telefone,
       };
+
+      //Refatorar para o método completo para salvar usuário ficar aqui, e não só a URL
+  static String getUrlSalvarUsuario(){
+    return "http://localhost:8080/users";
+  }
+//Refatorar para o método completo para pesquisar usuário por email ficar aqui, e não só a URL
+  static String getUrlFindByEmail(var email){
+    return "http://localhost:8080/findbyemail?email=${email}";
+  }
+
+  //Refatorar para o método completo para verificar usuário cadastrado ficar aqui, e não só a URL
+  static String getUrlVerificarUsuarioAutorizado(var email, var senha){
+    return "http://localhost:8080/usuarioautorizado?email=${email}&senha=${senha}";
+  }
+
 }

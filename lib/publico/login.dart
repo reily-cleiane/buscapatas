@@ -187,8 +187,7 @@ class _LoginState extends State<Login> {
   }
 
   Future<UsuarioModel?> _verificarUsuarioAutorizado() async {
-    var url =
-        "http://localhost:8080/usuarioautorizado?email=${emailController.text}&senha=${senhaController.text}";
+    var url = UsuarioModel.getUrlVerificarUsuarioAutorizado(emailController.text, senhaController.text);
 
     var response = await http.get(
       Uri.parse(url),
