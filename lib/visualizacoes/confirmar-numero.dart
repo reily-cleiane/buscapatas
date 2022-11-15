@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:buscapatas/perfil_usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
@@ -27,52 +29,73 @@ class _ConfirmarNumeroState extends State<ConfirmarNumero> {
             backgroundColor: estilo.corsecundaria),
         body: SingleChildScrollView(
             padding: EdgeInsets.fromLTRB(20.0, 50, 40.0, 10.0),
-            child: Column(
-              children: <Widget>[
-                Text("Insira o código de 4 dígitos \nenviado para ${widget.numero}",
+            child: Column(children: <Widget>[
+              Text(
+                "Insira o código de 4 dígitos \nenviado para ${widget.numero}",
                 textAlign: TextAlign.left,
                 style: const TextStyle(
                   decorationThickness: 5.0,
                 ),
-                ),
-                Form(
-                  key: _formKey,
-                  child: Column(
+              ),
+              Form(
+                key: _formKey,
+                child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
-                        child: PinCodeTextField(
+                      Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
+                          child: PinCodeTextField(
                             length: 4,
                             controller: numeroController,
-                            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
                             keyboardType: TextInputType.number,
                             onCompleted: (texto) {
-                              _visualizarPerfil();
-                            }, 
-                            appContext: context, 
+                              if (numeroController.text == "1234") {
+                                debugPrint("Oi, to aqui");
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                          title: const Text("Sucesso!"),
+                                          content: const Text(
+                                              "Número confirmado com sucesso"),
+                                          actions: <Widget>[
+                                            ElevatedButton(
+                                                onPressed: () {
+                                                  _visualizarPerfil();
+                                                },
+                                                child: const Text("Ok"))
+                                          ]);
+                                    });
+                              }
+                            },
+                            appContext: context,
                             onChanged: (texto) {
                               //Faz nada...
                             },
-                            ))
-              ]),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                //Reenvia o código
-              },
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Color.fromARGB(254, 254, 254, 254)),
-                alignment: Alignment.centerLeft
-              ), 
-              child: Text("Reenviar código",
-              style: TextStyle(color: estilo.corprimaria)
-              )
-              )
-            ]
-            )
-            )
-            );
+                            validator: (value) {
+                              if (value?.length == 4 && value != "1234") {
+                                debugPrint("Erro inv");
+                                return "Código inválido";
+                              }
+                              return null;
+                            },
+                          ))
+                    ]),
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    //Reenvia o código
+                  },
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          Color.fromARGB(254, 254, 254, 254)),
+                      alignment: Alignment.centerLeft),
+                  child: Text("Reenviar código",
+                      style: TextStyle(color: estilo.corprimaria)))
+            ])));
   }
 
   void _visualizarPerfil() {

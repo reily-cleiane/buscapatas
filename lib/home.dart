@@ -1,3 +1,4 @@
+import 'package:buscapatas/cadastros/cadastro-post-avistado.dart';
 import 'package:buscapatas/components/animal_card.dart';
 import 'package:buscapatas/visualizacoes/info-post-avistado.dart';
 import 'package:buscapatas/visualizacoes/info-post-perdido-avistar.dart';
@@ -54,32 +55,71 @@ class _HomeState extends State<Home> {
                       image: AssetImage('imagens/mapa_holder.PNG'),
                     ),
                     SizedBox(
-                        width: double.infinity,
                         height: 50,
-                        child: ElevatedButton(
-                            style: const ButtonStyle(
-                              backgroundColor: MaterialStatePropertyAll<Color>(
-                                  estilo.corsecundaria),
-                            ),
-                            onPressed: () {
-                              _cadastrarAnimalPerdido();
-                            },
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      "Animais perdidos",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 20.0),
-                                    )),
-                                Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Icon(Icons.add))
-                              ],
-                            ))),
+                        width: double.infinity,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                                style: const ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStatePropertyAll<Color>(
+                                          estilo.corsecundaria),
+                                ),
+                                onPressed: () {
+                                  _cadastrarAnimalAvistado();
+                                },
+                                child: Row(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Icon(Icons.add)),
+                                    Align(
+                                        alignment: Alignment.centerRight,
+                                        child: Text(
+                                          "Animal encontrado",
+                                          style: TextStyle(
+                                            color:
+                                                Colors.white, /*fontSize: 20.0*/
+                                          ),
+                                        )),
+                                  ],
+                                )),
+                            ElevatedButton(
+                                style: const ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStatePropertyAll<Color>(
+                                          estilo.corsecundaria),
+                                ),
+                                onPressed: () {
+                                  _cadastrarAnimalPerdido();
+                                },
+                                child: Row(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "Animal perdido",
+                                          style: TextStyle(
+                                            color:
+                                                Colors.white, /*fontSize: 20.0*/
+                                          ),
+                                        )),
+                                    Align(
+                                        alignment: Alignment.centerRight,
+                                        child: Icon(Icons.add))
+                                  ],
+                                ))
+                          ],
+                        ))
                   ],
                 ),
               ),
@@ -90,18 +130,40 @@ class _HomeState extends State<Home> {
                         children: <Widget>[
                           const SizedBox(height: 10),
                           ElevatedButton(
-                            onPressed: () {
-                              _infoPostPerdidoAvistar();
-                            },
-                            child: AnimalCard()
-                            ),
+                              style: ElevatedButton.styleFrom(
+                                  padding: EdgeInsets.zero,
+                                  minimumSize: Size.zero,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                      side: BorderSide.none)),
+                              onPressed: () {
+                                _infoPostPerdidoAvistar();
+                              },
+                              child: AnimalCard()),
                           const SizedBox(height: 10),
                           ElevatedButton(
-                            onPressed: () {
-                              _infoPostPerdidoAvistar();
-                            },
-                            child: AnimalCard()
-                            ),
+                              style: ElevatedButton.styleFrom(
+                                  padding: EdgeInsets.zero,
+                                  minimumSize: Size.zero,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                      side: BorderSide.none)),
+                              onPressed: () {
+                                _infoPostPerdidoAvistar();
+                              },
+                              child: AnimalCard()),
+                          const SizedBox(height: 10),
+                          ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  padding: EdgeInsets.zero,
+                                  minimumSize: Size.zero,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                      side: BorderSide.none)),
+                              onPressed: () {
+                                _infoPostAvistado();
+                              },
+                              child: AnimalCard.avistado()),
                         ],
                       )))
             ],
@@ -118,11 +180,21 @@ class _HomeState extends State<Home> {
     );
   }
 
+  void _cadastrarAnimalAvistado() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              CadastroPostAvistado(title: "Cadastrar Animal Avistado")),
+    );
+  }
+
   void _infoPostPerdidoAvistar() {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => InfoPostPerdidoAvistar(title: "Animal Perdido")),
+          builder: (context) =>
+              InfoPostPerdidoAvistar(title: "Animal Perdido")),
     );
   }
 
@@ -133,5 +205,4 @@ class _HomeState extends State<Home> {
           builder: (context) => InfoPostAvistado(title: "Animal Avistado")),
     );
   }
-
 }
