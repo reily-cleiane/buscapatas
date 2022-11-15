@@ -48,83 +48,99 @@ class _HomeState extends State<Home> {
           body: Column(
             children: <Widget>[
               SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(30.0, 50, 30.0, 10.0),
+                padding: const EdgeInsets.fromLTRB(30.0, 50, 30.0, 0),
                 child: Column(
                   children: <Widget>[
                     const Image(
                       image: AssetImage('imagens/mapa_holder.PNG'),
                     ),
+                    Padding(padding: const EdgeInsets.fromLTRB(0, 10.0, 0, 0)),
                     SizedBox(
                         height: 50,
                         width: double.infinity,
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            ElevatedButton(
-                                style: const ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStatePropertyAll<Color>(estilo.coravistado),
-                                ),
-                                onPressed: () {
-                                  _cadastrarAnimalAvistado();
-                                },
-                                child: Row(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Icon(Icons.add)),
-                                    Align(
-                                        alignment: Alignment.centerRight,
-                                        child: Text(
-                                          "Animal encontrado",
-                                          style: TextStyle(
-                                            color:
-                                                Colors.white, /*fontSize: 20.0*/
-                                          ),
-                                        )),
-                                  ],
-                                )),
-                            ElevatedButton(
-                                style: const ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStatePropertyAll<Color>(
-                                          estilo.corperdido),
-                                ),
-                                onPressed: () {
-                                  _cadastrarAnimalPerdido();
-                                },
-                                child: Row(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          "Animal perdido",
-                                          style: TextStyle(
-                                            color:
-                                                Colors.white, /*fontSize: 20.0*/
-                                          ),
-                                        )),
-                                    Align(
-                                        alignment: Alignment.centerRight,
-                                        child: Icon(Icons.add))
-                                  ],
-                                ))
+                            Expanded(
+                                child: ElevatedButton(
+                                    style: const ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStatePropertyAll<Color>(
+                                              estilo.coravistado),
+                                    ),
+                                    onPressed: () {
+                                      _cadastrarAnimalAvistado();
+                                    },
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: <Widget>[
+                                        Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Icon(Icons.add,
+                                                color: estilo.corpreto)),
+                                        Align(
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              "Animal avistado",
+                                              style: TextStyle(
+                                                  color: estilo.corpreto,
+                                                  fontWeight: FontWeight
+                                                      .bold /*fontSize: 20.0*/
+                                                  ),
+                                            )),
+                                      ],
+                                    ))),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(10, 10.0, 10, 10.0),
+                            ),
+                            Expanded(
+                                child: ElevatedButton(
+                                    style: const ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStatePropertyAll<Color>(
+                                              estilo.corperdido),
+                                    ),
+                                    onPressed: () {
+                                      _cadastrarAnimalPerdido();
+                                    },
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: <Widget>[
+                                        Align(
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              "Animal perdido",
+                                              style: TextStyle(
+                                                  color: estilo.corpreto,
+                                                  fontWeight: FontWeight
+                                                      .bold /*fontSize: 20.0*/
+                                                  ),
+                                            )),
+                                        Align(
+                                            alignment: Alignment.center,
+                                            child: Icon(Icons.add,
+                                                color: estilo.corpreto))
+                                      ],
+                                    )))
                           ],
                         ))
                   ],
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 10.0, 10, 10.0),
+              ),
               Expanded(
                   child: SingleChildScrollView(
-                      padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 20.0),
+                      padding: EdgeInsets.fromLTRB(30.0, 0, 30.0, 20.0),
                       child: Column(
                         children: <Widget>[
                           const SizedBox(height: 10),
