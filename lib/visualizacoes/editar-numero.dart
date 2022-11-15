@@ -1,6 +1,7 @@
 import 'package:buscapatas/visualizacoes/confirmar-numero.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
+import 'package:flutter/services.dart';
 
 class EditarNumero extends StatefulWidget {
   const EditarNumero({super.key, required this.title});
@@ -31,6 +32,8 @@ class _EditarNumeroState extends State<EditarNumero> {
                     padding: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
                     child: TextFormField(
                         keyboardType: TextInputType.phone,
+                        maxLength: 11,
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                         decoration: InputDecoration(
                           labelText: "Numero de celular",
                           border: const OutlineInputBorder(),

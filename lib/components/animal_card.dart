@@ -14,9 +14,9 @@ class AnimalCard extends StatefulWidget {
 
   const AnimalCard.avistado({
     super.key,
-    this.title = "Cachorrinho desaparecido",
+    this.title = "Animal Avistado",
     this.details =
-        "Gente por favor me ajudem! Meu cachorrinho viu o portão de casa aberto e fugiu",
+        "Gente, encontrei esse cachorrinho perto da ponte, tava virando uma lata de lixo.",
     this.timestamp = "Postado há 3h",
     this.distance = 10,
     this.backgroundColor = const Color(0xFFA7FFA7),
