@@ -1,5 +1,5 @@
 //Apagar depois dos testes, está aqui só para facilitar os testes da tela
-import 'package:buscapatas/cadastros/cadastro-post.dart';
+import 'package:buscapatas/cadastros/cadastro-post-perdido.dart';
 import 'package:buscapatas/utils/mock_usuario.dart';
 import 'package:buscapatas/visualizacoes/info-post-avistado.dart';
 import 'package:buscapatas/visualizacoes/lista-post-avistado.dart';
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: generateMaterialColor(color: estilo.corsecundaria),
       ),
-      //home: CadastroPost(title: "Cadastro de animal"),
+      //home: CadastroPostPerdido(title: "Cadastro de animal"),
       //home: Home(true, title: "Página Inicial"),
       //home: Login(title: "Login - BuscaPatas"),
       //home: NaoImplementado(title: "Não implementado"),

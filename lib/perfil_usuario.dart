@@ -1,5 +1,5 @@
 import 'package:buscapatas/cadastros/cadastro-post-avistado.dart';
-import 'package:buscapatas/cadastros/cadastro-post.dart';
+import 'package:buscapatas/cadastros/cadastro-post-perdido.dart';
 import 'package:buscapatas/utils/mock_usuario.dart';
 import 'package:buscapatas/visualizacoes/editar-perfil.dart';
 import 'package:flutter/material.dart';
@@ -170,7 +170,7 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => CadastroPost(title: "Cadastro Animal perdido")),
+          builder: (context) => CadastroPostPerdido(title: "Cadastro Animal perdido")),
     );
   }
 }

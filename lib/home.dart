@@ -5,7 +5,7 @@ import 'package:buscapatas/visualizacoes/lista-post-avistado.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/publico/login.dart';
-import 'package:buscapatas/cadastros/cadastro-post.dart';
+import 'package:buscapatas/cadastros/cadastro-post-perdido.dart';
 import 'package:buscapatas/perfil_usuario.dart';
 import 'package:flutter_session/flutter_session.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
@@ -114,7 +114,7 @@ class _HomeState extends State<Home> {
       context,
       MaterialPageRoute(
           builder: (context) =>
-              CadastroPost(title: "Cadastrar Animal Perdido")),
+              CadastroPostPerdido(title: "Cadastrar Animal Perdido")),
     );
   }
 
