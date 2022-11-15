@@ -56,7 +56,7 @@ class _HomeState extends State<Home> {
                     ),
                     Padding(padding: const EdgeInsets.fromLTRB(0, 10.0, 0, 0)),
                     SizedBox(
-                        height: 50,
+                        height: 65,
                         width: double.infinity,
                         child: Row(
                           mainAxisSize: MainAxisSize.max,

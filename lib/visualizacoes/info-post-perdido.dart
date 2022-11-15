@@ -25,10 +25,9 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          foregroundColor: Colors.white,
-            title: const Text("Animal Perdido",style: TextStyle(
-              color: Colors.white
-            )),
+            foregroundColor: Colors.white,
+            title: const Text("Animal Perdido",
+                style: TextStyle(color: Colors.white)),
             centerTitle: true,
             backgroundColor: estilo.corprimaria),
         body: SingleChildScrollView(
@@ -37,60 +36,73 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Center(
-                  child: CircleAvatar(
-                  radius: 250,
+                child: CircleAvatar(
+                  radius: 100,
                   backgroundImage: AssetImage('imagens/animal.jpg'),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 400.0, 0, 10.0),
-                    child: Center(
-                      child: Text("Zeus",
-                        style: TextStyle(
-                          color: Colors.black, fontSize: 30, decorationThickness: 5.0),
-                      )
-                      ),
-                    ),
-                  ),
                 ),
+              ),
+              Padding(padding: const EdgeInsets.fromLTRB(0, 20, 0, 10.0)),
+              Center(
+                  child: Text(
+                "Zeus",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 30,
+                    decorationThickness: 5.0),
+              )),
               Center(
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: const <Widget>[
+                        Padding(
+                        padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
+                        child: Text("Data da postagem: 14/10/2022 às 17:32",
+                            style:
+                                TextStyle(color: Colors.black, fontSize: 20))),
                     Padding(
                         padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
                         child: Text("Espécie: Cachorro",
                             style:
                                 TextStyle(color: Colors.black, fontSize: 20))),
+                     Padding(
+                        padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
+                        child: Text("Raça: SRD",
+                            style:
+                                TextStyle(color: Colors.black, fontSize: 20))),
                     Padding(
-                        padding: EdgeInsets.fromLTRB(0, 5, 0, 5.0),
+                        padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
                         child: Text("Sexo: Macho",
                             style:
                                 TextStyle(color: Colors.black, fontSize: 20))),
                     Padding(
-                        padding: EdgeInsets.fromLTRB(0, 5, 0, 5.0),
-                        child: Text("Cor do pelo: Branco",
+                        padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
+                        child: Text("Cor do pelo: Marrom, Preto",
                             style:
                                 TextStyle(color: Colors.black, fontSize: 20))),
                     Padding(
-                        padding: EdgeInsets.fromLTRB(0, 5, 0, 5.0),
-                        child: Text("Descrição: Gente por favor me ajudem! Meu cachorro viu o portão de casa aberto e fugiu",
+                        padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
+                        child: Text(
+                            "Descrição: Gente por favor me ajudem! Meu cachorro viu o portão de casa aberto e fugiu",
                             style:
                                 TextStyle(color: Colors.black, fontSize: 20))),
                     Padding(
-                        padding: EdgeInsets.fromLTRB(0, 5, 0, 5.0),
-                        child: Text("Orientações gerais: branco",
+                        padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
+                        child: Text("Orientações gerais: Não é agressivo, pode se aproximar",
                             style:
                                 TextStyle(color: Colors.black, fontSize: 20))),
                     Padding(
-                        padding: EdgeInsets.fromLTRB(0, 5, 0, 5.0),
+                        padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
                         child: Text("Estava de coleira?: Sim",
                             style:
                                 TextStyle(color: Colors.black, fontSize: 20))),
                     Padding(
-                        padding: EdgeInsets.fromLTRB(0, 5, 0, 10.0),
+                        padding: EdgeInsets.fromLTRB(0, 15, 0, 10.0),
                         child: Text("Recompensa: RS 120,00",
                             style:
                                 TextStyle(color: Colors.black, fontSize: 20))),
                   ])),
+              Padding(
+                    padding: EdgeInsets.fromLTRB(0, 20, 0, 20)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -124,24 +136,23 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
                   ),
                 ],
               ),
+              Padding(
+                    padding: EdgeInsets.fromLTRB(0, 20, 0, 20)),
               Center(
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(estilo.corprimaria),
+                  child: ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(estilo.corprimaria),
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)
-                    ))
-                  ),
-                  onPressed: () {
-                    //Faça algo
-                  }, 
-                  child: const Text("Avistado", 
-                    style: TextStyle(
-                      color: Colors.white
-                    )
-                  ),
-                )
-              )
+                        borderRadius: BorderRadius.circular(10.0)))),
+                onPressed: () {
+                  //Faça algo
+                },
+                child: const Text("Registrar avistamento",
+                    style: TextStyle(color: Colors.white)),
+              )),
+              Padding(
+                    padding: EdgeInsets.fromLTRB(0, 20, 0, 30)),
             ],
           ),
         ));
