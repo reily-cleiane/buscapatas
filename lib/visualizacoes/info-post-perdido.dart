@@ -54,7 +54,7 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: const <Widget>[
-                        Padding(
+                    Padding(
                         padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
                         child: Text("Data da postagem: 14/10/2022 às 17:32",
                             style:
@@ -64,7 +64,7 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
                         child: Text("Espécie: Cachorro",
                             style:
                                 TextStyle(color: Colors.black, fontSize: 20))),
-                     Padding(
+                    Padding(
                         padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
                         child: Text("Raça: SRD",
                             style:
@@ -87,7 +87,8 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
                                 TextStyle(color: Colors.black, fontSize: 20))),
                     Padding(
                         padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
-                        child: Text("Orientações gerais: Não é agressivo, pode se aproximar",
+                        child: Text(
+                            "Orientações gerais: Não é agressivo, pode se aproximar",
                             style:
                                 TextStyle(color: Colors.black, fontSize: 20))),
                     Padding(
@@ -101,8 +102,7 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
                             style:
                                 TextStyle(color: Colors.black, fontSize: 20))),
                   ])),
-              Padding(
-                    padding: EdgeInsets.fromLTRB(0, 20, 0, 20)),
+              Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 20)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -136,23 +136,26 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
                   ),
                 ],
               ),
-              Padding(
-                    padding: EdgeInsets.fromLTRB(0, 20, 0, 20)),
+              Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 20)),
               Center(
-                  child: ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(estilo.corprimaria),
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)))),
-                onPressed: () {
-                  //Faça algo
-                },
-                child: const Text("Registrar avistamento",
-                    style: TextStyle(color: Colors.white)),
-              )),
-              Padding(
-                    padding: EdgeInsets.fromLTRB(0, 20, 0, 30)),
+                  child: SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(estilo.corprimaria),
+                            shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(0)))),
+                        onPressed: () {
+                          //Faça algo
+                        },
+                        child: const Text("Registrar avistamento",
+                            style: TextStyle(color: Colors.white, fontSize: 20)),
+                      ))),
+              Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 30)),
             ],
           ),
         ));
