@@ -27,6 +27,9 @@ class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
     listaPostAvistados.add("Animal 1");
     listaPostAvistados.add("Animal 2");
     listaPostAvistados.add("Animal 3");
+    listaPostAvistados.add("Animal 4");
+    listaPostAvistados.add("Animal 5");
+    listaPostAvistados.add("Animal 6");
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -37,39 +40,40 @@ class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
           foregroundColor: Colors.white,
           backgroundColor: estilo.corprimaria),
       bottomNavigationBar: const BuscapatasNavBar(selectedIndex: 1),
-      body: Column(children: <Widget>[
-        Padding(padding: const EdgeInsets.fromLTRB(30.0, 30, 30.0, 10.0)),
-        campoInput(
-            "Busca", buscaController, TextInputType.name, "Informe sua Busca"),
-        Expanded(
-          child: ListView.builder(
-              itemCount: listaPostAvistados.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                    child: Card(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      minimumSize: Size.zero,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        side: BorderSide.none,
+      body: Padding(
+          padding: const EdgeInsets.fromLTRB(30.0, 10, 30.0, 10.0),
+          child: Column(children: <Widget>[
+            campoInput("Busca", buscaController, TextInputType.name,
+                "Informe sua Busca"),
+            Expanded(
+              child: ListView.builder(
+                  itemCount: listaPostAvistados.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                        child: Card(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          minimumSize: Size.zero,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            side: BorderSide.none,
+                          ),
+                        ),
+                        onPressed: () {
+                          _infoPostPerdido();
+                        },
+                        child: AnimalCard(
+                          title: listaPostAvistados[index],
+                          details:
+                              "Gente, encontrei esse cachorrinho perto da ponte, tava virando uma lata de lixo.",
+                          backgroundColor: estilo.corperdido,
+                        ),
                       ),
-                    ),
-                    onPressed: () {
-                      _infoPostPerdido();
-                    },
-                    child: AnimalCard(
-                      title: listaPostAvistados[index],
-                      details:
-                          "Gente, encontrei esse cachorrinho perto da ponte, tava virando uma lata de lixo.",
-                      backgroundColor: estilo.corperdido,
-                    ),
-                  ),
-                ));
-              }),
-        ),
-      ]),
+                    ));
+                  }),
+            ),
+          ])),
     );
   }
 

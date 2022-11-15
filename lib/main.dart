@@ -3,6 +3,7 @@ import 'package:buscapatas/cadastros/cadastro-post-perdido.dart';
 import 'package:buscapatas/utils/mock_usuario.dart';
 import 'package:buscapatas/visualizacoes/info-post-avistado.dart';
 import 'package:buscapatas/listagens/lista-posts-avistados.dart';
+import 'package:buscapatas/listagens/lista-posts-perdidos.dart';
 import 'package:flutter/material.dart';
 //Verificar a necessidade de apagar depois dos testes, se der para manter sessão pode iniciar na home em vez de login
 import 'package:buscapatas/home.dart';
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
       home: Login(title: "Login - BuscaPatas"),
       //home: NaoImplementado(title: "Não implementado"),
       //home: InfoPostAvistado(title: 'Post avistado'),
-      //home: ListaPostsAvistados(title: "Lista animais avistado"),
+      //home: ListaPostsPerdidos(title: "Lista animais avistado"),
     );
   }
 }
