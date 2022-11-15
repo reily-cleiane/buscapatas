@@ -5,16 +5,16 @@ import 'package:buscapatas/visualizacoes/contato.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
-class InfoPostPerdidoAvistar extends StatefulWidget {
-  const InfoPostPerdidoAvistar({super.key, required this.title});
+class InfoPostPerdido extends StatefulWidget {
+  const InfoPostPerdido({super.key, required this.title});
 
   final String title;
 
   @override
-  State<InfoPostPerdidoAvistar> createState() => _InfoPostPerdidoAvistarState();
+  State<InfoPostPerdido> createState() => _InfoPostPerdidoState();
 }
 
-class _InfoPostPerdidoAvistarState extends State<InfoPostPerdidoAvistar> {
+class _InfoPostPerdidoState extends State<InfoPostPerdido> {
   @override
   void initState() {
     //Para pegar o valor da sessao

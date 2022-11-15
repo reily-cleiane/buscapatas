@@ -1,7 +1,7 @@
 
 import 'package:buscapatas/components/animal_card.dart';
 import 'package:buscapatas/visualizacoes/info-post-avistado.dart';
-import 'package:buscapatas/visualizacoes/info-post-perdido-avistar.dart';
+import 'package:buscapatas/visualizacoes/info-post-perdido.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
@@ -99,7 +99,7 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
                               creatCard ("Cachorrinho desaparecido",
                               "Preciso de ajuda para achar meu cachorrinho!", 
                               estilo.corperdido,
-                              const InfoPostPerdidoAvistar(title: "Animal Avistado")),
+                              const InfoPostPerdido(title: "Animal Avistado")),
                               creatCard ("Cachorro avistado",
                               "Gente, encontrei esse cachorrinho perto da ponte, tava virando uma lata de lixo.",
                               estilo.coravistado,

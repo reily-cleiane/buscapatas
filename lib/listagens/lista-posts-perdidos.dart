@@ -1,6 +1,6 @@
 import 'package:buscapatas/components/animal_card.dart';
 import 'package:buscapatas/components/navbar.dart';
-import 'package:buscapatas/visualizacoes/info-post-perdido-avistar.dart';
+import 'package:buscapatas/visualizacoes/info-post-perdido.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
@@ -82,7 +82,7 @@ class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
       context,
       MaterialPageRoute(
           builder: (context) =>
-              InfoPostPerdidoAvistar(title: "Animal Avistado")),
+              InfoPostPerdido(title: "Animal Avistado")),
     );
   }
 

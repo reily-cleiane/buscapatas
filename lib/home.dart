@@ -1,7 +1,7 @@
 import 'package:buscapatas/cadastros/cadastro-post-avistado.dart';
 import 'package:buscapatas/components/animal_card.dart';
 import 'package:buscapatas/visualizacoes/info-post-avistado.dart';
-import 'package:buscapatas/visualizacoes/info-post-perdido-avistar.dart';
+import 'package:buscapatas/visualizacoes/info-post-perdido.dart';
 import 'package:buscapatas/listagens/lista-posts-avistados.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -152,7 +152,7 @@ class _HomeState extends State<Home> {
                                       borderRadius: BorderRadius.circular(8),
                                       side: BorderSide.none)),
                               onPressed: () {
-                                _infoPostPerdidoAvistar();
+                                _infoPostPerdido();
                               },
                               child: AnimalCard()),
                           const SizedBox(height: 10),
@@ -164,7 +164,7 @@ class _HomeState extends State<Home> {
                                       borderRadius: BorderRadius.circular(8),
                                       side: BorderSide.none)),
                               onPressed: () {
-                                _infoPostPerdidoAvistar();
+                                _infoPostPerdido();
                               },
                               child: AnimalCard()),
                           const SizedBox(height: 10),
@@ -204,12 +204,12 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void _infoPostPerdidoAvistar() {
+  void _infoPostPerdido() {
     Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) =>
-              InfoPostPerdidoAvistar(title: "Animal Perdido")),
+              InfoPostPerdido(title: "Animal Perdido")),
     );
   }
 
