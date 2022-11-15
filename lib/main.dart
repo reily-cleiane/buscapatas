@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
       home: Login(title: "Login - BuscaPatas"),
       //home: NaoImplementado(title: "Não implementado"),
       //home: InfoPostAvistado(title: 'Post avistado'),
+      //home: ListaPostsAvistados(title: "Lista animais avistado"),
     );
   }
 }

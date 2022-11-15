@@ -1,5 +1,6 @@
 import 'package:buscapatas/components/animal_card.dart';
 import 'package:buscapatas/components/navbar.dart';
+import 'package:buscapatas/visualizacoes/info-post-perdido-avistar.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
@@ -30,7 +31,8 @@ class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-          title: const Text("Animais Perdidos", style: TextStyle(color: Colors.white)),
+          title: const Text("Animais Perdidos",
+              style: TextStyle(color: Colors.white)),
           centerTitle: true,
           foregroundColor: Colors.white,
           backgroundColor: estilo.corprimaria),
@@ -45,16 +47,38 @@ class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
               itemBuilder: (context, index) {
                 return GestureDetector(
                     child: Card(
-                  child: AnimalCard(
-                    title: listaPostAvistados[index],
-                    details:
-                        "Gente, encontrei esse cachorrinho perto da ponte, tava virando uma lata de lixo.",
-                    backgroundColor:estilo.corperdido,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      minimumSize: Size.zero,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: BorderSide.none,
+                      ),
+                    ),
+                    onPressed: () {
+                      _infoPostPerdido();
+                    },
+                    child: AnimalCard(
+                      title: listaPostAvistados[index],
+                      details:
+                          "Gente, encontrei esse cachorrinho perto da ponte, tava virando uma lata de lixo.",
+                      backgroundColor: estilo.corperdido,
+                    ),
                   ),
                 ));
               }),
         ),
       ]),
+    );
+  }
+
+  void _infoPostPerdido() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              InfoPostPerdidoAvistar(title: "Animal Avistado")),
     );
   }
 
