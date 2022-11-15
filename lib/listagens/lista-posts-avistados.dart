@@ -37,8 +37,9 @@ class _ListaPostsAvistados extends State<ListaPostsAvistados> {
           foregroundColor: Colors.white,
           backgroundColor: estilo.corprimaria),
       bottomNavigationBar: const BuscapatasNavBar(selectedIndex: 2),
-      body: Column(children: <Widget>[
-        Padding(padding: const EdgeInsets.fromLTRB(30.0, 30, 30.0, 10.0)),
+      body: Padding(
+          padding: const EdgeInsets.fromLTRB(30.0, 10, 30.0, 10.0),
+          child: Column(children: <Widget>[
         campoInput(
             "Busca", buscaController, TextInputType.name, "Informe sua Busca"),
         Expanded(
@@ -69,7 +70,7 @@ class _ListaPostsAvistados extends State<ListaPostsAvistados> {
                 ));
               }),
         ),
-      ]),
+      ])),
     );
   }
 
