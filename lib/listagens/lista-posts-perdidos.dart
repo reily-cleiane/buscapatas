@@ -30,10 +30,11 @@ class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-          title: const Text("Animal Avistado"),
+          title: const Text("Animais Perdidos", style: TextStyle(color: Colors.white)),
           centerTitle: true,
+          foregroundColor: Colors.white,
           backgroundColor: estilo.corprimaria),
-      bottomNavigationBar: const BuscapatasNavBar(selectedIndex: 2),
+      bottomNavigationBar: const BuscapatasNavBar(selectedIndex: 1),
       body: Column(children: <Widget>[
         Padding(padding: const EdgeInsets.fromLTRB(30.0, 30, 30.0, 10.0)),
         campoInput(
@@ -48,7 +49,7 @@ class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
                     title: listaPostAvistados[index],
                     details:
                         "Gente, encontrei esse cachorrinho perto da ponte, tava virando uma lata de lixo.",
-                    backgroundColor: Color(0xFFD7FFE2),
+                    backgroundColor:estilo.corperdido,
                   ),
                 ));
               }),

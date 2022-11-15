@@ -30,8 +30,9 @@ class _ListaPostsAvistados extends State<ListaPostsAvistados> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-          title: const Text("Animal Avistado"),
+          title: const Text("Animais Avistados", style: TextStyle(color: Colors.white)),
           centerTitle: true,
+          foregroundColor: Colors.white,
           backgroundColor: estilo.corprimaria),
       bottomNavigationBar: const BuscapatasNavBar(selectedIndex: 2),
       body: Column(children: <Widget>[
@@ -48,7 +49,7 @@ class _ListaPostsAvistados extends State<ListaPostsAvistados> {
                     title: listaPostAvistados[index],
                     details:
                         "Gente, encontrei esse cachorrinho perto da ponte, tava virando uma lata de lixo.",
-                    backgroundColor: Color(0xFFD7FFE2),
+                    backgroundColor: estilo.coravistado,
                   ),
                 ));
               }),
