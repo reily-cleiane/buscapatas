@@ -63,8 +63,7 @@ class _HomeState extends State<Home> {
                             ElevatedButton(
                                 style: const ButtonStyle(
                                   backgroundColor:
-                                      MaterialStatePropertyAll<Color>(
-                                          estilo.corsecundaria),
+                                      MaterialStatePropertyAll<Color>(estilo.coravistado),
                                 ),
                                 onPressed: () {
                                   _cadastrarAnimalAvistado();
@@ -93,7 +92,7 @@ class _HomeState extends State<Home> {
                                 style: const ButtonStyle(
                                   backgroundColor:
                                       MaterialStatePropertyAll<Color>(
-                                          estilo.corsecundaria),
+                                          estilo.corperdido),
                                 ),
                                 onPressed: () {
                                   _cadastrarAnimalPerdido();
