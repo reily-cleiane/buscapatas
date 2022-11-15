@@ -1,6 +1,8 @@
 //Apagar depois dos testes, está aqui só para facilitar os testes da tela
 import 'package:buscapatas/cadastros/cadastro-post.dart';
 import 'package:buscapatas/utils/mock_usuario.dart';
+import 'package:buscapatas/visualizacoes/info-post-avistado.dart';
+import 'package:buscapatas/visualizacoes/lista-post-avistado.dart';
 import 'package:flutter/material.dart';
 //Verificar a necessidade de apagar depois dos testes, se der para manter sessão pode iniciar na home em vez de login
 import 'package:buscapatas/home.dart';
@@ -10,7 +12,7 @@ import 'package:buscapatas/publico/login.dart';
 //Apagar depois dos testes, está aqui só para facilitar os testes da tela
 import 'package:buscapatas/publico/nao-implementado.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await MockUsuario.init();
 
@@ -28,9 +30,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: generateMaterialColor(color: estilo.corsecundaria),
       ),
       //home: CadastroPost(title: "Cadastro de animal"),
-      home: Home(true, title: "Página Inicial"),
-      //home: Login(title:"Login - BuscaPatas"),
+      //home: Home(true, title: "Página Inicial"),
+      //home: Login(title: "Login - BuscaPatas"),
       //home: NaoImplementado(title: "Não implementado"),
+      home: InfoPostAvistado(title: 'Post avistado'),
     );
   }
 }

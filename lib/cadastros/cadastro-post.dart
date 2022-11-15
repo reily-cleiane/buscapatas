@@ -7,6 +7,7 @@ import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:buscapatas/model/CorModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
+import 'package:geolocator/geolocator.dart';
 
 class CadastroPost extends StatefulWidget {
   const CadastroPost({super.key, required this.title});
@@ -28,6 +29,8 @@ class _CadastroPostState extends State<CadastroPost> {
   String valorSexoMarcado = "";
   String? valorEspecieSelecionado;
   String? valorRacaSelecionado;
+  double? valorLatitude;
+  double? valorLongitude;
 
   List<dynamic> listaEspecies = [];
   List<dynamic> listaRacas = [];
@@ -42,6 +45,7 @@ class _CadastroPostState extends State<CadastroPost> {
     getEspecies();
     getCores();
     getUsuarioLogado();
+    getPosicao();
     super.initState();
   }
 
@@ -112,10 +116,11 @@ class _CadastroPostState extends State<CadastroPost> {
                         onChanged: (bool? value) {
                           setState(() {
                             mapaCoresNomeBool[key] = value!;
-                            if(mapaCoresNomeBool[key] == true){
+                            if (mapaCoresNomeBool[key] == true) {
                               listaCoresSelecionadas.add(mapaCoresNomeId[key]!);
-                            }else{
-                              listaCoresSelecionadas.remove(mapaCoresNomeId[key]);
+                            } else {
+                              listaCoresSelecionadas
+                                  .remove(mapaCoresNomeId[key]);
                             }
                           });
                         },
@@ -190,10 +195,11 @@ class _CadastroPostState extends State<CadastroPost> {
     );
   }
 
-  void getUsuarioLogado() async{
-    usuarioLogado = UsuarioModel.fromJson( await(FlutterSession().get("sessao_usuarioLogado")));
+  void getUsuarioLogado() async {
+    usuarioLogado = UsuarioModel.fromJson(
+        await (FlutterSession().get("sessao_usuarioLogado")));
   }
-  
+
   void getEspecies() async {
     const request = "http://localhost:8080/especies";
 
@@ -277,25 +283,30 @@ class _CadastroPostState extends State<CadastroPost> {
       CorModel corSelecionada = CorModel.id(corId);
       cores.add(corSelecionada);
     }
-    
+
     var response = await http.post(Uri.parse(url),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, dynamic>{
-          if(outrasinformacoesController.text.isNotEmpty) "outrasInformacoes": outrasinformacoesController.text,
-          if(orientacoesController.text.isNotEmpty) "orientacoesGerais": orientacoesController.text,
-          if(recompensaController.text.isNotEmpty) "recompensa": int.parse(recompensaController.text),
+          if (outrasinformacoesController.text.isNotEmpty)
+            "outrasInformacoes": outrasinformacoesController.text,
+          if (orientacoesController.text.isNotEmpty)
+            "orientacoesGerais": orientacoesController.text,
+          if (recompensaController.text.isNotEmpty)
+            "recompensa": int.parse(recompensaController.text),
           //ajustar quando pegar latitude
-          "latitude": 987,
+          "latitude": valorLatitude,
           //ajustar quando pegar longitude
-          "longitude": 9632,
-          if(nomeController.text.isNotEmpty) "nomeAnimal": nomeController.text,
+          "longitude": valorLongitude,
+          if (nomeController.text.isNotEmpty) "nomeAnimal": nomeController.text,
           "coleira": valorColeiraMarcado,
-          if(valorEspecieSelecionado != null) "especieAnimal": {"id": int.parse(valorEspecieSelecionado!)},
-          if(valorRacaSelecionado != null) "racaAnimal": {"id": int.parse(valorRacaSelecionado!)},
+          if (valorEspecieSelecionado != null)
+            "especieAnimal": {"id": int.parse(valorEspecieSelecionado!)},
+          if (valorRacaSelecionado != null)
+            "racaAnimal": {"id": int.parse(valorRacaSelecionado!)},
           "coresAnimal": cores,
-          if(valorSexoMarcado.isNotEmpty) "sexoAnimal": valorSexoMarcado,
+          if (valorSexoMarcado.isNotEmpty) "sexoAnimal": valorSexoMarcado,
           "tipoPost": "ANIMAL_PERDIDO",
 //ajustar quando pegar usuario
           "usuario": usuarioLogado,
@@ -311,7 +322,39 @@ class _CadastroPostState extends State<CadastroPost> {
         },
       );
     }
+  }
 
+  void getPosicao() async {
+    try {
+      Position posicao = await _posicaoAtual();
+      valorLatitude = posicao.latitude;
+      valorLongitude = posicao.longitude;
+    } catch (e) {
+      e.toString();
+    }
+  }
+
+  Future<Position> _posicaoAtual() async {
+    LocationPermission permissao;
+
+    bool ativado = await Geolocator.isLocationServiceEnabled();
+    if (!ativado) {
+      return Future.error('Por favor, habilite a localização no smartphone');
+    }
+
+    permissao = await Geolocator.checkPermission();
+    if (permissao == LocationPermission.denied) {
+      permissao = await Geolocator.requestPermission();
+      if (permissao == LocationPermission.denied) {
+        return Future.error('Você precisa autorizar o acesso à localização');
+      }
+    }
+
+    if (permissao == LocationPermission.deniedForever) {
+      return Future.error('Você precisa autorizar o acesso à localização');
+    }
+
+    return await Geolocator.getCurrentPosition();
   }
 
   void selecionarRaca(String racaSelecionada) {
