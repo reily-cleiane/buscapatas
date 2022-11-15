@@ -22,7 +22,7 @@ class _EditarNumeroState extends State<EditarNumero> {
         appBar: AppBar(
             title: const Text("Trocar numero de celular"),
             centerTitle: true,
-            backgroundColor: estilo.corsecundaria),
+            backgroundColor: estilo.corprimaria),
         body: SingleChildScrollView(
             padding: EdgeInsets.fromLTRB(30.0, 50, 30.0, 10.0),
             child: Form(

@@ -26,7 +26,7 @@ class _ConfirmarNumeroState extends State<ConfirmarNumero> {
         appBar: AppBar(
             title: const Text("Confirmar numero de celular"),
             centerTitle: true,
-            backgroundColor: estilo.corsecundaria),
+            backgroundColor: estilo.corprimaria),
         body: SingleChildScrollView(
             padding: EdgeInsets.fromLTRB(20.0, 50, 40.0, 10.0),
             child: Column(children: <Widget>[
