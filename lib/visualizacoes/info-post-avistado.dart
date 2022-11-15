@@ -25,28 +25,32 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-            title: const Text("Animal Avistado"),
-            centerTitle: true,
             foregroundColor: Colors.white,
+            title: const Text("Animal Avistado",
+                style: TextStyle(color: Colors.white)),
+            centerTitle: true,
             backgroundColor: estilo.corprimaria),
         body: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(30.0, 30, 30.0, 10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 10.0),
-                child: Center(
-                  child: CircleAvatar(
-                    radius: 250,
-                    backgroundImage: AssetImage('imagens/animal.jpg'),
-                  ),
+              Center(
+                child: CircleAvatar(
+                  radius: 100,
+                  backgroundImage: AssetImage('imagens/animal.jpg'),
                 ),
               ),
+              Padding(padding: const EdgeInsets.fromLTRB(0, 20, 0, 10.0)),
               Center(
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: const <Widget>[
+                        Padding(
+                        padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
+                        child: Text("Data da postagem: 14/10/2022 às 17:32",
+                            style:
+                                TextStyle(color: Colors.black, fontSize: 20))),
                     Padding(
                         padding: EdgeInsets.fromLTRB(0, 10, 0, 10.0),
                         child: Text(
@@ -58,27 +62,34 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
                         child: Text("Espécie: Cachorro",
                             style:
                                 TextStyle(color: Colors.black, fontSize: 20))),
+                     Padding(
+                        padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
+                        child: Text("Raça: SRD",
+                            style:
+                                TextStyle(color: Colors.black, fontSize: 20))),
                     Padding(
-                        padding: EdgeInsets.fromLTRB(0, 5, 0, 5.0),
+                        padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
                         child: Text("Sexo: Macho",
                             style:
                                 TextStyle(color: Colors.black, fontSize: 20))),
                     Padding(
-                        padding: EdgeInsets.fromLTRB(0, 5, 0, 5.0),
-                        child: Text("Cor do pelo: Branco",
+                        padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
+                        child: Text("Cor do pelo: Marrom, Preto",
                             style:
                                 TextStyle(color: Colors.black, fontSize: 20))),
                     Padding(
-                        padding: EdgeInsets.fromLTRB(0, 5, 0, 5.0),
+                        padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
                         child: Text("Estava de coleira?: Sim",
                             style:
                                 TextStyle(color: Colors.black, fontSize: 20))),
                     Padding(
-                        padding: EdgeInsets.fromLTRB(0, 5, 0, 10.0),
+                        padding: EdgeInsets.fromLTRB(0, 15, 0, 10.0),
                         child: Text("Deu lar temporário?: Sim",
                             style:
                                 TextStyle(color: Colors.black, fontSize: 20))),
                   ])),
+              Padding(
+                    padding: EdgeInsets.fromLTRB(0, 20, 0, 20)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -112,6 +123,8 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
                   ),
                 ],
               ),
+              Padding(
+                    padding: EdgeInsets.fromLTRB(0, 20, 0, 30)),
             ],
           ),
         ));
