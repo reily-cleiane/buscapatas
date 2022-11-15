@@ -22,6 +22,8 @@ class BuscapatasNavBarState extends State<BuscapatasNavBar> {
       switch (index) {
         case 0:
           return _home();
+        case 1: return _listarAnimaisPerdidos();
+        case 2: return _listarAnimaisAvistados();
         case 2:
           return _visualizarPerfil();
         default:
