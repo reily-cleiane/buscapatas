@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
 class AnimalCard extends StatefulWidget {
   const AnimalCard({
@@ -8,7 +9,7 @@ class AnimalCard extends StatefulWidget {
         "Gente por favor me ajudem! Meu cachorrinho viu o portão de casa aberto e fugiu",
     this.timestamp = "Postado há 3h",
     this.distance = 10,
-    this.backgroundColor = const Color(0xFFFFA7A7),
+    this.backgroundColor = estilo.corperdido,
     this.image = 'imagens/animal.jpg',
   });
 
@@ -19,7 +20,7 @@ class AnimalCard extends StatefulWidget {
         "Gente, encontrei esse cachorrinho perto da ponte, tava virando uma lata de lixo.",
     this.timestamp = "Postado há 3h",
     this.distance = 10,
-    this.backgroundColor = const Color(0xFFA7FFA7),
+    this.backgroundColor = estilo.coravistado,
     this.image = 'imagens/animal.jpg',
   });
 

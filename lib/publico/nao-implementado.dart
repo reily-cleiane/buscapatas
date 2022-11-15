@@ -16,13 +16,20 @@ class _NaoImplementadoState extends State<NaoImplementado> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+          title: const Text("Volte em 1 mês", style: TextStyle(color: Colors.white)),
+          centerTitle: true,
+          foregroundColor: Colors.white,
+          backgroundColor: estilo.corprimaria),
+      body: SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.fromLTRB(30.0, 120, 30.0, 10.0),
-        //child:
+        child:
         //CampoInput("Teste label",nomeController,TextInputType.name),
-        //Text("Funcionalidade ainda não implementada", style: TextStyle(color: estilo.corprimaria,fontSize: 20)),
+        Text("Funcionalidade ainda não implementada", style: TextStyle(color: estilo.corprimaria,fontSize: 20)),
       ),
-    );
+    ));
   }
 }
