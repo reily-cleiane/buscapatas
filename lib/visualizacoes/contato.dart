@@ -20,7 +20,7 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
               title: const Text("Visualizar Perfil",style: TextStyle(color: Colors.white),),
               centerTitle: true,
               foregroundColor: Colors.white,
-              backgroundColor: const Color.fromARGB(255, 126, 107, 107)),
+              backgroundColor: estilo.corprimaria),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[

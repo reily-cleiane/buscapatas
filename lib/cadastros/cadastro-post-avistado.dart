@@ -4,6 +4,7 @@ import 'package:flutter_session/flutter_session.dart';
 import 'dart:convert';
 import 'package:buscapatas/home.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
+import 'package:buscapatas/model/PostModel.dart';
 import 'package:buscapatas/model/RacaModel.dart';
 import 'package:buscapatas/model/CorModel.dart';
 import 'package:http/http.dart' as http;
@@ -31,6 +32,7 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
   String? valorRacaSelecionado;
   double? valorLatitude;
   double? valorLongitude;
+  String _mensagemValidacao = "";
 
   List<dynamic> listaEspecies = [];
   List<dynamic> listaRacas = [];
@@ -52,8 +54,9 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text("Cadastro de Animal Perdido"),
+          title: const Text("Cadastro de Animal Avistado"),
           centerTitle: true,
+          foregroundColor: Colors.white,
           backgroundColor: estilo.corprimaria),
       body: SingleChildScrollView(
         padding: EdgeInsets.fromLTRB(30.0, 50, 30.0, 20.0),
@@ -192,6 +195,11 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
                     outrasinformacoesController,
                     TextInputType.multiline,
                     "Outras características para ajudar na identificação do animal"),
+                const Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 10)),
+                Text(
+                  _mensagemValidacao,
+                  style: TextStyle(color: Color(0xFFe53935)),
+                ),
                 const Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 10)),
                 SizedBox(
                     width: double.infinity,
@@ -251,12 +259,28 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
 
   void _cadastrarPost() {
     // Colocar a validação depois
-    //if (_formKey.currentState!.validate())
-    _addPost();
+    if (_formKey.currentState!.validate() &&
+        valorEspecieSelecionado != null &&
+        listaCoresSelecionadas.isNotEmpty) {
+      _addPost();
+    } else {
+      _mensagemValidacao = "";
+      if (valorEspecieSelecionado == null) {
+        setState(() {
+          _mensagemValidacao += "O campo Espécie deve ser preenchido. ";
+        });
+      }
+      if(listaCoresSelecionadas.isEmpty){
+        setState(() {
+          _mensagemValidacao += "\nO campo Cor deve ser preenchido. ";
+        });
+
+      }
+    }
   }
 
   void _addPost() async {
-    var url = "http://localhost:8080/posts";
+    var url = PostModel.getUrlSalvarPost();
 
     List<CorModel> cores = [];
 
@@ -357,6 +381,11 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
           value: valorSelecionado,
           icon: const Icon(Icons.arrow_drop_down_rounded),
           elevation: 16,
+          validator: (value) {
+            if (label == "Espécie" && valorEspecieSelecionado == null) {
+              return "O campo deve ser preenchido";
+            }
+          },
           decoration: InputDecoration(
             labelText: label,
             labelStyle:

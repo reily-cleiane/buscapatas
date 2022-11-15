@@ -81,5 +81,10 @@ class PostModel {
         "usuario": jsonEncode(usuario),
       };
 
+
+  //Refatorar para o método completo para salvar post ficar aqui, e não só a URL
+  static String getUrlSalvarPost(){
+    return "http://localhost:8080/posts";
+  }
   
 }

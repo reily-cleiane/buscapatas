@@ -31,6 +31,7 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
       appBar: AppBar(
           title: const Text("Cadastro de Usuário"),
           centerTitle: true,
+          foregroundColor: Colors.white,
           backgroundColor: estilo.corprimaria),
       body: SingleChildScrollView(
         padding: EdgeInsets.fromLTRB(30.0, 50, 30.0, 10.0),

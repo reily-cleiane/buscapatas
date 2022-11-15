@@ -4,6 +4,7 @@ import 'package:flutter_session/flutter_session.dart';
 import 'dart:convert';
 import 'package:buscapatas/home.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
+import 'package:buscapatas/model/PostModel.dart';
 import 'package:buscapatas/model/RacaModel.dart';
 import 'package:buscapatas/model/CorModel.dart';
 import 'package:http/http.dart' as http;
@@ -25,6 +26,7 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
   TextEditingController outrasinformacoesController = TextEditingController();
   TextEditingController orientacoesController = TextEditingController();
   TextEditingController recompensaController = TextEditingController();
+  String _mensagemValidacao = "";
 
   bool valorColeiraMarcado = false;
   String valorSexoMarcado = "";
@@ -55,6 +57,7 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
       appBar: AppBar(
           title: const Text("Cadastro de Animal Perdido"),
           centerTitle: true,
+          foregroundColor: Colors.white,
           backgroundColor: estilo.corprimaria),
       body: SingleChildScrollView(
         padding: EdgeInsets.fromLTRB(30.0, 50, 30.0, 20.0),
@@ -171,6 +174,11 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
                     "Temperamento do animal e outras instruções importantes"),
                 campoInput("Recompensa", recompensaController,
                     TextInputType.number, "R\$ 0"),
+                const Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 10)),
+                Text(
+                  _mensagemValidacao,
+                  style: TextStyle(color: Color(0xFFe53935)),
+                ),
                 const Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 10)),
                 SizedBox(
                     width: double.infinity,
@@ -189,6 +197,7 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
                       ),
                     )),
                 const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 10)),
+
               ],
             )),
       ),
@@ -220,8 +229,9 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
       valorRacaSelecionado = null;
     });
 
-    List<dynamic> racasTemp = await RacaModel.getRacasByEspecie(valorEspecieSelecionado);
-    
+    List<dynamic> racasTemp =
+        await RacaModel.getRacasByEspecie(valorEspecieSelecionado);
+
     setState(() {
       listaRacas.clear();
       listaRacas = racasTemp;
@@ -230,12 +240,29 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
 
   void _cadastrarPost() {
     // Colocar a validação depois
-    //if (_formKey.currentState!.validate())
-    _addPost();
+    if (_formKey.currentState!.validate() &&
+        valorEspecieSelecionado != null &&
+        listaCoresSelecionadas.isNotEmpty) {
+      _addPost();
+    } else {
+      _mensagemValidacao = "";
+      if (valorEspecieSelecionado == null) {
+        setState(() {
+          _mensagemValidacao += "O campo Espécie deve ser preenchido. ";
+        });
+      }
+      if(listaCoresSelecionadas.isEmpty){
+        setState(() {
+          _mensagemValidacao += "\nO campo Cor deve ser preenchido. ";
+        });
+
+      }
+    }
   }
 
   void _addPost() async {
-    var url = "http://localhost:8080/posts";
+    //Refatorar para o método ficar em PostModel e não aqui
+    var url = PostModel.getUrlSalvarPost();
 
     List<CorModel> cores = [];
 
@@ -255,9 +282,7 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
             "orientacoesGerais": orientacoesController.text,
           if (recompensaController.text.isNotEmpty)
             "recompensa": int.parse(recompensaController.text),
-          //ajustar quando pegar latitude
           "latitude": valorLatitude,
-          //ajustar quando pegar longitude
           "longitude": valorLongitude,
           if (nomeController.text.isNotEmpty) "nomeAnimal": nomeController.text,
           "coleira": valorColeiraMarcado,
@@ -268,7 +293,6 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
           "coresAnimal": cores,
           if (valorSexoMarcado.isNotEmpty) "sexoAnimal": valorSexoMarcado,
           "tipoPost": "ANIMAL_PERDIDO",
-//ajustar quando pegar usuario
           "usuario": usuarioLogado,
         }));
 
@@ -340,6 +364,11 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
           value: valorSelecionado,
           icon: const Icon(Icons.arrow_drop_down_rounded),
           elevation: 16,
+          validator: (value) {
+            if (label == "Espécie" && valorEspecieSelecionado == null) {
+              return "O campo deve ser preenchido";
+            }
+          },
           decoration: InputDecoration(
             labelText: label,
             labelStyle:
