@@ -1,5 +1,7 @@
 import 'package:buscapatas/components/animal_card.dart';
 import 'package:buscapatas/components/navbar.dart';
+import 'package:buscapatas/visualizacoes/info-notificacao-avistado.dart';
+import 'package:buscapatas/visualizacoes/info-post-avistado.dart';
 import 'package:buscapatas/visualizacoes/info-post-perdido.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
@@ -60,7 +62,7 @@ class _ListaNotificoesAvistadoState extends State<ListaNotificoesAvistado> {
                           ),
                         ),
                         onPressed: () {
-                          //Adicionar
+                          _infoNotificacaoAvistado();
                         },
                         child: AnimalCard(
                             title: listaNotificacoesAvistado[index],
@@ -76,11 +78,12 @@ class _ListaNotificoesAvistadoState extends State<ListaNotificoesAvistado> {
     );
   }
 
-  void _infoPost() {
+  void _infoNotificacaoAvistado() {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => InfoPostPerdido(title: "Animal Avistado")),
+          builder: (context) =>
+              InfoNotificacaoAvistado(title: "Notificação do Post")),
     );
   }
 }
