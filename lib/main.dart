@@ -1,5 +1,6 @@
 //Apagar depois dos testes, está aqui só para facilitar os testes da tela
 import 'package:buscapatas/cadastros/cadastro-post-perdido.dart';
+import 'package:buscapatas/listagens/lista-notificacoes-avistado.dart';
 import 'package:buscapatas/utils/mock_usuario.dart';
 import 'package:buscapatas/visualizacoes/info-post-avistado.dart';
 import 'package:buscapatas/listagens/lista-posts-avistados.dart';
@@ -32,10 +33,11 @@ class MyApp extends StatelessWidget {
       ),
       //home: CadastroPostPerdido(title: "Cadastro de animal"),
       //home: Home(true, title: "Página Inicial"),
-      home: Login(title: "Login - BuscaPatas"),
+      //home: Login(title: "Login - BuscaPatas"),
       //home: NaoImplementado(title: "Não implementado"),
       //home: InfoPostAvistado(title: 'Post avistado'),
       //home: ListaPostsPerdidos(title: "Lista animais avistado"),
+      home: ListaNotificoesAvistado(title: "Lista Notificações avistado"),
     );
   }
 }
