@@ -2,6 +2,8 @@ import 'package:buscapatas/cadastros/cadastro-post-avistado.dart';
 import 'package:buscapatas/cadastros/cadastro-post-perdido.dart';
 import 'package:buscapatas/utils/mock_usuario.dart';
 import 'package:buscapatas/publico/login.dart';
+import 'package:buscapatas/visualizacoes/info-post-avistado.dart';
+import 'package:buscapatas/visualizacoes/info-post-perdido.dart';
 import 'package:flutter_session/flutter_session.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 import 'package:buscapatas/visualizacoes/editar-perfil.dart';
@@ -121,14 +123,20 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10),
-                  const AnimalCard(),
-                  const SizedBox(height: 10),
-                  const AnimalCard(
-                    title: "Animal encontrado",
-                    details:
-                        "Gente, encontrei esse cachorrinho perto da ponte, tava virando uma lata de lixo.",
-                    backgroundColor: estilo.coravistado,
-                  ),
+                  GestureDetector(
+                          child: Column(
+                            children: [
+                              creatCard ("Cachorrinho desaparecido",
+                              "Preciso de ajuda para achar meu cachorrinho!", 
+                              estilo.corperdido,
+                              const InfoPostPerdido(title: "Animal Perdido")),
+                              creatCard ("Cachorro avistado",
+                              "Gente, encontrei esse cachorrinho perto da ponte, tava virando uma lata de lixo.",
+                              estilo.coravistado,
+                              const InfoPostAvistado(title: "Animal Perdido"))
+                            ],
+                          ) 
+                      ),
                   const SizedBox(height: 25),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -221,5 +229,31 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
       MaterialPageRoute(
           builder: (context) => CadastroPostPerdido(title: "Cadastro de Animal Perdido")),
     );
+  }
+
+  Widget creatCard (String texto, String mensagem, Color cor, infoPost) {
+    return Card(
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.zero,
+          minimumSize: Size.zero,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+            side: BorderSide.none,
+          ),
+        ),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => infoPost),
+          );
+        },
+        child: AnimalCard.avistado(
+          title: texto,
+          details: mensagem,
+          backgroundColor: cor,
+        ),
+      ));
   }
 }
