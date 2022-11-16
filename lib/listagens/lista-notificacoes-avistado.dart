@@ -1,5 +1,5 @@
 import 'package:buscapatas/components/animal_card.dart';
-import 'package:buscapatas/components/navbar.dart';
+import 'package:buscapatas/components/navbar-extra.dart';
 import 'package:buscapatas/visualizacoes/info-notificacao-avistado.dart';
 import 'package:buscapatas/visualizacoes/info-post-avistado.dart';
 import 'package:buscapatas/visualizacoes/info-post-perdido.dart';
@@ -42,6 +42,7 @@ class _ListaNotificoesAvistadoState extends State<ListaNotificoesAvistado> {
           centerTitle: true,
           foregroundColor: Colors.white,
           backgroundColor: estilo.corprimaria),
+        bottomNavigationBar: const BuscapatasNavBarExtra(),
       body: Padding(
           padding: const EdgeInsets.fromLTRB(30.0, 10, 30.0, 10.0),
           child: Column(children: <Widget>[
