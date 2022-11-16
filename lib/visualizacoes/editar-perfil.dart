@@ -75,7 +75,7 @@ class _EditarPerfilState extends State<EditarPerfil> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => const EditarNumero(
-                                title: 'Mudar numero')),
+                                title: 'Mudar número')),
                       );
                   })
                 ),

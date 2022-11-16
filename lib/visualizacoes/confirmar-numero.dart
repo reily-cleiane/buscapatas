@@ -63,10 +63,16 @@ class _ConfirmarNumeroState extends State<ConfirmarNumero> {
                                               "Número confirmado com sucesso"),
                                           actions: <Widget>[
                                             ElevatedButton(
+                                                style: const ButtonStyle(
+                                                    backgroundColor:
+                                                        MaterialStatePropertyAll<
+                                                                Color>(
+                                                            estilo
+                                                                .corprimaria)),
                                                 onPressed: () {
                                                   _visualizarPerfil();
                                                 },
-                                                child: const Text("Ok"))
+                                                child: const Text("Ok", style: TextStyle(color: Colors.white, fontSize: 10.0)))
                                           ]);
                                     });
                               }
