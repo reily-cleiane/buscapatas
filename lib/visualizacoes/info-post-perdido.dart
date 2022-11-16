@@ -4,6 +4,7 @@ import 'package:buscapatas/publico/cadastro-usuario.dart';
 import 'package:buscapatas/publico/esqueceu-senha.dart';
 import 'package:buscapatas/visualizacoes/contato.dart';
 import 'package:flutter/material.dart';
+import 'package:buscapatas/listagens/lista-notificacoes-avistado.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
 class InfoPostPerdido extends StatefulWidget {
@@ -157,6 +158,25 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
                                 TextStyle(color: Colors.white, fontSize: 20)),
                       ))),
               Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 30)),
+              Center(
+                  child: SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(estilo.corprimaria),
+                            shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(0)))),
+                        onPressed: () {
+                          _listaNotificacaoAvistado();
+                        },
+                        child: const Text("Ver notificacões",
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 20)),
+                      ))),
+              Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 30)),
             ],
           ),
         ));
@@ -168,6 +188,15 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
       MaterialPageRoute(
           builder: (context) =>
               CadastroNotificacaoAvistado(title: "Cadastro Notificação")),
+    );
+  }
+
+  void _listaNotificacaoAvistado() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => 
+            ListaNotificoesAvistado(title: "Cadastro Notificação")),
     );
   }
 }

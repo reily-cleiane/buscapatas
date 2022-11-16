@@ -40,10 +40,13 @@ class _CadastroNotificacaoAvistadoState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-          title: const Text("Cadastro Notificação"),
+          title: const Text("Cadastro Notificação",
+            style: TextStyle(color: Colors.white)),
           centerTitle: true,
-          backgroundColor: estilo.corprimaria),
+          backgroundColor: estilo.corprimaria,
+          foregroundColor: Colors.white),
       body: SingleChildScrollView(
         padding: EdgeInsets.fromLTRB(30.0, 50, 30.0, 20.0),
         child: Form(
