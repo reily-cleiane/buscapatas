@@ -26,7 +26,7 @@ class EspecieModel {
       };
 
   static Future<List<dynamic>> getEspecies() async {
-    const request = "http://localhost:8080/especies";
+    const request = "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/especies";
 
     http.Response response = await http.get(Uri.parse(request));
 

@@ -95,7 +95,7 @@ class _CadastroNotificacaoAvistadoState
   }
 
   void _addPost() async {
-    var url = "http://localhost:8080/notifications";
+    var url = "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/notifications";
 
     List<CorModel> cores = [];
 
@@ -109,7 +109,7 @@ class _CadastroNotificacaoAvistadoState
           "latitude": valorLatitude,
           "longitude": valorLongitude,
           "usuario": usuarioLogado,
-          "post": {"id": 37}
+          "post": {"id": 27}
         }));
 
     if (response.statusCode == 200) {

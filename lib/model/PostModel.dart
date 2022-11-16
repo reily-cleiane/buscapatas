@@ -84,7 +84,7 @@ class PostModel {
 
   //Refatorar para o método completo para salvar post ficar aqui, e não só a URL
   static String getUrlSalvarPost(){
-    return "http://localhost:8080/posts";
+    return "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/posts";
   }
   
 }

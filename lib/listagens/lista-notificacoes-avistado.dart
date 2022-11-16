@@ -42,7 +42,6 @@ class _ListaNotificoesAvistadoState extends State<ListaNotificoesAvistado> {
           centerTitle: true,
           foregroundColor: Colors.white,
           backgroundColor: estilo.corprimaria),
-      bottomNavigationBar: const BuscapatasNavBar(selectedIndex: 1),
       body: Padding(
           padding: const EdgeInsets.fromLTRB(30.0, 10, 30.0, 10.0),
           child: Column(children: <Widget>[

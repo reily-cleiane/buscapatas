@@ -27,7 +27,7 @@ class CorModel {
 
   
    static Future<Map<String, int>> getCores() async {
-    const request = "http://localhost:8080/cores";
+    const request = "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/cores";
 
     http.Response response = await http.get(Uri.parse(request));
 

@@ -37,16 +37,16 @@ class UsuarioModel {
 
       //Refatorar para o método completo para salvar usuário ficar aqui, e não só a URL
   static String getUrlSalvarUsuario(){
-    return "http://localhost:8080/users";
+    return "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/users";
   }
 //Refatorar para o método completo para pesquisar usuário por email ficar aqui, e não só a URL
   static String getUrlFindByEmail(var email){
-    return "http://localhost:8080/findbyemail?email=${email}";
+    return "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/findbyemail?email=${email}";
   }
 
   //Refatorar para o método completo para verificar usuário cadastrado ficar aqui, e não só a URL
   static String getUrlVerificarUsuarioAutorizado(var email, var senha){
-    return "http://localhost:8080/usuarioautorizado?email=${email}&senha=${senha}";
+    return "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/usuarioautorizado?email=${email}&senha=${senha}";
   }
 
 }

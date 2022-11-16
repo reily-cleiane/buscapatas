@@ -29,7 +29,7 @@ class RacaModel {
   static Future<List<dynamic>> getRacasByEspecie(var valorEspecieSelecionado) async {
 
     var request =
-        "http://localhost:8080/racas/especie/${valorEspecieSelecionado}";
+        "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/racas/especie/${valorEspecieSelecionado}";
 
     http.Response response = await http.get(Uri.parse(request));
 
