@@ -18,6 +18,7 @@ class EditarPerfil extends StatefulWidget {
 
 class _EditarPerfilState extends State<EditarPerfil> {
   User usuario = MockUsuario.getUser();
+  var _passwordVisible = false;
   // TextEditingController nomeController = TextEditingController();
   // TextEditingController emailController = TextEditingController();
   // TextEditingController telefoneController = TextEditingController();
@@ -59,11 +60,52 @@ class _EditarPerfilState extends State<EditarPerfil> {
               tipoCampo: TextInputType.emailAddress,
               enableEdit: true,
               onChanged: (email) => usuario = usuario.copy(email: email)),
-              CampoTexto(label: 'Telefone', 
-              text: usuario.telefone, 
-              tipoCampo: TextInputType.phone,
-              enableEdit: false,
-              onChanged: (telefone) => usuario = usuario.copy(telefone: telefone)),
+              const SizedBox(height: 20),
+              TextFormField(
+                initialValue: usuario.telefone,
+                decoration: InputDecoration(
+                  labelText: "Telefone",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  suffixIcon: IconButton(icon: const Icon(Icons.edit),
+                  color: estilo.corprimaria,
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const EditarNumero(
+                                title: 'Mudar numero')),
+                      );
+                  })
+                ),
+                readOnly: true,
+              ),
+              const SizedBox(height: 20),
+              TextFormField(
+                initialValue: "12345678",
+                decoration: InputDecoration(
+                    labelText: "Senha",
+                    border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    ),
+                    suffixIcon: IconButton(
+                          icon: Icon(
+                            _passwordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                            color: estilo.corprimaria,
+                            ),
+                          onPressed: () {
+                            setState(() {
+                                _passwordVisible = !_passwordVisible;
+                            });
+                          },
+                          ),
+                        ),
+                obscureText: !_passwordVisible,
+                readOnly: true,
+              ),
               const SizedBox(height: 20),
               SizedBox(
                 width: double.infinity,
@@ -86,29 +128,6 @@ class _EditarPerfilState extends State<EditarPerfil> {
                     style: TextStyle(color: Colors.white, fontSize: 20.0),
                   ),
                 )),
-                const SizedBox(height: 20),
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                    style: const ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll<Color>(
-                          estilo.corprimaria),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const EditarNumero(
-                                title: 'Mudar numero')),
-                      );
-                    },
-                    child: const Text(
-                      "Mudar Numero",
-                      style: TextStyle(color: Colors.white, fontSize: 20.0),
-                    ),
-                  )
-                ),
                 const SizedBox(height: 20),
                 SizedBox(
                 width: double.infinity,

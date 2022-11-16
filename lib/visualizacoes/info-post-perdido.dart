@@ -1,3 +1,4 @@
+import 'package:buscapatas/cadastros/cadastro-notificacao-avistado.dart';
 import 'package:buscapatas/perfil_usuario.dart';
 import 'package:buscapatas/publico/cadastro-usuario.dart';
 import 'package:buscapatas/publico/esqueceu-senha.dart';
@@ -147,17 +148,26 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
                                 MaterialStateProperty.all(estilo.corprimaria),
                             shape: MaterialStateProperty.all(
                                 RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(0)))),
+                                    borderRadius: BorderRadius.circular(0)))),
                         onPressed: () {
-                          //Faça algo
+                          _infoNotificacaoAvistado();
                         },
                         child: const Text("Registrar avistamento",
-                            style: TextStyle(color: Colors.white, fontSize: 20)),
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 20)),
                       ))),
               Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 30)),
             ],
           ),
         ));
+  }
+
+  void _infoNotificacaoAvistado() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              CadastroNotificacaoAvistado(title: "Cadastro Notificação")),
+    );
   }
 }
