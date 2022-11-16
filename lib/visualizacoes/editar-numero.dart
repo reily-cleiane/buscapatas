@@ -20,8 +20,9 @@ class _EditarNumeroState extends State<EditarNumero> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: const Text("Trocar numero de celular"),
+            title: const Text("Trocar número de celular"),
             centerTitle: true,
+            foregroundColor: Colors.white,
             backgroundColor: estilo.corprimaria),
         body: SingleChildScrollView(
             padding: EdgeInsets.fromLTRB(30.0, 50, 30.0, 10.0),
@@ -35,7 +36,7 @@ class _EditarNumeroState extends State<EditarNumero> {
                         maxLength: 11,
                         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                         decoration: InputDecoration(
-                          labelText: "Numero de celular",
+                          labelText: "Número de celular",
                           border: const OutlineInputBorder(),
                         ),
                         controller: numeroController,
@@ -59,7 +60,7 @@ class _EditarNumeroState extends State<EditarNumero> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ConfirmarNumero(title: "Confirmar numero de celular", numero: num))
+        builder: (context) => ConfirmarNumero(title: "Confirmar número de celular", numero: num))
       );
   }
 }

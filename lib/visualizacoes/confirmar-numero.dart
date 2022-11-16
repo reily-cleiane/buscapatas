@@ -24,8 +24,9 @@ class _ConfirmarNumeroState extends State<ConfirmarNumero> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: const Text("Confirmar numero de celular"),
+            title: const Text("Confirmar número de celular"),
             centerTitle: true,
+            foregroundColor: Colors.white,
             backgroundColor: estilo.corprimaria),
         body: SingleChildScrollView(
             padding: EdgeInsets.fromLTRB(20.0, 50, 40.0, 10.0),
@@ -53,7 +54,6 @@ class _ConfirmarNumeroState extends State<ConfirmarNumero> {
                             keyboardType: TextInputType.number,
                             onCompleted: (texto) {
                               if (numeroController.text == "1234") {
-                                debugPrint("Oi, to aqui");
                                 showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
