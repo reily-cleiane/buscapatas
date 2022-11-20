@@ -143,7 +143,7 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
                               onPressed: () {
                                 _infoPost(postAtual);
                               },
-                              child: AnimalCard.novo(post: postAtual),
+                              child: AnimalCard(post: postAtual),
                             ),
                           ));
                         }),

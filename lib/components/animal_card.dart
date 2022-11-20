@@ -5,30 +5,8 @@ import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 import 'package:buscapatas/Model/PostModel.dart';
 
 class AnimalCard extends StatefulWidget {
-  AnimalCard({title, details, timestamp, distance, backgroundColor, image}) {
-    super.key;
-    this.title = "Cachorrinho desaparecido";
-    this.details =
-        "Gente por favor me ajudem! Meu cachorrinho viu o portão de casa aberto e fugiu";
-    this.timestamp = "Postado há 3h";
-    this.distance = 10;
-    this.backgroundColor = estilo.corperdido;
-    this.image = 'imagens/animal.jpg';
-  }
 
-  AnimalCard.antigoAvistado(
-      {title, details, timestamp, distance, backgroundColor, image}) {
-    super.key;
-    this.title = "Cachorrinho desaparecido";
-    this.details =
-        "Gente por favor me ajudem! Meu cachorrinho viu o portão de casa aberto e fugiu";
-    this.timestamp = "Postado há 3h";
-    this.distance = 10;
-    this.backgroundColor = estilo.coravistado;
-    this.image = 'imagens/animal.jpg';
-  }
-
-  AnimalCard.novo({post}){
+  AnimalCard({post}){
     super.key;
     if(post?.tipoPost == "ANIMAL_PERDIDO"){
       this.tipoPost = "perdido";
@@ -49,8 +27,8 @@ class AnimalCard extends StatefulWidget {
 
   }
 
-  AnimalCard.perdido({post}) : this.novo( post:post);
-  AnimalCard.avistado({post}) : this.novo( post:post);
+  AnimalCard.perdido({post}) : this( post:post);
+  AnimalCard.avistado({post}) : this( post:post);
 
   AnimalCard.notificacao({notificacao}){
     super.key;

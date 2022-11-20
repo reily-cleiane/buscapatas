@@ -65,7 +65,7 @@ class _ListaPostsAvistados extends State<ListaPostsAvistados> {
                         onPressed: () {
                           _infoPostAvistado();
                         },
-                        child: AnimalCard.avistado(post:postAtual
+                        child: AnimalCard(post:postAtual
                         ),
                       ),
                     ));

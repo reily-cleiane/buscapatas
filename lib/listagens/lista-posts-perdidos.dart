@@ -65,7 +65,7 @@ class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
                           _infoPostPerdido();
                         },
 
-                        child: AnimalCard.perdido(post:postAtual
+                        child: AnimalCard(post:postAtual
 
                   ),
                       ),

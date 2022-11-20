@@ -158,7 +158,7 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
                               onPressed: () {
                                 _infoPost(postAtual);
                               },
-                              child: AnimalCard.novo(post: postAtual),
+                              child: AnimalCard(post: postAtual),
                             ),
                           ));
                         }),
