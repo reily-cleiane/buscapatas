@@ -95,7 +95,7 @@ class _CadastroNotificacaoAvistadoState
   }
 
   void _addPost() async {
-    var url = "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/notifications";
+    var url = "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/notificacoes";
 
     List<CorModel> cores = [];
 

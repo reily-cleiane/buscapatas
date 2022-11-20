@@ -3,6 +3,7 @@ import 'package:buscapatas/components/navbar-extra.dart';
 import 'package:buscapatas/visualizacoes/info-notificacao-avistado.dart';
 import 'package:buscapatas/visualizacoes/info-post-avistado.dart';
 import 'package:buscapatas/visualizacoes/info-post-perdido.dart';
+import 'package:buscapatas/model/NotificacaoAvistamentoModel.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
@@ -19,20 +20,16 @@ class ListaNotificoesAvistado extends StatefulWidget {
 class _ListaNotificoesAvistadoState extends State<ListaNotificoesAvistado> {
   List<String> listaNotificacoesAvistado = [];
   TextEditingController buscaController = TextEditingController();
+  List<NotificacaoAvistamentoModel> notificacoes = [];
 
   @override
   void initState() {
+    _getNotificacoesByPost();
     //Para pegar o valor da sessao
   }
 
   @override
   Widget build(BuildContext context) {
-    listaNotificacoesAvistado.add("Pessoa 1");
-    listaNotificacoesAvistado.add("Pessoa 2");
-    listaNotificacoesAvistado.add("Pessoa 3");
-    listaNotificacoesAvistado.add("Pessoa 4");
-    listaNotificacoesAvistado.add("Pessoa 5");
-    listaNotificacoesAvistado.add("Pessoa 6");
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -48,8 +45,12 @@ class _ListaNotificoesAvistadoState extends State<ListaNotificoesAvistado> {
           child: Column(children: <Widget>[
             Expanded(
               child: ListView.builder(
-                  itemCount: listaNotificacoesAvistado.length,
+                  itemCount: notificacoes.length,
                   itemBuilder: (context, index) {
+                    NotificacaoAvistamentoModel? notificacaoAtual = null ;
+                    if(notificacoes[index]!=null){
+                      notificacaoAtual = notificacoes[index];                         
+                    }
                     return GestureDetector(
                         child: Card(
                       child: ElevatedButton(
@@ -64,18 +65,22 @@ class _ListaNotificoesAvistadoState extends State<ListaNotificoesAvistado> {
                         onPressed: () {
                           _infoNotificacaoAvistado();
                         },
-                        child: AnimalCard(
-                            title: listaNotificacoesAvistado[index],
-                            details:
-                                "Ele foi encontrado perto do supershow do Amarante.",
-                            backgroundColor: estilo.coravistado,
-                            image: "imagens/homem.jpg"),
+                        child: AnimalCard.notificacao(notificacao:notificacaoAtual
                       ),
-                    ));
+                    )));
                   }),
             ),
           ])),
     );
+  }
+
+  void _getNotificacoesByPost() async{
+    //AJUSTAR AQUI PARA PASSAR O ID POST DINÂMICO
+    List<NotificacaoAvistamentoModel> listaNotificacoes = await NotificacaoAvistamentoModel.getNotificacoesByPost(4);
+    setState(() {
+      notificacoes = listaNotificacoes;
+    });
+
   }
 
   void _infoNotificacaoAvistado() {

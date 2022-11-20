@@ -5,7 +5,7 @@ import 'package:buscapatas/model/CorModel.dart';
 import 'package:buscapatas/model/EspecieModel.dart';
 import 'package:buscapatas/model/RacaModel.dart';
 
-PostModel usuairoModelJson(String str) => PostModel.fromJson(json.decode(str));
+PostModel postModelJson(String str) => PostModel.fromJson(json.decode(str));
 
 String postModelToJson(PostModel data) => json.encode(data.toJson());
 
@@ -92,6 +92,10 @@ class PostModel {
     return "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/posts";
   }
 
+  EspecieModel? getEspecie(){
+    return this.especieAnimal;
+
+  }
   static Future<List<PostModel>> getPostsAnimaisPerdidos() async {
     const request = "http://localhost:8080/posts/perdidos";
 
@@ -150,8 +154,8 @@ class PostModel {
     }
   }
 
-    static Future<List<PostModel>> getPostsByUsuario(int? idUsuario) async {
-      //AJUSTAR ISSO AQUI PARA PEGAR DO USUARIO CERTO
+  static Future<List<PostModel>> getPostsByUsuario(int? idUsuario) async {
+    //AJUSTAR ISSO AQUI PARA PEGAR DO USUARIO CERTO
     const request = "http://localhost:8080/posts/usuario/1";
     //const request = "http://localhost:8080/posts/usuario/${idUsuario}";
 
@@ -170,4 +174,5 @@ class PostModel {
       throw Exception('Falha no servidor ao carregar posts');
     }
   }
+
 }

@@ -1,28 +1,42 @@
-
 import 'package:buscapatas/components/animal_card.dart';
 import 'package:buscapatas/visualizacoes/info-post-avistado.dart';
 import 'package:buscapatas/visualizacoes/info-post-perdido.dart';
 import 'package:flutter/material.dart';
+import 'package:buscapatas/model/PostModel.dart';
+import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
 class PerfilUsuario extends StatefulWidget {
   const PerfilUsuario({super.key, required this.title});
 
   final String title;
-  
+
   @override
   State<PerfilUsuario> createState() => _PerfilUsuarioState();
 }
 
 class _PerfilUsuarioState extends State<PerfilUsuario> {
+  List<PostModel> postsUsuario = [];
+  UsuarioModel usuarioLogado = UsuarioModel();
+
+   @override
+  void initState() {
+    getUsuarioLogado();
+    getPostsByUsuario();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-              title: const Text("Visualizar Perfil",style: TextStyle(color: Colors.white),),
-              centerTitle: true,
-              foregroundColor: Colors.white,
-              backgroundColor: estilo.corprimaria),
+          title: const Text(
+            "Visualizar Perfil",
+            style: TextStyle(color: Colors.white),
+          ),
+          centerTitle: true,
+          foregroundColor: Colors.white,
+          backgroundColor: estilo.corprimaria),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -43,7 +57,8 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
                       flex: 7,
                       child: Text(
                         "Norville Rogers",
-                        style: TextStyle(fontSize: 24, color: estilo.corprimaria),
+                        style:
+                            TextStyle(fontSize: 24, color: estilo.corprimaria),
                       ),
                     ),
                     SizedBox(width: 10),
@@ -69,13 +84,21 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
                       Text('Informações de contato',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: estilo.corprimaria)),
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: estilo.corprimaria)),
                       SizedBox(height: 5),
-                      Text('Número de celular: ', style: TextStyle(fontSize: 16),),
+                      Text(
+                        'Número de celular: ',
+                        style: TextStyle(fontSize: 16),
+                      ),
                       SizedBox(width: 5),
-                      Text('(84)989989236',style: TextStyle(fontSize: 16)),
-                      SizedBox(height: 10,),
-                      Text('Email: ',style: TextStyle(fontSize: 16)),
+                      Text('(84)989989236', style: TextStyle(fontSize: 16)),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text('Email: ', style: TextStyle(fontSize: 16)),
                       Text.rich(TextSpan(
                         text: "salsicha@gmail.com",
                         style: TextStyle(
@@ -90,58 +113,90 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
                     children: [
                       const Text(
                         "Atividade recente",
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: estilo.corprimaria),
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: estilo.corprimaria),
                       ),
                       const SizedBox(height: 10),
-                      GestureDetector(
-                          child: Column(
-                            children: [
-                              creatCard ("Cachorrinho desaparecido",
-                              "Preciso de ajuda para achar meu cachorrinho!", 
-                              estilo.corperdido,
-                              const InfoPostPerdido(title: "Animal Avistado")),
-                              creatCard ("Cachorro avistado",
-                              "Gente, encontrei esse cachorrinho perto da ponte, tava virando uma lata de lixo.",
-                              estilo.coravistado,
-                              const InfoPostAvistado(title: "Animal Perdido"))
-                            ],
-                          ) 
-                      ),
+                    Container(
+                    height: 300,
+                    child: ListView.builder(
+                        itemCount: postsUsuario.length,
+                        itemBuilder: (context, index) {
+                          PostModel? postAtual = null;
+                          if (postsUsuario[index] != null) {
+                            postAtual = postsUsuario[index];
+                          }
+
+                          return GestureDetector(
+                              child: Card(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.zero,
+                                minimumSize: Size.zero,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  side: BorderSide.none,
+                                ),
+                              ),
+                              onPressed: () {
+                                _infoPost(postAtual);
+                              },
+                              child: AnimalCard.novo(post: postAtual),
+                            ),
+                          ));
+                        }),
+                  ),
                     ],
                   )
-                  
                 ],
               ),
-              
             ),
           ],
         ),
       ),
     );
   }
-  Widget creatCard (String texto, String mensagem, Color cor, infoPost) {
-    return Card(
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.zero,
-          minimumSize: Size.zero,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-            side: BorderSide.none,
-          ),
-        ),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => infoPost),
-          );
-        },
-        child: AnimalCard.antigoAvistado(
-          title: texto,
-          details: mensagem,
-          backgroundColor: cor,
-        ),
-      ));
+
+  void getUsuarioLogado() async {
+    //ESTÁ AQUI SÓ PARA TESTE QUANDO NÃO FIZER LOGIN ANTES, APAGAR
+    usuarioLogado = new UsuarioModel(
+        id: 1,
+        nome: "cleiane",
+        email: "cleiane@gmail.com",
+        senha: "abc",
+        telefone: "8498778787");
+
+    /*
+
+    usuarioLogado = UsuarioModel.fromJson(
+        await (FlutterSession().get("sessao_usuarioLogado")));
+        */
   }
+
+  void getPostsByUsuario() async {
+    List<PostModel> posts = await PostModel.getPostsByUsuario(usuarioLogado.id);
+    setState(() {
+      postsUsuario = posts;
+    });
+  }
+
+   void _infoPost(post) {
+    if (post.tipoPost == "ANIMAL_PERDIDO") {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => InfoPostPerdido(title: "Animal Perdido"),
+          ));
+    } else {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => InfoPostAvistado(title: "Animal Avistado"),
+          ));
+    }
+  }
+
+
 }

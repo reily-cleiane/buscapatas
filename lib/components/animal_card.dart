@@ -51,7 +51,22 @@ class AnimalCard extends StatefulWidget {
 
   AnimalCard.perdido({post}) : this.novo( post:post);
   AnimalCard.avistado({post}) : this.novo( post:post);
-    
+
+  AnimalCard.notificacao({notificacao}){
+    super.key;
+    tipoPost = "notificado";
+    this.backgroundColor = estilo.coravistado;
+
+    this.especie = "Seu ${notificacao.post.getEspecie().getNome().toLowerCase()} foi";
+    this.dataHora = notificacao?.dataHora;
+    this.latitude = notificacao?.latitude;
+    this.longitude = notificacao?.longitude;
+    this.outrasInformacoes = notificacao?.mensagem;
+
+    this.image = 'imagens/animal.jpg';
+
+  }
+
   String? title;
   String? especie;
   DateTime? dataHora;
