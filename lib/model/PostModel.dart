@@ -149,4 +149,25 @@ class PostModel {
       throw Exception('Falha no servidor ao carregar posts');
     }
   }
+
+    static Future<List<PostModel>> getPostsByUsuario(int? idUsuario) async {
+      //AJUSTAR ISSO AQUI PARA PEGAR DO USUARIO CERTO
+    const request = "http://localhost:8080/posts/usuario/1";
+    //const request = "http://localhost:8080/posts/usuario/${idUsuario}";
+
+    http.Response response = await http.get(Uri.parse(request));
+
+    if (response.statusCode == 200) {
+      var resposta = json.decode(utf8.decode(response.bodyBytes));
+      List<PostModel> posts = [];
+
+      for (var post in resposta) {
+        posts.add(PostModel?.fromJson(post));
+      }
+
+      return posts;
+    } else {
+      throw Exception('Falha no servidor ao carregar posts');
+    }
+  }
 }

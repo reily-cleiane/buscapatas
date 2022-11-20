@@ -190,7 +190,7 @@ class _HomeState extends State<Home> {
                               onPressed: () {
                                 _infoPostPerdido();
                               },
-                              child: AnimalCard.perdido(post: postAtual),
+                              child: AnimalCard.novo(post: postAtual),
                             ),
                           ));
                         }),

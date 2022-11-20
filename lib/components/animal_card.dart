@@ -28,7 +28,7 @@ class AnimalCard extends StatefulWidget {
     this.image = 'imagens/animal.jpg';
   }
 
-  AnimalCard.novo(tipoPost, cor, {post}){
+  AnimalCard.novo({post}){
     super.key;
     if(post?.tipoPost == "ANIMAL_PERDIDO"){
       this.tipoPost = "perdido";
@@ -36,8 +36,8 @@ class AnimalCard extends StatefulWidget {
     }else if(post?.tipoPost == "ANIMAL_AVISTADO"){
       this.tipoPost = "avistado";
       this.backgroundColor = estilo.coravistado;
-    }
 
+    }
     this.especie = post?.especieAnimal?.getNome();
     this.dataHora = post?.dataHora;
     this.latitude = post?.latitude;
@@ -49,8 +49,8 @@ class AnimalCard extends StatefulWidget {
 
   }
 
-  AnimalCard.perdido({post}) : this.novo("perdido", estilo.corperdido, post:post);
-  AnimalCard.avistado({post}) : this.novo("avistado", estilo.coravistado, post:post);
+  AnimalCard.perdido({post}) : this.novo( post:post);
+  AnimalCard.avistado({post}) : this.novo( post:post);
     
   String? title;
   String? especie;

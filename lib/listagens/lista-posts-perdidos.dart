@@ -21,7 +21,7 @@ class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
 
   @override
   void initState() {
-    getPostsAnimaisPerdidos();
+    _getPostsAnimaisPerdidos();
   }
 
   @override
@@ -84,7 +84,7 @@ class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
     );
   }
 
-  void getPostsAnimaisPerdidos() async {
+  void _getPostsAnimaisPerdidos() async {
     List<PostModel> posts = await PostModel.getPostsAnimaisPerdidos();
     setState(() {
       postsPerdidos = posts;

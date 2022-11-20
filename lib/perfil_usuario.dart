@@ -2,6 +2,8 @@ import 'package:buscapatas/cadastros/cadastro-post-avistado.dart';
 import 'package:buscapatas/cadastros/cadastro-post-perdido.dart';
 import 'package:buscapatas/utils/mock_usuario.dart';
 import 'package:buscapatas/publico/login.dart';
+import 'package:buscapatas/model/PostModel.dart';
+import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:buscapatas/visualizacoes/info-post-avistado.dart';
 import 'package:buscapatas/visualizacoes/info-post-perdido.dart';
 import 'package:flutter_session/flutter_session.dart';
@@ -21,6 +23,15 @@ class VisualizarPerfil extends StatefulWidget {
 }
 
 class _VisualizarPerfilState extends State<VisualizarPerfil> {
+  List<PostModel> postsUsuario = [];
+  UsuarioModel usuarioLogado = UsuarioModel();
+
+  @override
+  void initState() {
+    getUsuarioLogado();
+    getPostsByUsuario();
+  }
+
   @override
   Widget build(BuildContext context) {
     final usuario = MockUsuario.getUser();
@@ -53,10 +64,10 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
                     ),
                     const SizedBox(width: 10),
                     ClipRRect(
-                          borderRadius: BorderRadius.circular(20.0),
-                          child: CircleAvatar(
-                            radius: 50,
-                            backgroundImage: AssetImage(usuario.imagem),
+                      borderRadius: BorderRadius.circular(20.0),
+                      child: CircleAvatar(
+                        radius: 50,
+                        backgroundImage: AssetImage(usuario.imagem),
                       ),
                     ),
                   ],
@@ -96,7 +107,7 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
                       Expanded(
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:estilo.corperdido,
+                            backgroundColor: estilo.corperdido,
                             side: const BorderSide(
                               color: Color.fromARGB(255, 238, 212, 176),
                             ),
@@ -123,25 +134,44 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10),
-                  GestureDetector(
-                          child: Column(
-                            children: [
-                              creatCard ("Cachorrinho desaparecido",
-                              "Preciso de ajuda para achar meu cachorrinho!", 
-                              estilo.corperdido,
-                              const InfoPostPerdido(title: "Animal Perdido")),
-                              creatCard ("Cachorro avistado",
-                              "Gente, encontrei esse cachorrinho perto da ponte, tava virando uma lata de lixo.",
-                              estilo.coravistado,
-                              const InfoPostAvistado(title: "Animal Perdido"))
-                            ],
-                          ) 
-                      ),
+                  Container(
+                    height: 300,
+                    child: ListView.builder(
+                        itemCount: postsUsuario.length,
+                        itemBuilder: (context, index) {
+                          PostModel? postAtual = null;
+                          if (postsUsuario[index] != null) {
+                            postAtual = postsUsuario[index];
+                          }
+
+                          return GestureDetector(
+                              child: Card(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.zero,
+                                minimumSize: Size.zero,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  side: BorderSide.none,
+                                ),
+                              ),
+                              onPressed: () {
+                                _infoPost(postAtual);
+                              },
+                              child: AnimalCard.novo(post: postAtual),
+                            ),
+                          ));
+                        }),
+                  ),
                   const SizedBox(height: 25),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      const Icon(Icons.create_rounded, size: 18, color: estilo.corprimaria,),
+                      const Icon(
+                        Icons.create_rounded,
+                        size: 18,
+                        color: estilo.corprimaria,
+                      ),
                       Padding(
                         padding: EdgeInsets.fromLTRB(10, 0, 0, 0.0),
                         child: InkWell(
@@ -173,17 +203,21 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      const Icon(Icons.logout, size: 18, color: Colors.red,),
+                      const Icon(
+                        Icons.logout,
+                        size: 18,
+                        color: Colors.red,
+                      ),
                       Padding(
                         padding: EdgeInsets.fromLTRB(10, 0, 0, 0.0),
                         child: InkWell(
                             onTap: () {
                               _deslogar();
                               Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const Login(title: 'Login - BuscaPatas')),
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const Login(
+                                        title: 'Login - BuscaPatas')),
                               );
                             },
                             child: Ink(
@@ -210,8 +244,47 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
     );
   }
 
-  void _deslogar() async{
+  void _deslogar() async {
     await FlutterSession().set("sessao_usuarioLogado", null);
+  }
+
+  void _infoPost(post) {
+    if (post.tipoPost == "ANIMAL_PERDIDO") {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => InfoPostPerdido(title: "Animal Perdido"),
+          ));
+    } else {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => InfoPostAvistado(title: "Animal Avistado"),
+          ));
+    }
+  }
+
+  void getUsuarioLogado() async {
+    //ESTÁ AQUI SÓ PARA TESTE QUANDO NÃO FIZER LOGIN ANTES, APAGAR
+    usuarioLogado = new UsuarioModel(
+        id: 1,
+        nome: "cleiane",
+        email: "cleiane@gmail.com",
+        senha: "abc",
+        telefone: "8498778787");
+
+    /*
+
+    usuarioLogado = UsuarioModel.fromJson(
+        await (FlutterSession().get("sessao_usuarioLogado")));
+        */
+  }
+
+  void getPostsByUsuario() async {
+    List<PostModel> posts = await PostModel.getPostsByUsuario(usuarioLogado.id);
+    setState(() {
+      postsUsuario = posts;
+    });
   }
 
   void _cadastroPostAnimalAvistado() {
@@ -227,33 +300,9 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => CadastroPostPerdido(title: "Cadastro de Animal Perdido")),
+          builder: (context) =>
+              CadastroPostPerdido(title: "Cadastro de Animal Perdido")),
     );
   }
 
-  Widget creatCard (String texto, String mensagem, Color cor, infoPost) {
-    return Card(
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.zero,
-          minimumSize: Size.zero,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-            side: BorderSide.none,
-          ),
-        ),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => infoPost),
-          );
-        },
-        child: AnimalCard.antigoAvistado(
-          title: texto,
-          details: mensagem,
-          backgroundColor: cor,
-        ),
-      ));
-  }
 }
