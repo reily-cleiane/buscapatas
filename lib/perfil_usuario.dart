@@ -249,7 +249,7 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
                 builder: (context) => infoPost),
           );
         },
-        child: AnimalCard.avistado(
+        child: AnimalCard.antigoAvistado(
           title: texto,
           details: mensagem,
           backgroundColor: cor,

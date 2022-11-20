@@ -15,9 +15,14 @@ class RacaModel {
   RacaModel.id(this.id);
 
   factory RacaModel.fromJson(Map<String, dynamic> json) {
-    return RacaModel(
+    if(json==null){
+      return RacaModel();
+    } else{
+      return RacaModel(
         id: json["id"],
         nome: json["nome"]);
+    }
+    
   }
 
   Map<String, dynamic> toJson() => {

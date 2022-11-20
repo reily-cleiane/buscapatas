@@ -2,6 +2,8 @@ import 'package:buscapatas/components/animal_card.dart';
 import 'package:buscapatas/components/navbar.dart';
 import 'package:buscapatas/visualizacoes/info-post-perdido.dart';
 import 'package:flutter/material.dart';
+import 'package:buscapatas/model/PostModel.dart';
+
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
 class ListaPostsPerdidos extends StatefulWidget {
@@ -15,10 +17,14 @@ class ListaPostsPerdidos extends StatefulWidget {
 
 class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
   List<String> listaPostAvistados = [];
+  List<PostModel> postsPerdidos = [];
+  Map<int, PostModel> mapateste= {};
   TextEditingController buscaController = TextEditingController();
 
   @override
   void initState() {
+    getPostsAnimaisPerdidos();
+    PostModel teste;
     //Para pegar o valor da sessao
   }
 
@@ -47,8 +53,13 @@ class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
                 "Informe sua Busca"),
             Expanded(
               child: ListView.builder(
-                  itemCount: listaPostAvistados.length,
+                  itemCount: postsPerdidos.length,
                   itemBuilder: (context, index) {
+                    PostModel? postAtual = null ;
+                    if(postsPerdidos[index]!=null){
+                      postAtual = postsPerdidos[index];                         
+                    }
+
                     return GestureDetector(
                         child: Card(
                       child: ElevatedButton(
@@ -63,12 +74,10 @@ class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
                         onPressed: () {
                           _infoPostPerdido();
                         },
-                        child: AnimalCard(
-                          title: listaPostAvistados[index],
-                          details:
-                              "Gente, encontrei esse cachorrinho perto da ponte, tava virando uma lata de lixo.",
-                          backgroundColor: estilo.corperdido,
-                        ),
+
+                        child: AnimalCard.perdido(post:postAtual
+
+                  ),
                       ),
                     ));
                   }),
@@ -81,9 +90,19 @@ class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) =>
-              InfoPostPerdido(title: "Animal Avistado")),
+          builder: (context) => InfoPostPerdido(title: "Animal Avistado")),
     );
+  }
+
+  void getPostsAnimaisPerdidos() async {
+    List<PostModel> posts = await PostModel.getPostsAnimaisPerdidos();
+    setState(() {
+      postsPerdidos = posts;
+      for(var post in posts){
+        mapateste[post.id!] = post;
+      }
+      
+    });
   }
 
   Widget campoInput(String label, TextEditingController controller,

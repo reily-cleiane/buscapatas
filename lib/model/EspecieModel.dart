@@ -14,6 +14,10 @@ class EspecieModel {
 
   EspecieModel.id(this.id);
 
+  String? getNome(){
+    return this.nome;
+  }
+
   factory EspecieModel.fromJson(Map<String, dynamic> json) {
     return EspecieModel(
         id: json["id"],

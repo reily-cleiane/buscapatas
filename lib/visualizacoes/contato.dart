@@ -137,7 +137,7 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
                 builder: (context) => infoPost),
           );
         },
-        child: AnimalCard.avistado(
+        child: AnimalCard.antigoAvistado(
           title: texto,
           details: mensagem,
           backgroundColor: cor,
