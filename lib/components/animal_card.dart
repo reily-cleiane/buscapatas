@@ -30,8 +30,14 @@ class AnimalCard extends StatefulWidget {
 
   AnimalCard.novo(tipoPost, cor, {post}){
     super.key;
-    this.tipoPost = tipoPost;
-    this.backgroundColor = cor;
+    if(post?.tipoPost == "ANIMAL_PERDIDO"){
+      this.tipoPost = "perdido";
+      this.backgroundColor = estilo.corperdido;
+    }else if(post?.tipoPost == "ANIMAL_AVISTADO"){
+      this.tipoPost = "avistado";
+      this.backgroundColor = estilo.coravistado;
+    }
+
     this.especie = post?.especieAnimal?.getNome();
     this.dataHora = post?.dataHora;
     this.latitude = post?.latitude;

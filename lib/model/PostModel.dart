@@ -62,7 +62,8 @@ class PostModel {
         coleira: json["coleira"],
         especieAnimal: EspecieModel.fromJson(json["especieAnimal"]),
         racaAnimal: RacaModel.fromJson(json["racaAnimal"]),
-        coresAnimal: List<CorModel>.from(json["coresAnimal"]!.map((x) => CorModel.fromJson(x))),
+        coresAnimal: List<CorModel>.from(
+            json["coresAnimal"]!.map((x) => CorModel.fromJson(x))),
         sexoAnimal: json["sexo"],
         tipoPost: json["tipoPost"],
         usuario: UsuarioModel.fromJson(json["usuario"]));
@@ -86,13 +87,12 @@ class PostModel {
         "usuario": jsonEncode(usuario),
       };
 
-
   //Refatorar para o método completo para salvar post ficar aqui, e não só a URL
-  static String getUrlSalvarPost(){
+  static String getUrlSalvarPost() {
     return "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/posts";
   }
 
-  static Future<List<PostModel>> getPostsAnimaisPerdidos() async{
+  static Future<List<PostModel>> getPostsAnimaisPerdidos() async {
     const request = "http://localhost:8080/posts/perdidos";
 
     http.Response response = await http.get(Uri.parse(request));
@@ -111,7 +111,7 @@ class PostModel {
     }
   }
 
-    static Future<List<PostModel>> getPostsAnimaisAvistados() async{
+  static Future<List<PostModel>> getPostsAnimaisAvistados() async {
     const request = "http://localhost:8080/posts/avistados";
 
     http.Response response = await http.get(Uri.parse(request));
@@ -129,5 +129,24 @@ class PostModel {
       throw Exception('Falha no servidor ao carregar posts');
     }
   }
-  
+
+  static Future<List<PostModel>> getPostsAnimaisProximos() async {
+    //AJUSTAR ISSO AQUI PARA SER POSTS PRÓXIMOS E NÃO TODOS OS POSTS
+    const request = "http://localhost:8080/posts";
+
+    http.Response response = await http.get(Uri.parse(request));
+
+    if (response.statusCode == 200) {
+      var resposta = json.decode(utf8.decode(response.bodyBytes));
+      List<PostModel> posts = [];
+
+      for (var post in resposta) {
+        posts.add(PostModel?.fromJson(post));
+      }
+
+      return posts;
+    } else {
+      throw Exception('Falha no servidor ao carregar posts');
+    }
+  }
 }

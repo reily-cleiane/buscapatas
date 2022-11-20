@@ -3,6 +3,7 @@ import 'package:buscapatas/components/animal_card.dart';
 import 'package:buscapatas/visualizacoes/info-post-avistado.dart';
 import 'package:buscapatas/visualizacoes/info-post-perdido.dart';
 import 'package:buscapatas/listagens/lista-posts-avistados.dart';
+import 'package:buscapatas/model/PostModel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -28,6 +29,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  List<PostModel> postsProximos = [];
   late GoogleMapController mapController;
   double? valorLatitude = 45.521563;
   double? valorLongitude = -122.677433;
@@ -41,6 +43,7 @@ class _HomeState extends State<Home> {
   void initState() {
     getPosicao();
     _center = LatLng(valorLatitude, valorLongitude);
+    getPostsAnimaisProximos();
     //Para pegar o valor da sessao
   }
 
@@ -161,69 +164,37 @@ class _HomeState extends State<Home> {
                     padding: const EdgeInsets.fromLTRB(10, 10.0, 10, 10.0),
                   ),
                   Container(
-                      height: 500,
-                      child: ListView(
-                        shrinkWrap: true,
-                        children: <Widget>[
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  padding: EdgeInsets.zero,
-                                  minimumSize: Size.zero,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                      side: BorderSide.none)),
-                              onPressed: () {
-                                _infoPostPerdido();
-                              },
-                              child: AnimalCard()),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                          ),
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  padding: EdgeInsets.zero,
-                                  minimumSize: Size.zero,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                      side: BorderSide.none)),
-                              onPressed: () {
-                                _infoPostPerdido();
-                              },
-                              child: AnimalCard()),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                          ),
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  padding: EdgeInsets.zero,
-                                  minimumSize: Size.zero,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                      side: BorderSide.none)),
-                              onPressed: () {
-                                _infoPostAvistado();
-                              },
-                              child: AnimalCard.avistado()),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                          ),
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  padding: EdgeInsets.zero,
-                                  minimumSize: Size.zero,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                      side: BorderSide.none)),
-                              onPressed: () {
-                                _infoPostAvistado();
-                              },
-                              child: AnimalCard.avistado()),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                          ),
+                    height: 500,
+                    child: ListView.builder(
+                        //shrinkWrap: true,
+                        itemCount: postsProximos.length,
+                        itemBuilder: (context, index) {
+                          PostModel? postAtual = null;
+                          if (postsProximos[index] != null) {
+                            postAtual = postsProximos[index];
+                          }
 
-                        ],
-                      ))
+                          //precisa desse GestureDetector e desse card?
+                          //não dava certo só colocar direto o elevatedButton?
+                          return GestureDetector(
+                              child: Card(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.zero,
+                                minimumSize: Size.zero,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  side: BorderSide.none,
+                                ),
+                              ),
+                              onPressed: () {
+                                _infoPostPerdido();
+                              },
+                              child: AnimalCard.perdido(post: postAtual),
+                            ),
+                          ));
+                        }),
+                  )
                 ],
               )));
     }
@@ -261,6 +232,13 @@ class _HomeState extends State<Home> {
       MaterialPageRoute(
           builder: (context) => InfoPostAvistado(title: "Animal Avistado")),
     );
+  }
+
+  void getPostsAnimaisProximos() async {
+    List<PostModel> posts = await PostModel.getPostsAnimaisProximos();
+    setState(() {
+      postsProximos = posts;
+    });
   }
 
   void getPosicao() async {
