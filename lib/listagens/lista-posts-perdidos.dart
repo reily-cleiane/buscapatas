@@ -16,26 +16,16 @@ class ListaPostsPerdidos extends StatefulWidget {
 }
 
 class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
-  List<String> listaPostAvistados = [];
   List<PostModel> postsPerdidos = [];
-  Map<int, PostModel> mapateste= {};
   TextEditingController buscaController = TextEditingController();
 
   @override
   void initState() {
     getPostsAnimaisPerdidos();
-    PostModel teste;
-    //Para pegar o valor da sessao
   }
 
   @override
   Widget build(BuildContext context) {
-    listaPostAvistados.add("Animal 1");
-    listaPostAvistados.add("Animal 2");
-    listaPostAvistados.add("Animal 3");
-    listaPostAvistados.add("Animal 4");
-    listaPostAvistados.add("Animal 5");
-    listaPostAvistados.add("Animal 6");
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -98,10 +88,7 @@ class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
     List<PostModel> posts = await PostModel.getPostsAnimaisPerdidos();
     setState(() {
       postsPerdidos = posts;
-      for(var post in posts){
-        mapateste[post.id!] = post;
-      }
-      
+
     });
   }
 

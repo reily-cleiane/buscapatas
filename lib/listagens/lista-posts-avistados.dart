@@ -2,6 +2,7 @@ import 'package:buscapatas/components/animal_card.dart';
 import 'package:buscapatas/components/navbar.dart';
 import 'package:buscapatas/visualizacoes/info-post-avistado.dart';
 import 'package:flutter/material.dart';
+import 'package:buscapatas/model/PostModel.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
 class ListaPostsAvistados extends StatefulWidget {
@@ -14,22 +15,19 @@ class ListaPostsAvistados extends StatefulWidget {
 }
 
 class _ListaPostsAvistados extends State<ListaPostsAvistados> {
-  List<String> listaPostAvistados = [];
+
   TextEditingController buscaController = TextEditingController();
+  List<PostModel> postsAvistados = [];
 
   @override
   void initState() {
-    //Para pegar o valor da sessao
+    getPostsAnimaisAvistados();
+
   }
 
   @override
   Widget build(BuildContext context) {
-    listaPostAvistados.add("Animal 1");
-    listaPostAvistados.add("Animal 2");
-    listaPostAvistados.add("Animal 3");
-    listaPostAvistados.add("Animal 4");
-    listaPostAvistados.add("Animal 5");
-    listaPostAvistados.add("Animal 6");
+
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -47,8 +45,12 @@ class _ListaPostsAvistados extends State<ListaPostsAvistados> {
                 "Informe sua Busca"),
             Expanded(
               child: ListView.builder(
-                  itemCount: listaPostAvistados.length,
+                  itemCount: postsAvistados.length,
                   itemBuilder: (context, index) {
+                    PostModel? postAtual = null ;
+                    if(postsAvistados[index]!=null){
+                      postAtual = postsAvistados[index];                         
+                    }
                     return GestureDetector(
                         child: Card(
                       child: ElevatedButton(
@@ -63,11 +65,7 @@ class _ListaPostsAvistados extends State<ListaPostsAvistados> {
                         onPressed: () {
                           _infoPostAvistado();
                         },
-                        child: AnimalCard(
-                          title: listaPostAvistados[index],
-                          details:
-                              "Gente, encontrei esse cachorrinho perto da ponte, tava virando uma lata de lixo.",
-                          backgroundColor: estilo.coravistado,
+                        child: AnimalCard.avistado(post:postAtual
                         ),
                       ),
                     ));
@@ -77,6 +75,14 @@ class _ListaPostsAvistados extends State<ListaPostsAvistados> {
     );
   }
 
+  void getPostsAnimaisAvistados() async {
+    List<PostModel> posts = await PostModel.getPostsAnimaisAvistados();
+    setState(() {
+      postsAvistados = posts;
+
+    });
+  }
+  
   void _infoPostAvistado() {
     Navigator.push(
       context,
