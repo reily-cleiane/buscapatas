@@ -44,7 +44,20 @@ class _HomeState extends State<Home> {
     getPosicao();
     _center = LatLng(valorLatitude, valorLongitude);
     getPostsAnimaisProximos();
-    //Para pegar o valor da sessao
+    mockarUsuarioLogado();
+
+  }
+
+  void mockarUsuarioLogado() async{
+    //MOCKAR UM USUARIO LOGADO PARA QUANDO INICIA DIRETO PELA MAIN
+    UsuarioModel usuarioLogado = new UsuarioModel(
+        id: 1,
+        nome: "cleiane",
+        email: "cleiane@gmail.com",
+        senha: "abc",
+        telefone: "8498778787");
+
+      await FlutterSession().set("sessao_usuarioLogado", usuarioLogado);
   }
 
   @override
@@ -188,7 +201,7 @@ class _HomeState extends State<Home> {
                                 ),
                               ),
                               onPressed: () {
-                                _infoPostPerdido();
+                                _infoPostPerdido(postAtual);
                               },
                               child: AnimalCard(post: postAtual),
                             ),
@@ -218,11 +231,11 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void _infoPostPerdido() {
+  void _infoPostPerdido(PostModel? postAtual) {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => InfoPostPerdido(title: "Animal Perdido")),
+          builder: (context) => InfoPostPerdido(post:postAtual)),
     );
   }
 

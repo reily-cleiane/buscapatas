@@ -2,6 +2,7 @@ import 'package:buscapatas/components/animal_card.dart';
 import 'package:buscapatas/visualizacoes/info-post-avistado.dart';
 import 'package:buscapatas/visualizacoes/info-post-perdido.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_session/flutter_session.dart';
 import 'package:buscapatas/model/PostModel.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
@@ -160,19 +161,9 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
   }
 
   void getUsuarioLogado() async {
-    //ESTÁ AQUI SÓ PARA TESTE QUANDO NÃO FIZER LOGIN ANTES, APAGAR
-    usuarioLogado = new UsuarioModel(
-        id: 1,
-        nome: "cleiane",
-        email: "cleiane@gmail.com",
-        senha: "abc",
-        telefone: "8498778787");
-
-    /*
-
     usuarioLogado = UsuarioModel.fromJson(
         await (FlutterSession().get("sessao_usuarioLogado")));
-        */
+
   }
 
   void getPostsByUsuario() async {

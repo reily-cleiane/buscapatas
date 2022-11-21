@@ -265,19 +265,8 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
   }
 
   void getUsuarioLogado() async {
-    //ESTÁ AQUI SÓ PARA TESTE QUANDO NÃO FIZER LOGIN ANTES, APAGAR
-    usuarioLogado = new UsuarioModel(
-        id: 1,
-        nome: "cleiane",
-        email: "cleiane@gmail.com",
-        senha: "abc",
-        telefone: "8498778787");
-
-    /*
-
     usuarioLogado = UsuarioModel.fromJson(
         await (FlutterSession().get("sessao_usuarioLogado")));
-        */
   }
 
   void getPostsByUsuario() async {
@@ -304,5 +293,4 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
               CadastroPostPerdido(title: "Cadastro de Animal Perdido")),
     );
   }
-
 }

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-CorModel usuairoModelJson(String str) =>
+CorModel corModelJson(String str) =>
     CorModel.fromJson(json.decode(str));
 
 String corModelToJson(CorModel data) => json.encode(data.toJson());

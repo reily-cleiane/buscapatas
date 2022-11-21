@@ -1,4 +1,5 @@
 import 'package:buscapatas/cadastros/cadastro-notificacao-avistado.dart';
+import 'package:buscapatas/model/PostModel.dart';
 import 'package:buscapatas/perfil_usuario.dart';
 import 'package:buscapatas/publico/cadastro-usuario.dart';
 import 'package:buscapatas/publico/esqueceu-senha.dart';
@@ -8,18 +9,33 @@ import 'package:buscapatas/listagens/lista-notificacoes-avistado.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
 class InfoPostPerdido extends StatefulWidget {
-  const InfoPostPerdido({super.key, required this.title});
+  InfoPostPerdido({title, post}) {
+    super.key;
+    this.title = "Animal Perdido";
+    this.post = post;
+  }
 
-  final String title;
+  PostModel post = new PostModel();
+  String title = "";
 
   @override
   State<InfoPostPerdido> createState() => _InfoPostPerdidoState();
 }
 
 class _InfoPostPerdidoState extends State<InfoPostPerdido> {
+  PostModel post = new PostModel();
+
+  String coleira = "";
+  String dataHora = "";
+  String especieAnimal = "";
+  String racaAnimal = "";
+  String coresAnimal = "";
+  String sexoAnimal = "";
+
   @override
   void initState() {
-    //Para pegar o valor da sessao
+    post = widget.post;
+    formatarDados();
   }
 
   @override
@@ -43,67 +59,126 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
                   backgroundImage: AssetImage('imagens/animal.jpg'),
                 ),
               ),
-              Padding(padding: const EdgeInsets.fromLTRB(0, 20, 0, 10.0)),
-              Center(
-                  child: Text(
-                "Zeus",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 30,
-                    decorationThickness: 5.0),
-              )),
-              Center(
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const <Widget>[
-                    Padding(
-                        padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
-                        child: Text("Data da postagem: 14/10/2022 às 17:32",
-                            style:
-                                TextStyle(color: Colors.black, fontSize: 20))),
-                    Padding(
-                        padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
-                        child: Text("Espécie: Cachorro",
-                            style:
-                                TextStyle(color: Colors.black, fontSize: 20))),
-                    Padding(
-                        padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
-                        child: Text("Raça: SRD",
-                            style:
-                                TextStyle(color: Colors.black, fontSize: 20))),
-                    Padding(
-                        padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
-                        child: Text("Sexo: Macho",
-                            style:
-                                TextStyle(color: Colors.black, fontSize: 20))),
-                    Padding(
-                        padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
-                        child: Text("Cor do pelo: Marrom, Preto",
-                            style:
-                                TextStyle(color: Colors.black, fontSize: 20))),
-                    Padding(
-                        padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
-                        child: Text(
-                            "Descrição: Gente por favor me ajudem! Meu cachorro viu o portão de casa aberto e fugiu",
-                            style:
-                                TextStyle(color: Colors.black, fontSize: 20))),
-                    Padding(
-                        padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
-                        child: Text(
-                            "Orientações gerais: Não é agressivo, pode se aproximar",
-                            style:
-                                TextStyle(color: Colors.black, fontSize: 20))),
-                    Padding(
-                        padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
-                        child: Text("Estava de coleira?: Sim",
-                            style:
-                                TextStyle(color: Colors.black, fontSize: 20))),
-                    Padding(
-                        padding: EdgeInsets.fromLTRB(0, 15, 0, 10.0),
-                        child: Text("Recompensa: RS 120,00",
-                            style:
-                                TextStyle(color: Colors.black, fontSize: 20))),
-                  ])),
+              Padding(padding: const EdgeInsets.fromLTRB(0, 5.0, 0, 0)),
+              if (post.nomeAnimal != null && post.nomeAnimal!.isNotEmpty)
+                Center(
+                    child: Text(
+                  post.nomeAnimal!,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 30,
+                      decorationThickness: 5.0),
+                )),
+              Padding(padding: const EdgeInsets.fromLTRB(0, 20, 0, 5)),
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
+                  Widget>[
+                Container(
+                    color: estilo.corperdido,
+                    child: Center(
+                        child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                            child: Text("Postado em: ${dataHora}",
+                                textAlign: TextAlign.right,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 20,
+                                    backgroundColor: estilo.corperdido))))),
+                Padding(
+                    padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
+                    child: Row(children: <Widget>[
+                      const Icon(
+                        Icons.pets,
+                        size: 20,
+                        color: estilo.corprimaria,
+                      ),
+                      Text("   Espécie: ${especieAnimal}",
+                          style: TextStyle(color: Colors.black, fontSize: 20))
+                    ])),
+                if (racaAnimal.isNotEmpty)
+                  Padding(
+                      padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
+                      child: Row(children: <Widget>[
+                        const Icon(
+                          Icons.pets,
+                          size: 20,
+                          color: estilo.corprimaria,
+                        ),
+                        Text("   Raça: ${racaAnimal}",
+                            style: TextStyle(color: Colors.black, fontSize: 20))
+                      ])),
+                if (sexoAnimal.isNotEmpty)
+                  Padding(
+                      padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
+                      child: Row(children: <Widget>[
+                        const Icon(
+                          Icons.male,
+                          size: 20,
+                          color: estilo.corprimaria,
+                        ),
+                        Text("   Sexo: ${sexoAnimal}",
+                            style: TextStyle(color: Colors.black, fontSize: 20))
+                      ])),
+                Padding(
+                    padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
+                    child: Row(children: <Widget>[
+                      const Icon(
+                        Icons.invert_colors,
+                        size: 20,
+                        color: estilo.corprimaria,
+                      ),
+                      Text("   Cor do pelo: ${coresAnimal}",
+                          style: TextStyle(color: Colors.black, fontSize: 20))
+                    ])),
+                if (post.outrasInformacoes != null &&
+                    post.outrasInformacoes!.isNotEmpty)
+                  Padding(
+                      padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
+                      child: Row(children: <Widget>[
+                        const Icon(
+                          Icons.info,
+                          size: 20,
+                          color: estilo.corprimaria,
+                        ),
+                        Text("   Descrição: ${post.outrasInformacoes!}",
+                            style: TextStyle(color: Colors.black, fontSize: 20))
+                      ])),
+                if (post.orientacoesGerais != null &&
+                    post.orientacoesGerais!.isNotEmpty)
+                  Padding(
+                      padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
+                      child: Row(children: <Widget>[
+                        const Icon(
+                          Icons.fact_check,
+                          size: 20,
+                          color: estilo.corprimaria,
+                        ),
+                        Text("   Orientações gerais: ${post.orientacoesGerais}",
+                            style: TextStyle(color: Colors.black, fontSize: 20))
+                      ])),
+                Padding(
+                    padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
+                    child: Row(children: <Widget>[
+                      const Icon(
+                        Icons.commit,
+                        size: 20,
+                        color: estilo.corprimaria,
+                      ),
+                      Text("   " + coleira,
+                          style: TextStyle(color: Colors.black, fontSize: 20))
+                    ])),
+                if (post.recompensa! > 0)
+                  Padding(
+                      padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
+                      child: Row(children: <Widget>[
+                        const Icon(
+                          Icons.payments,
+                          size: 20,
+                          color: estilo.corprimaria,
+                        ),
+                        Text("   Recompensa: R\$ ${post.recompensa}",
+                            style: TextStyle(color: Colors.black, fontSize: 20))
+                      ])),
+              ]),
               Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 20)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -151,7 +226,7 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(0)))),
                         onPressed: () {
-                          _infoNotificacaoAvistado();
+                          _registrarAvistamento();
                         },
                         child: const Text("Registrar avistamento",
                             style:
@@ -182,7 +257,38 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
         ));
   }
 
-  void _infoNotificacaoAvistado() {
+  void formatarDados() {
+    if (post.especieAnimal?.getNome() != null) {
+      especieAnimal = post.especieAnimal!.getNome()!;
+    }
+    if (post.coleira!) {
+      coleira = "Estava com coleira";
+    } else {
+      coleira = "Não estava com coleira";
+    }
+    dataHora =
+        "${post.dataHora!.day.toString().padLeft(2, '0')}/${post.dataHora!.month.toString().padLeft(2, '0')}/${post.dataHora!.year.toString()} às ${post.dataHora!.hour.toString()}:${post.dataHora!.minute.toString()}";
+
+    if (post.racaAnimal?.nome != null) {
+      racaAnimal = post.racaAnimal!.nome!;
+    }
+    if (post.sexoAnimal != null) {
+      if (post.sexoAnimal == "M") {
+        sexoAnimal = "Macho";
+      } else {
+        sexoAnimal = "Fêmea";
+      }
+    }
+
+    if (post.coresAnimal!.isNotEmpty) {
+      for (var cor in post.coresAnimal!) {
+        coresAnimal = coresAnimal + ", " + cor.nome!;
+      }
+      coresAnimal = coresAnimal.substring(1);
+    }
+  }
+
+  void _registrarAvistamento() {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -195,8 +301,8 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => 
-            ListaNotificoesAvistado(title: "Cadastro Notificação")),
+          builder: (context) =>
+              ListaNotificoesAvistado(title: "Cadastro Notificação")),
     );
   }
 }
