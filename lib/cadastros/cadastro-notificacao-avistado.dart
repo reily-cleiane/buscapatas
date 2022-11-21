@@ -28,14 +28,19 @@ class _CadastroNotificacaoAvistadoState
 
   @override
   void initState() {
-    setState(() {
-      usuarioLogado = usuarioSessao.getUsuarioLogado();
-    });
+    carregarUsuarioLogado();
     super.initState();
   }
 
+  void carregarUsuarioLogado() async{
+    await usuarioSessao.getUsuarioLogado().then((value) => usuarioLogado=value);
+    //Necessário para recarregar a página após ter pegado o valor de usuarioLogado
+    setState(() {     
+    });
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(

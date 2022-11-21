@@ -43,11 +43,15 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
   @override
   void initState() {
     cargaInicialBD();
-    setState(() {
-      usuarioLogado = usuarioSessao.getUsuarioLogado();
-    });
-
+    carregarUsuarioLogado();
     super.initState();
+  }
+
+  void carregarUsuarioLogado() async{
+    await usuarioSessao.getUsuarioLogado().then((value) => usuarioLogado=value);
+    //Necessário para recarregar a página após ter pegado o valor de usuarioLogado
+    setState(() {     
+    });
   }
 
   @override

@@ -33,10 +33,16 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
 
   @override
   void initState() {
+    carregarUsuarioLogado();
     post = widget.post;
     formatarDados();
-    setState(() {
-      usuarioLogado = usuarioSessao.getUsuarioLogado();
+
+  }
+
+  void carregarUsuarioLogado() async{
+    await usuarioSessao.getUsuarioLogado().then((value) => usuarioLogado=value);
+    //Necessário para recarregar a página após ter pegado o valor de usuarioLogado
+    setState(() {     
     });
   }
 
@@ -201,7 +207,8 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
   }
 
   void formatarDados() {
-    if (post.especieAnimal?.getNome() != null) {
+    setState(() {
+      if (post.especieAnimal?.getNome() != null) {
       especieAnimal = post.especieAnimal!.getNome()!;
     }
     if (post.coleira!) {
@@ -236,7 +243,8 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
       }
       coresAnimal = coresAnimal.substring(1);
     }
+      
+    });
   }
-
 
 }

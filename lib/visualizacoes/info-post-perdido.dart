@@ -34,10 +34,16 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
 
   @override
   void initState() {
+    carregarUsuarioLogado();
     post = widget.post;
     formatarDados();
-    setState(() {
-      usuarioLogado = usuarioSessao.getUsuarioLogado();
+
+  }
+
+  void carregarUsuarioLogado() async{
+    await usuarioSessao.getUsuarioLogado().then((value) => usuarioLogado=value);
+    //Necessário para recarregar a página após ter pegado o valor de usuarioLogado
+    setState(() {     
     });
   }
 

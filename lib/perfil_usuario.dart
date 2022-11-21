@@ -10,6 +10,7 @@ import 'package:flutter_session/flutter_session.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 import 'package:buscapatas/visualizacoes/editar-perfil.dart';
 import 'package:flutter/material.dart';
+import 'package:buscapatas/utils/usuario_logado.dart' as usuarioSessao;
 import 'package:buscapatas/components/navbar.dart';
 import 'package:buscapatas/components/animal_card.dart';
 
@@ -28,9 +29,17 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
 
   @override
   void initState() {
-    getUsuarioLogado();
+    carregarUsuarioLogado();
+    super.initState();
+    
+  }
+  void carregarUsuarioLogado() async{
+    await usuarioSessao.getUsuarioLogado().then((value) => usuarioLogado=value);
+    //Posts depende do usuário, precisar estar em uma função async após o await do usuário
+    //o getPostByUsuario recarrega a tela com um setState, necessário para ter acesso ao usuarioLogado
     getPostsByUsuario();
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -264,16 +273,9 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
     }
   }
 
-  void getUsuarioLogado() async {
-    UsuarioModel usuario;
-    usuario = UsuarioModel.fromJson(
-        await (FlutterSession().get("sessao_usuarioLogado")));
-    setState(() {
-      usuarioLogado = usuario;
-    });
-  }
 
   void getPostsByUsuario() async {
+    
     List<PostModel> posts = await PostModel.getPostsByUsuario(usuarioLogado.id);
     setState(() {
       postsUsuario = posts;
