@@ -66,24 +66,21 @@ class _InfoNotificacaoAvistadoState extends State<InfoNotificacaoAvistado> {
                                     color: Colors.black,
                                     fontSize: 20,
                                   ))))),
-
-                      Padding(
-                      padding: EdgeInsets.fromLTRB(0, 1, 0, 1)),
-                      Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: <Widget>[
-                            const Icon(
-                              Icons.location_on,
-                              size: 14,
-                              color: estilo.corprimaria,
-                            ),
-                            Text(" A ${distancia} km de você.",
-                                textAlign: TextAlign.right,
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 14))
-                          ]),
+                  Padding(padding: EdgeInsets.fromLTRB(0, 1, 0, 1)),
+                  Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        const Icon(
+                          Icons.location_on,
+                          size: 16,
+                          color: estilo.corprimaria,
+                        ),
+                        Text(" A ${distancia} km de você.",
+                            textAlign: TextAlign.right,
+                            style: TextStyle(color: Colors.black, fontSize: 14))
+                      ]),
                   Padding(
                       padding: EdgeInsets.fromLTRB(0, 50, 0, 30),
                       child: Row(children: <Widget>[
@@ -136,11 +133,12 @@ class _InfoNotificacaoAvistadoState extends State<InfoNotificacaoAvistado> {
             ])));
   }
 
-  void formatarDados() {
+  void formatarDados() async{
     dataHora =
         "${notificacao.dataHora!.day.toString().padLeft(2, '0')}/${notificacao.dataHora!.month.toString().padLeft(2, '0')}/${notificacao.dataHora!.year.toString()} às ${notificacao.dataHora!.hour.toString()}:${notificacao.dataHora!.minute.toString()}";
-    distancia = localizacao.calcularDistanciaPosicaoAtual(notificacao.latitude, notificacao.longitude);
-
+    
+    await localizacao.calcularDistanciaPosicaoAtual(notificacao.latitude, notificacao.longitude)
+        .then((value) => distancia = value);
+    setState(() {});
   }
-
 }

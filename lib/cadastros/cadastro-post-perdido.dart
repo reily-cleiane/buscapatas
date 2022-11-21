@@ -264,8 +264,13 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
   void _addPost() async {
     //Refatorar para o método ficar em PostModel e não aqui
     var url = PostModel.getUrlSalvarPost();
-    double valorLatitude = localizacao.getLatitudeAtual();
-    double valorLongitude = localizacao.getLongitudeAtual();
+    double valorLatitude = 0;
+    await localizacao.getLatitudeAtual()
+        .then((value) => valorLatitude = value);
+    
+    double valorLongitude = 0;
+    await localizacao.getLongitudeAtual()
+        .then((value) => valorLongitude = value);
 
     List<CorModel> cores = [];
 

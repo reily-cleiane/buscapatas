@@ -2,6 +2,7 @@ import 'package:buscapatas/model/PostModel.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:buscapatas/visualizacoes/contato.dart';
 import 'package:flutter/material.dart';
+import 'package:buscapatas/utils/localizacao.dart' as localizacao;
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 import 'package:buscapatas/utils/usuario_logado.dart' as usuarioSessao;
 
@@ -30,20 +31,21 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
   String coresAnimal = "";
   String sexoAnimal = "";
   UsuarioModel usuarioLogado = UsuarioModel();
+  double distancia = 0;
 
   @override
   void initState() {
     carregarUsuarioLogado();
     post = widget.post;
     formatarDados();
-
   }
 
-  void carregarUsuarioLogado() async{
-    await usuarioSessao.getUsuarioLogado().then((value) => usuarioLogado=value);
+  void carregarUsuarioLogado() async {
+    await usuarioSessao
+        .getUsuarioLogado()
+        .then((value) => usuarioLogado = value);
     //Necessário para recarregar a página após ter pegado o valor de usuarioLogado
-    setState(() {     
-    });
+    setState(() {});
   }
 
   @override
@@ -78,9 +80,24 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
                             child: Text("Postado em: ${dataHora}",
                                 textAlign: TextAlign.right,
                                 style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20,
-                                    ))))),
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                ))))),
+                Padding(padding: EdgeInsets.fromLTRB(0, 1, 0, 1)),
+                Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      const Icon(
+                        Icons.location_on,
+                        size: 16,
+                        color: estilo.corprimaria,
+                      ),
+                      Text(" A ${distancia} km de você.",
+                          textAlign: TextAlign.right,
+                          style: TextStyle(color: Colors.black, fontSize: 14))
+                    ]),
                 Padding(
                     padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
                     child: Row(children: <Widget>[
@@ -151,8 +168,7 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
                       Text("   " + coleira,
                           style: TextStyle(color: Colors.black, fontSize: 20))
                     ])),
-
-                    Padding(
+                Padding(
                     padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
                     child: Row(children: <Widget>[
                       const Icon(
@@ -181,8 +197,9 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      ContatoUsuario(title: "Contato", usuario:post.usuario!)),
+                                  builder: (context) => ContatoUsuario(
+                                      title: "Contato",
+                                      usuario: post.usuario!)),
                             );
                           },
                           child: Ink(
@@ -206,45 +223,46 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
         ));
   }
 
-  void formatarDados() {
+  void formatarDados() async{
+    await localizacao.calcularDistanciaPosicaoAtual(post.latitude, post.longitude)
+        .then((value) => distancia = value);
+
     setState(() {
       if (post.especieAnimal?.getNome() != null) {
-      especieAnimal = post.especieAnimal!.getNome()!;
-    }
-    if (post.coleira!) {
-      coleira = "Estava com coleira";
-    } else {
-      coleira = "Não estava com coleira";
-    }
-
-    if (post.larTemporario!) {
-      larTemporario = "Está em lar temporário";
-    } else {
-      larTemporario = "Não está em lar temporário";
-    }
-
-    dataHora =
-        "${post.dataHora!.day.toString().padLeft(2, '0')}/${post.dataHora!.month.toString().padLeft(2, '0')}/${post.dataHora!.year.toString()} às ${post.dataHora!.hour.toString()}:${post.dataHora!.minute.toString()}";
-
-    if (post.racaAnimal?.nome != null) {
-      racaAnimal = post.racaAnimal!.nome!;
-    }
-    if (post.sexoAnimal != null) {
-      if (post.sexoAnimal == "M") {
-        sexoAnimal = "Macho";
+        especieAnimal = post.especieAnimal!.getNome()!;
+      }
+      if (post.coleira!) {
+        coleira = "Estava com coleira";
       } else {
-        sexoAnimal = "Fêmea";
+        coleira = "Não estava com coleira";
       }
-    }
 
-    if (post.coresAnimal!.isNotEmpty) {
-      for (var cor in post.coresAnimal!) {
-        coresAnimal = coresAnimal + ", " + cor.nome!;
+      if (post.larTemporario!) {
+        larTemporario = "Está em lar temporário";
+      } else {
+        larTemporario = "Não está em lar temporário";
       }
-      coresAnimal = coresAnimal.substring(1);
-    }
-      
+
+      dataHora =
+          "${post.dataHora!.day.toString().padLeft(2, '0')}/${post.dataHora!.month.toString().padLeft(2, '0')}/${post.dataHora!.year.toString()} às ${post.dataHora!.hour.toString()}:${post.dataHora!.minute.toString()}";
+
+      if (post.racaAnimal?.nome != null) {
+        racaAnimal = post.racaAnimal!.nome!;
+      }
+      if (post.sexoAnimal != null) {
+        if (post.sexoAnimal == "M") {
+          sexoAnimal = "Macho";
+        } else {
+          sexoAnimal = "Fêmea";
+        }
+      }
+
+      if (post.coresAnimal!.isNotEmpty) {
+        for (var cor in post.coresAnimal!) {
+          coresAnimal = coresAnimal + ", " + cor.nome!;
+        }
+        coresAnimal = coresAnimal.substring(1);
+      }
     });
   }
-
 }

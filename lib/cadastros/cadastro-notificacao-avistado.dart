@@ -95,8 +95,13 @@ class _CadastroNotificacaoAvistadoState
 
   void _addNotificacao() async {
     var url = NotificacaoAvistamentoModel.getUrlSalvarNotificacao();
-    double valorLatitude = localizacao.getLatitudeAtual();
-    double valorLongitude = localizacao.getLongitudeAtual();
+    double valorLatitude = 0;
+    await localizacao.getLatitudeAtual()
+        .then((value) => valorLatitude = value);
+    
+    double valorLongitude = 0;
+    await localizacao.getLongitudeAtual()
+        .then((value) => valorLongitude = value);
 
     var response = await http.post(Uri.parse(url),
         headers: <String, String>{

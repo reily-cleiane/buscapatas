@@ -281,8 +281,13 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
 
   void _addPost() async {
     var url = PostModel.getUrlSalvarPost();
-    double valorLatitude = localizacao.getLatitudeAtual();
-    double valorLongitude = localizacao.getLongitudeAtual();
+    double valorLatitude = 0;
+    await localizacao.getLatitudeAtual()
+        .then((value) => valorLatitude = value);
+    
+    double valorLongitude = 0;
+    await localizacao.getLongitudeAtual()
+        .then((value) => valorLongitude = value);
 
     List<CorModel> cores = [];
 

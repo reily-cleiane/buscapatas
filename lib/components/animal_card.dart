@@ -65,16 +65,20 @@ class AnimalCardState extends State<AnimalCard> {
 
   @override
   void initState() {
+    carregarDistancia();
     informacoes = getInformacoesResumidas(widget.outrasInformacoes, widget.orientacoesGerais);
     postadoHa = getTempoDecorrido(widget.dataHora);
     dataHoraExibida =
           "${widget.dataHora!.day.toString().padLeft(2, '0')}/${widget.dataHora!.month.toString().padLeft(2, '0')}/${widget.dataHora!.year.toString()} às ${widget.dataHora!.hour.toString()}:${widget.dataHora!.minute.toString()}";
     
-    setState(() {
-      distancia = localizacao.calcularDistanciaPosicaoAtual(widget.latitude, widget.longitude);
-      });
-      
     super.initState();
+  }
+
+  void carregarDistancia() async {
+    await localizacao.calcularDistanciaPosicaoAtual(widget.latitude, widget.longitude)
+        .then((value) => distancia = value);
+    //Necessário para recarregar a página após ter pegado o valor de distancia
+    setState(() {});
   }
 
   @override

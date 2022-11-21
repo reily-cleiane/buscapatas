@@ -5,17 +5,17 @@ import 'dart:math';
 double valorLatitudeAtual = 0;
 double valorLongitudeAtual = 0;
 
-double getLatitudeAtual(){
-  getPosicao();
+Future<double> getLatitudeAtual()async{
+  await getPosicao();
   return valorLatitudeAtual;
 }
 
-double getLongitudeAtual(){
-  getPosicao();
+Future<double> getLongitudeAtual()async {
+  await getPosicao();
   return valorLongitudeAtual;
 }
 
-void getPosicao() async {
+Future<void> getPosicao() async {
   try {
     LocationPermission permissao;
 
@@ -52,8 +52,8 @@ double calcularDistancia(lat1, lon1, lat2, lon2) {
   return 12742 * asin(sqrt(a));
 }
 
-double calcularDistanciaPosicaoAtual(lat2, lon2) {
-  getPosicao();
+Future<double> calcularDistanciaPosicaoAtual(lat2, lon2) async {
+  await getPosicao();
   var p = 0.017453292519943295;
   var a = 0.5 -
       cos((lat2 - valorLatitudeAtual) * p) / 2 +
