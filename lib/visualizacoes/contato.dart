@@ -24,9 +24,10 @@ class _ContatoUsuarioState extends State<ContatoUsuario> {
 
    @override
   void initState() {
-    getUsuarioLogado();
-    getPostsByUsuario();
     usuarioVisitado = widget.usuario;
+    getUsuarioLogado();
+    getPostsByUsuario(usuarioVisitado.id!);
+    
   }
 
   @override
@@ -171,8 +172,8 @@ class _ContatoUsuarioState extends State<ContatoUsuario> {
     });
   }
 
-  void getPostsByUsuario() async {
-    List<PostModel> posts = await PostModel.getPostsByUsuario(usuarioVisitado.id);
+  void getPostsByUsuario(int usuarioId) async {
+    List<PostModel> posts = await PostModel.getPostsByUsuario(usuarioId);
     setState(() {
       postsUsuario = posts;
     });
