@@ -1,5 +1,5 @@
 import 'package:buscapatas/components/animal_card.dart';
-import 'package:buscapatas/components/navbar-extra.dart';
+import 'package:buscapatas/components/navbar_extra.dart';
 import 'package:buscapatas/model/PostModel.dart';
 import 'package:buscapatas/visualizacoes/info-notificacao-avistado.dart';
 import 'package:buscapatas/visualizacoes/info-post-avistado.dart';

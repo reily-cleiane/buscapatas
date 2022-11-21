@@ -5,12 +5,10 @@ import 'package:flutter_session/flutter_session.dart';
 import 'dart:convert';
 import 'package:buscapatas/home.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
-import 'package:buscapatas/model/RacaModel.dart';
-import 'package:buscapatas/model/CorModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 import 'package:buscapatas/utils/localizacao.dart' as localizacao;
-import 'package:geolocator/geolocator.dart';
+import 'package:buscapatas/utils/usuario_logado.dart' as usuarioSessao;
 
 class CadastroNotificacaoAvistado extends StatefulWidget {
   const CadastroNotificacaoAvistado({super.key, required this.title, required this.postId});
@@ -32,7 +30,9 @@ class _CadastroNotificacaoAvistadoState
 
   @override
   void initState() {
-    getUsuarioLogado();
+    setState(() {
+      usuarioLogado = usuarioSessao.getUsuarioLogado();
+    });
     super.initState();
   }
 
@@ -82,14 +82,7 @@ class _CadastroNotificacaoAvistadoState
     );
   }
 
-  void getUsuarioLogado() async {
-    UsuarioModel usuario;
-    usuario = UsuarioModel.fromJson(
-        await (FlutterSession().get("sessao_usuarioLogado")));
-    setState(() {
-      usuarioLogado = usuario;
-    });
-  }
+
 
   void _cadastrarNotificacao() {    
     if (_formKey.currentState!.validate()){

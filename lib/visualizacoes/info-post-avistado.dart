@@ -5,6 +5,7 @@ import 'package:flutter_session/flutter_session.dart';
 import 'package:buscapatas/visualizacoes/contato.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
+import 'package:buscapatas/utils/usuario_logado.dart' as usuarioSessao;
 
 class InfoPostAvistado extends StatefulWidget {
   InfoPostAvistado({title, required post}) {
@@ -30,13 +31,15 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
   String racaAnimal = "";
   String coresAnimal = "";
   String sexoAnimal = "";
-  UsuarioModel usuarioLogado = new UsuarioModel();
+  UsuarioModel usuarioLogado = UsuarioModel();
 
   @override
   void initState() {
     post = widget.post;
     formatarDados();
-    getUsuarioLogado();
+    setState(() {
+      usuarioLogado = usuarioSessao.getUsuarioLogado();
+    });
   }
 
   @override
@@ -237,12 +240,5 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
     }
   }
 
-  void getUsuarioLogado() async {
-    UsuarioModel usuario;
-    usuario = UsuarioModel.fromJson(
-        await (FlutterSession().get("sessao_usuarioLogado")));
-    setState(() {
-      usuarioLogado = usuario;
-    });
-  }
+
 }

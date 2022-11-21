@@ -20,12 +20,11 @@ class ContatoUsuario extends StatefulWidget {
 class _ContatoUsuarioState extends State<ContatoUsuario> {
   UsuarioModel usuarioVisitado = new UsuarioModel();
   List<PostModel> postsUsuario = [];
-  UsuarioModel usuarioLogado = UsuarioModel();
 
    @override
   void initState() {
     usuarioVisitado = widget.usuario;
-    getUsuarioLogado();
+
     getPostsByUsuario(usuarioVisitado.id!);
     
   }
@@ -163,14 +162,6 @@ class _ContatoUsuarioState extends State<ContatoUsuario> {
     );
   }
 
-  void getUsuarioLogado() async {
-    UsuarioModel usuario;
-    usuario = UsuarioModel.fromJson(
-        await (FlutterSession().get("sessao_usuarioLogado")));
-    setState(() {
-      usuarioLogado = usuario;
-    });
-  }
 
   void getPostsByUsuario(int usuarioId) async {
     List<PostModel> posts = await PostModel.getPostsByUsuario(usuarioId);

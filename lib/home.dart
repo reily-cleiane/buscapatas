@@ -5,7 +5,6 @@ import 'package:buscapatas/visualizacoes/info-post-avistado.dart';
 import 'package:buscapatas/visualizacoes/info-post-perdido.dart';
 import 'package:buscapatas/model/PostModel.dart';
 import 'package:flutter/foundation.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/publico/login.dart';

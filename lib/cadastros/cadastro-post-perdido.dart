@@ -10,6 +10,7 @@ import 'package:buscapatas/model/CorModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 import 'package:buscapatas/utils/localizacao.dart' as localizacao;
+import 'package:buscapatas/utils/usuario_logado.dart' as usuarioSessao;
 
 class CadastroPostPerdido extends StatefulWidget {
   const CadastroPostPerdido({super.key, required this.title});
@@ -44,7 +45,9 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
   @override
   void initState() {
     cargaInicialBD();
-    getUsuarioLogado();
+    setState(() {
+      usuarioLogado = usuarioSessao.getUsuarioLogado();
+    });
     super.initState();
   }
 
@@ -201,14 +204,7 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
     );
   }
 
-  void getUsuarioLogado() async {
-    UsuarioModel usuario;
-    usuario = UsuarioModel.fromJson(
-        await (FlutterSession().get("sessao_usuarioLogado")));
-    setState(() {
-      usuarioLogado = usuario;
-    });
-  }
+
 
   void cargaInicialBD() async {
     List<dynamic> especiesTemp = await EspecieModel.getEspecies();

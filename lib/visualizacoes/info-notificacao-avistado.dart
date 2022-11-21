@@ -1,7 +1,5 @@
 import 'package:buscapatas/visualizacoes/contato.dart';
 import 'package:flutter/material.dart';
-import 'dart:math';
-import 'package:geolocator/geolocator.dart';
 import 'package:flutter_session/flutter_session.dart';
 import 'package:buscapatas/utils/localizacao.dart' as localizacao;
 import 'package:buscapatas/model/NotificacaoAvistamentoModel.dart';
@@ -28,14 +26,10 @@ class _InfoNotificacaoAvistadoState extends State<InfoNotificacaoAvistado> {
   String dataHora = "";
   double distancia = 0;
 
-  UsuarioModel usuarioLogado = new UsuarioModel();
-
   @override
   void initState() {
     notificacao = widget.notificacao;
-
     formatarDados();
-    getUsuarioLogado();
   }
 
   @override
@@ -149,15 +143,6 @@ class _InfoNotificacaoAvistadoState extends State<InfoNotificacaoAvistado> {
         "${notificacao.dataHora!.day.toString().padLeft(2, '0')}/${notificacao.dataHora!.month.toString().padLeft(2, '0')}/${notificacao.dataHora!.year.toString()} às ${notificacao.dataHora!.hour.toString()}:${notificacao.dataHora!.minute.toString()}";
     distancia = localizacao.calcularDistanciaPosicaoAtual(notificacao.latitude, notificacao.longitude);
 
-  }
-
-  void getUsuarioLogado() async {
-    UsuarioModel usuario;
-    usuario = UsuarioModel.fromJson(
-        await (FlutterSession().get("sessao_usuarioLogado")));
-    setState(() {
-      usuarioLogado = usuario;
-    });
   }
 
 }

@@ -9,6 +9,7 @@ import 'package:buscapatas/visualizacoes/contato.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/listagens/lista-notificacoes-avistado.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
+import 'package:buscapatas/utils/usuario_logado.dart' as usuarioSessao;
 
 class InfoPostPerdido extends StatefulWidget {
   InfoPostPerdido({title, required post}) {
@@ -33,13 +34,15 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
   String racaAnimal = "";
   String coresAnimal = "";
   String sexoAnimal = "";
-  UsuarioModel usuarioLogado = new UsuarioModel();
+  UsuarioModel usuarioLogado = UsuarioModel();
 
   @override
   void initState() {
     post = widget.post;
     formatarDados();
-    getUsuarioLogado();
+    setState(() {
+      usuarioLogado = usuarioSessao.getUsuarioLogado();
+    });
   }
 
   @override
@@ -315,12 +318,4 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
     );
   }
 
-  void getUsuarioLogado() async {
-    UsuarioModel usuario;
-    usuario = UsuarioModel.fromJson(
-        await (FlutterSession().get("sessao_usuarioLogado")));
-    setState(() {
-      usuarioLogado = usuario;
-    });
-  }
 }
