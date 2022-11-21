@@ -63,7 +63,7 @@ class _ListaPostsAvistados extends State<ListaPostsAvistados> {
                           ),
                         ),
                         onPressed: () {
-                          _infoPostAvistado();
+                          _infoPostAvistado(postAtual);
                         },
                         child: AnimalCard(post:postAtual
                         ),
@@ -83,11 +83,11 @@ class _ListaPostsAvistados extends State<ListaPostsAvistados> {
     });
   }
   
-  void _infoPostAvistado() {
+  void _infoPostAvistado(PostModel? postAtual) {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => InfoPostAvistado(title: "Animal Avistado")),
+          builder: (context) => InfoPostAvistado(title: "Animal Avistado", post:postAtual)),
     );
   }
 

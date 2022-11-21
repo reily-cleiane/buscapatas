@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
 class InfoPostAvistado extends StatefulWidget {
-  InfoPostAvistado({title, post}) {
+  InfoPostAvistado({title, required post}) {
     super.key;
     this.title = "Animal avistado";
     this.post = post;

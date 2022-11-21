@@ -62,7 +62,7 @@ class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
                           ),
                         ),
                         onPressed: () {
-                          _infoPostPerdido();
+                          _infoPostPerdido(postAtual);
                         },
 
                         child: AnimalCard(post:postAtual
@@ -76,11 +76,11 @@ class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
     );
   }
 
-  void _infoPostPerdido() {
+  void _infoPostPerdido(PostModel? postAtual) {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => InfoPostPerdido(title: "Animal Avistado")),
+          builder: (context) => InfoPostPerdido(title: "Animal Avistado", post:postAtual)),
     );
   }
 

@@ -11,7 +11,7 @@ import 'package:buscapatas/listagens/lista-notificacoes-avistado.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
 class InfoPostPerdido extends StatefulWidget {
-  InfoPostPerdido({title, post}) {
+  InfoPostPerdido({title, required post}) {
     super.key;
     this.title = "Animal Perdido";
     this.post = post;

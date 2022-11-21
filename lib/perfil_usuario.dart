@@ -253,13 +253,13 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => InfoPostPerdido(title: "Animal Perdido"),
+            builder: (context) => InfoPostPerdido(title: "Animal Perdido", post:post),
           ));
     } else {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => InfoPostAvistado(title: "Animal Avistado"),
+            builder: (context) => InfoPostAvistado(title: "Animal Avistado", post:post),
           ));
     }
   }

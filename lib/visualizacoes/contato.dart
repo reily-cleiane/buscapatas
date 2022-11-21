@@ -176,18 +176,18 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
     });
   }
 
-   void _infoPost(post) {
-    if (post.tipoPost == "ANIMAL_PERDIDO") {
+   void _infoPost(PostModel? postAtual) {
+    if (postAtual?.tipoPost == "ANIMAL_PERDIDO") {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => InfoPostPerdido(title: "Animal Perdido"),
+            builder: (context) => InfoPostPerdido(title: "Animal Perdido", post:postAtual),
           ));
     } else {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => InfoPostAvistado(title: "Animal Avistado"),
+            builder: (context) => InfoPostAvistado(title: "Animal Avistado", post:postAtual),
           ));
     }
   }
