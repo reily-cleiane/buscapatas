@@ -47,10 +47,8 @@ class NotificacaoAvistamentoModel {
       };
 
 
-  static Future<List<NotificacaoAvistamentoModel>> getNotificacoesByPost(int? idPost) async {
-    //AJUSTAR ISSO AQUI PARA PEGAR DO POST CERTO
-    const request = "http://localhost:8080/notificacoes/post/4";
-    //const request = "http://localhost:8080/notificacoes/post/${idUsuario}";
+  static Future<List<NotificacaoAvistamentoModel>> getNotificacoesByPost(int postId) async {
+    var request = "http://localhost:8080/notificacoes/post/${postId}";
 
     http.Response response = await http.get(Uri.parse(request));
 
@@ -70,7 +68,7 @@ class NotificacaoAvistamentoModel {
 
   static Future<List<NotificacaoAvistamentoModel>> getNotificacoesByUsuario(int? idUsuario) async {
     //AJUSTAR ISSO AQUI PARA PEGAR DO USUARIO CERTO
-    const request = "http://localhost:8080/notificacoes/usuario/1";
+    var request = "http://localhost:8080/notificacoes/usuario/1";
     //const request = "http://localhost:8080/notificacoes/usuario/${idUsuario}";
 
     http.Response response = await http.get(Uri.parse(request));
@@ -87,6 +85,10 @@ class NotificacaoAvistamentoModel {
     } else {
       throw Exception('Falha no servidor ao carregar posts');
     }
+  }
+
+  static String getUrlSalvarNotificacao() {
+    return "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/notificacoes";
   }
 
 }

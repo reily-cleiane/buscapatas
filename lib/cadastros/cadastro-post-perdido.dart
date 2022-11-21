@@ -205,8 +205,12 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
   }
 
   void getUsuarioLogado() async {
-    usuarioLogado = UsuarioModel.fromJson(
+    UsuarioModel usuario;
+    usuario = UsuarioModel.fromJson(
         await (FlutterSession().get("sessao_usuarioLogado")));
+    setState(() {
+      usuarioLogado = usuario;
+    });
   }
 
   void cargaInicialBD() async {

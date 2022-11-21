@@ -1,4 +1,5 @@
 import 'package:buscapatas/model/EspecieModel.dart';
+import 'package:buscapatas/model/NotificacaoAvistamentoModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session/flutter_session.dart';
 import 'dart:convert';
@@ -11,9 +12,10 @@ import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 import 'package:geolocator/geolocator.dart';
 
 class CadastroNotificacaoAvistado extends StatefulWidget {
-  const CadastroNotificacaoAvistado({super.key, required this.title});
+  const CadastroNotificacaoAvistado({super.key, required this.title, required this.postId});
 
   final String title;
+  final int postId;
 
   @override
   State<CadastroNotificacaoAvistado> createState() =>
@@ -42,7 +44,7 @@ class _CadastroNotificacaoAvistadoState
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-          title: const Text("Cadastro Notificação",
+          title: const Text("Cadastro de Notificação",
             style: TextStyle(color: Colors.white)),
           centerTitle: true,
           backgroundColor: estilo.corprimaria,
@@ -69,7 +71,7 @@ class _CadastroNotificacaoAvistadoState
                             MaterialStatePropertyAll<Color>(estilo.corprimaria),
                       ),
                       onPressed: () {
-                        _cadastrarPost();
+                        _cadastrarNotificacao();
                       },
                       child: const Text(
                         "Cadastrar",
@@ -84,20 +86,22 @@ class _CadastroNotificacaoAvistadoState
   }
 
   void getUsuarioLogado() async {
-    usuarioLogado = UsuarioModel.fromJson(
+    UsuarioModel usuario;
+    usuario = UsuarioModel.fromJson(
         await (FlutterSession().get("sessao_usuarioLogado")));
+    setState(() {
+      usuarioLogado = usuario;
+    });
   }
 
-  void _cadastrarPost() {
-    // Colocar a validação depois
-    //if (_formKey.currentState!.validate())
-    _addPost();
+  void _cadastrarNotificacao() {    
+    if (_formKey.currentState!.validate()){
+      _addNotificacao();
+    } 
   }
 
-  void _addPost() async {
-    var url = "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/notificacoes";
-
-    List<CorModel> cores = [];
+  void _addNotificacao() async {
+    var url = NotificacaoAvistamentoModel.getUrlSalvarNotificacao();
 
     var response = await http.post(Uri.parse(url),
         headers: <String, String>{
@@ -109,7 +113,7 @@ class _CadastroNotificacaoAvistadoState
           "latitude": valorLatitude,
           "longitude": valorLongitude,
           "usuario": usuarioLogado,
-          "post": {"id": 27}
+          "post": {"id": widget.postId}
         }));
 
     if (response.statusCode == 200) {
@@ -163,6 +167,11 @@ class _CadastroNotificacaoAvistadoState
         padding: const EdgeInsets.fromLTRB(0, 20.0, 0, 10.0),
         child: TextFormField(
           keyboardType: tipoCampo,
+          validator: (value) {
+            if (controller.text.isEmpty) {
+              return "O campo deve ser preenchido";
+            }
+          },
           decoration: InputDecoration(
               labelText: label,
               labelStyle:

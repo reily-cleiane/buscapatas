@@ -161,9 +161,12 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
   }
 
   void getUsuarioLogado() async {
-    usuarioLogado = UsuarioModel.fromJson(
+    UsuarioModel usuario;
+    usuario = UsuarioModel.fromJson(
         await (FlutterSession().get("sessao_usuarioLogado")));
-
+    setState(() {
+      usuarioLogado = usuario;
+    });
   }
 
   void getPostsByUsuario() async {

@@ -1,5 +1,7 @@
 import 'package:buscapatas/cadastros/cadastro-notificacao-avistado.dart';
 import 'package:buscapatas/model/PostModel.dart';
+import 'package:buscapatas/model/UsuarioModel.dart';
+import 'package:flutter_session/flutter_session.dart';
 import 'package:buscapatas/perfil_usuario.dart';
 import 'package:buscapatas/publico/cadastro-usuario.dart';
 import 'package:buscapatas/publico/esqueceu-senha.dart';
@@ -31,11 +33,13 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
   String racaAnimal = "";
   String coresAnimal = "";
   String sexoAnimal = "";
+  UsuarioModel usuarioLogado = new UsuarioModel();
 
   @override
   void initState() {
     post = widget.post;
     formatarDados();
+    getUsuarioLogado();
   }
 
   @override
@@ -179,78 +183,83 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
                             style: TextStyle(color: Colors.black, fontSize: 20))
                       ])),
               ]),
-              Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 20)),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  const CircleAvatar(
-                    radius: 20,
-                    backgroundImage: AssetImage('imagens/salsicha.jpg'),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(10, 0, 0, 0.0),
-                    child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    PerfilUsuario(title: "Perfil")),
-                          );
-                        },
-                        child: Ink(
-                          child: RichText(
-                            text: const TextSpan(
-                              text: "Entrar em contato ",
-                              style: TextStyle(
-                                decoration: TextDecoration.underline,
-                                color: estilo.corprimaria,
-                                fontSize: 16.0,
+              if (usuarioLogado.id != post.usuario!.id)
+                Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 20)),
+              if (usuarioLogado.id != post.usuario!.id)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    const CircleAvatar(
+                      radius: 20,
+                      backgroundImage: AssetImage('imagens/salsicha.jpg'),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(10, 0, 0, 0.0),
+                      child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      PerfilUsuario(title: "Perfil")),
+                            );
+                          },
+                          child: Ink(
+                            child: RichText(
+                              text: const TextSpan(
+                                text: "Ver informações de contato ",
+                                style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  color: estilo.corprimaria,
+                                  fontSize: 16.0,
+                                ),
                               ),
                             ),
-                          ),
-                        )),
-                  ),
-                ],
-              ),
-              Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 20)),
-              Center(
-                  child: SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(estilo.corprimaria),
-                            shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(0)))),
-                        onPressed: () {
-                          _registrarAvistamento();
-                        },
-                        child: const Text("Registrar avistamento",
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 20)),
-                      ))),
+                          )),
+                    ),
+                  ],
+                ),
+              if (usuarioLogado.id != post.usuario!.id)
+                Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 10)),
+              if (usuarioLogado.id != post.usuario!.id)
+                Center(
+                    child: SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(estilo.corprimaria),
+                              shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(0)))),
+                          onPressed: () {
+                            _registrarAvistamento(post.id!);
+                          },
+                          child: const Text("Registrar avistamento",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20)),
+                        ))),
               Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 30)),
-              Center(
-                  child: SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(estilo.corprimaria),
-                            shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(0)))),
-                        onPressed: () {
-                          _listaNotificacaoAvistado();
-                        },
-                        child: const Text("Ver notificacões",
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 20)),
-                      ))),
+              if (usuarioLogado.id == post.usuario!.id)
+                Center(
+                    child: SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(estilo.corprimaria),
+                              shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(0)))),
+                          onPressed: () {
+                            _listaNotificacaoAvistado(post.id!);
+                          },
+                          child: const Text("Ver notificacões",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20)),
+                        ))),
               Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 30)),
             ],
           ),
@@ -288,21 +297,30 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
     }
   }
 
-  void _registrarAvistamento() {
+  void _registrarAvistamento(int postId) {
     Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) =>
-              CadastroNotificacaoAvistado(title: "Cadastro Notificação")),
+              CadastroNotificacaoAvistado(title: "Cadastrar Notificação", postId: postId)),
     );
   }
 
-  void _listaNotificacaoAvistado() {
+  void _listaNotificacaoAvistado(int postId) {
     Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) =>
-              ListaNotificoesAvistado(title: "Cadastro Notificação")),
+              ListaNotificoesAvistado(title: "Listar Notificações", postId:postId)),
     );
+  }
+
+  void getUsuarioLogado() async {
+    UsuarioModel usuario;
+    usuario = UsuarioModel.fromJson(
+        await (FlutterSession().get("sessao_usuarioLogado")));
+    setState(() {
+      usuarioLogado = usuario;
+    });
   }
 }

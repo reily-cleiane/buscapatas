@@ -1,22 +1,19 @@
 import 'package:buscapatas/cadastros/cadastro-post-avistado.dart';
+import 'package:buscapatas/cadastros/cadastro-post-perdido.dart';
 import 'package:buscapatas/components/animal_card.dart';
 import 'package:buscapatas/visualizacoes/info-post-avistado.dart';
 import 'package:buscapatas/visualizacoes/info-post-perdido.dart';
-import 'package:buscapatas/listagens/lista-posts-avistados.dart';
 import 'package:buscapatas/model/PostModel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/publico/login.dart';
-import 'package:buscapatas/cadastros/cadastro-post-perdido.dart';
-import 'package:buscapatas/perfil_usuario.dart';
 import 'package:flutter_session/flutter_session.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 import 'package:buscapatas/components/navbar.dart';
 
-//OBS: Essa página é temporária e está simulando a página inicial
 class Home extends StatefulWidget {
   bool autorizado;
   Home(bool usuario, {super.key, required this.title})

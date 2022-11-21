@@ -1,5 +1,6 @@
 import 'package:buscapatas/components/animal_card.dart';
 import 'package:buscapatas/components/navbar-extra.dart';
+import 'package:buscapatas/model/PostModel.dart';
 import 'package:buscapatas/visualizacoes/info-notificacao-avistado.dart';
 import 'package:buscapatas/visualizacoes/info-post-avistado.dart';
 import 'package:buscapatas/visualizacoes/info-post-perdido.dart';
@@ -8,9 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
 class ListaNotificoesAvistado extends StatefulWidget {
-  const ListaNotificoesAvistado({super.key, required this.title});
+  ListaNotificoesAvistado({title, key, postId}) {
+    super.key;
+    this.title = title;
+    this.postId = postId;
+  }
 
-  final String title;
+  String title = "";
+  int postId = 0;
 
   @override
   State<ListaNotificoesAvistado> createState() =>
@@ -18,19 +24,17 @@ class ListaNotificoesAvistado extends StatefulWidget {
 }
 
 class _ListaNotificoesAvistadoState extends State<ListaNotificoesAvistado> {
-  List<String> listaNotificacoesAvistado = [];
   TextEditingController buscaController = TextEditingController();
   List<NotificacaoAvistamentoModel> notificacoes = [];
 
   @override
   void initState() {
-    _getNotificacoesByPost();
+    _getNotificacoesByPost(widget.postId);
     //Para pegar o valor da sessao
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -39,34 +43,38 @@ class _ListaNotificoesAvistadoState extends State<ListaNotificoesAvistado> {
           centerTitle: true,
           foregroundColor: Colors.white,
           backgroundColor: estilo.corprimaria),
-        bottomNavigationBar: const BuscapatasNavBarExtra(),
+      bottomNavigationBar: const BuscapatasNavBarExtra(),
       body: Padding(
           padding: const EdgeInsets.fromLTRB(30.0, 10, 30.0, 10.0),
           child: Column(children: <Widget>[
+            if (notificacoes.isEmpty)
+              const Text("Não há notificações para esse post",
+                  style: TextStyle(
+                      fontSize: 22, color: estilo.corprimaria, height: 10)),
             Expanded(
               child: ListView.builder(
                   itemCount: notificacoes.length,
                   itemBuilder: (context, index) {
-                    NotificacaoAvistamentoModel? notificacaoAtual = null ;
-                    if(notificacoes[index]!=null){
-                      notificacaoAtual = notificacoes[index];                         
+                    NotificacaoAvistamentoModel? notificacaoAtual = null;
+                    if (notificacoes[index] != null) {
+                      notificacaoAtual = notificacoes[index];
                     }
                     return GestureDetector(
                         child: Card(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.zero,
-                          minimumSize: Size.zero,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            side: BorderSide.none,
-                          ),
+                            child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        minimumSize: Size.zero,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          side: BorderSide.none,
                         ),
-                        onPressed: () {
-                          _infoNotificacaoAvistado();
-                        },
-                        child: AnimalCard.notificacao(notificacao:notificacaoAtual
                       ),
+                      onPressed: () {
+                        _infoNotificacaoAvistado();
+                      },
+                      child:
+                          AnimalCard.notificacao(notificacao: notificacaoAtual),
                     )));
                   }),
             ),
@@ -74,13 +82,12 @@ class _ListaNotificoesAvistadoState extends State<ListaNotificoesAvistado> {
     );
   }
 
-  void _getNotificacoesByPost() async{
-    //AJUSTAR AQUI PARA PASSAR O ID POST DINÂMICO
-    List<NotificacaoAvistamentoModel> listaNotificacoes = await NotificacaoAvistamentoModel.getNotificacoesByPost(4);
+  void _getNotificacoesByPost(int postId) async {
+    List<NotificacaoAvistamentoModel> listaNotificacoes =
+        await NotificacaoAvistamentoModel.getNotificacoesByPost(postId);
     setState(() {
       notificacoes = listaNotificacoes;
     });
-
   }
 
   void _infoNotificacaoAvistado() {
