@@ -175,7 +175,7 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      PerfilUsuario(title: "Perfil")),
+                                      ContatoUsuario(title: "Perfil", usuario:post.usuario!)),
                             );
                           },
                           child: Ink(

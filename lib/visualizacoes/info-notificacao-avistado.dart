@@ -1,8 +1,6 @@
-import 'package:buscapatas/perfil_usuario.dart';
-import 'package:buscapatas/publico/cadastro-usuario.dart';
-import 'package:buscapatas/publico/esqueceu-senha.dart';
 import 'package:buscapatas/visualizacoes/contato.dart';
 import 'package:flutter/material.dart';
+import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
 class InfoNotificacaoAvistado extends StatefulWidget {
@@ -80,13 +78,13 @@ class _InfoNotificacaoAvistadoState extends State<InfoNotificacaoAvistado> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    PerfilUsuario(title: "Perfil")),
+                                    ContatoUsuario(title: "Perfil", usuario: UsuarioModel())),
                           );
                         },
                         child: Ink(
                           child: RichText(
                             text: const TextSpan(
-                              text: "Entrar em contato ",
+                              text: "Ver informações de contato ",
                               style: TextStyle(
                                 decoration: TextDecoration.underline,
                                 color: estilo.corprimaria,

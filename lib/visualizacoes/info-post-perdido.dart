@@ -201,7 +201,7 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      PerfilUsuario(title: "Perfil")),
+                                      ContatoUsuario(title: "Perfil", usuario:post.usuario!)),
                             );
                           },
                           child: Ink(

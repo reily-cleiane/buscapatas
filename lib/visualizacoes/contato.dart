@@ -7,16 +7,18 @@ import 'package:buscapatas/model/PostModel.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
-class PerfilUsuario extends StatefulWidget {
-  const PerfilUsuario({super.key, required this.title});
+class ContatoUsuario extends StatefulWidget {
+  ContatoUsuario({super.key, required this.title, required this.usuario});
 
   final String title;
+  UsuarioModel usuario = new UsuarioModel();
 
   @override
-  State<PerfilUsuario> createState() => _PerfilUsuarioState();
+  State<ContatoUsuario> createState() => _ContatoUsuarioState();
 }
 
-class _PerfilUsuarioState extends State<PerfilUsuario> {
+class _ContatoUsuarioState extends State<ContatoUsuario> {
+  UsuarioModel usuarioVisitado = new UsuarioModel();
   List<PostModel> postsUsuario = [];
   UsuarioModel usuarioLogado = UsuarioModel();
 
@@ -24,8 +26,8 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
   void initState() {
     getUsuarioLogado();
     getPostsByUsuario();
+    usuarioVisitado = widget.usuario;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -53,11 +55,11 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                 child: Row(
-                  children: const [
+                  children: [
                     Expanded(
                       flex: 7,
                       child: Text(
-                        "Norville Rogers",
+                        usuarioVisitado.nome!,
                         style:
                             TextStyle(fontSize: 24, color: estilo.corprimaria),
                       ),
@@ -83,25 +85,25 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text('Informações de contato',
                           style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                               color: estilo.corprimaria)),
-                      SizedBox(height: 5),
+                      SizedBox(height: 10),
                       Text(
                         'Número de celular: ',
                         style: TextStyle(fontSize: 16),
                       ),
                       SizedBox(width: 5),
-                      Text('(84)989989236', style: TextStyle(fontSize: 16)),
+                      Text(usuarioVisitado.telefone!, style: TextStyle(fontSize: 16)),
                       SizedBox(
                         height: 10,
                       ),
                       Text('Email: ', style: TextStyle(fontSize: 16)),
                       Text.rich(TextSpan(
-                        text: "salsicha@gmail.com",
+                        text: usuarioVisitado.email!,
                         style: TextStyle(
                           fontSize: 16,
                           decoration: TextDecoration.underline,
@@ -170,7 +172,7 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
   }
 
   void getPostsByUsuario() async {
-    List<PostModel> posts = await PostModel.getPostsByUsuario(usuarioLogado.id);
+    List<PostModel> posts = await PostModel.getPostsByUsuario(usuarioVisitado.id);
     setState(() {
       postsUsuario = posts;
     });

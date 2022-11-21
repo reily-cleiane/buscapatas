@@ -156,9 +156,8 @@ class PostModel {
   }
 
   static Future<List<PostModel>> getPostsByUsuario(int? idUsuario) async {
-    //AJUSTAR ISSO AQUI PARA PEGAR DO USUARIO CERTO
-    const request = "http://localhost:8080/posts/usuario/1";
-    //const request = "http://localhost:8080/posts/usuario/${idUsuario}";
+
+    var request = "http://localhost:8080/posts/usuario/${idUsuario}";
 
     http.Response response = await http.get(Uri.parse(request));
 
