@@ -32,7 +32,7 @@ class AnimalCard extends StatefulWidget {
 
   AnimalCard.notificacao({notificacao}){
     super.key;
-    tipoPost = "notificado";
+    tipoPost = "visto";
     this.backgroundColor = estilo.coravistado;
 
     this.especie = "Seu ${notificacao.post.getEspecie().getNome().toLowerCase()} foi";
@@ -45,20 +45,16 @@ class AnimalCard extends StatefulWidget {
 
   }
 
-  String? title;
   String? especie;
   DateTime? dataHora;
   String? tipoPost;
-  String? details;
   double? latitude;
   double? longitude;
   String? timestamp;
   PostModel? post;
   String outrasInformacoes = "";
   String orientacoesGerais = "";
-
   String? image;
-  int? distance;
   Color? backgroundColor;
 
   @override
@@ -132,7 +128,7 @@ class AnimalCardState extends State<AnimalCard> {
                       Text(
                         "${widget.especie!} ${widget.tipoPost!}",
                         style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
+                            fontWeight: FontWeight.bold, fontSize: 18, color: estilo.corpreto),
                       ),
                       Text(informacoes),
                       const SizedBox(height: 10),
@@ -144,7 +140,7 @@ class AnimalCardState extends State<AnimalCard> {
                             style: const TextStyle(fontWeight: FontWeight.w300),
                           ),
                           const SizedBox(width: 5),
-                          const Icon(Icons.location_on, color: estilo.corpreto)
+                          const Icon(Icons.location_on, color: estilo.corcinza)
                         ],
                       ),
                     ],
@@ -179,11 +175,15 @@ class AnimalCardState extends State<AnimalCard> {
 
   String getDistanciaTemporal(DateTime? dataHora){
     Duration? diferencaTempo;
-    String texto = "Postado há ";
+    String texto = "Postado há";
 
     diferencaTempo = DateTime.now().difference(dataHora!);
     if (diferencaTempo.inDays >= 1 && diferencaTempo.inDays <= 30) {
-      texto = "${texto} ${diferencaTempo.inDays} dias.";
+      if(diferencaTempo.inDays == 1){
+        texto = "${texto} ${diferencaTempo.inDays} dia.";
+      }else{
+        texto = "${texto} ${diferencaTempo.inDays} dias.";
+      }    
     } else if (diferencaTempo.inDays < 1) {
       texto = "${texto} ${diferencaTempo.inHours} horas.";
     } else {

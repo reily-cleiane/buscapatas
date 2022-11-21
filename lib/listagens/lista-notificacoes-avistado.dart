@@ -71,7 +71,7 @@ class _ListaNotificoesAvistadoState extends State<ListaNotificoesAvistado> {
                         ),
                       ),
                       onPressed: () {
-                        _infoNotificacaoAvistado();
+                        _infoNotificacaoAvistado(notificacaoAtual!);
                       },
                       child:
                           AnimalCard.notificacao(notificacao: notificacaoAtual),
@@ -90,12 +90,13 @@ class _ListaNotificoesAvistadoState extends State<ListaNotificoesAvistado> {
     });
   }
 
-  void _infoNotificacaoAvistado() {
+  void _infoNotificacaoAvistado(NotificacaoAvistamentoModel notificacaoAtual) {
+
     Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) =>
-              InfoNotificacaoAvistado(title: "Notificação do Post")),
+              InfoNotificacaoAvistado(title: "Notificação do Post", notificacao: notificacaoAtual)),
     );
   }
 }
