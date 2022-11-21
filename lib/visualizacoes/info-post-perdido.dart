@@ -86,7 +86,7 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 20,
-                                    backgroundColor: estilo.corperdido))))),
+                                    ))))),
                 Padding(
                     padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
                     child: Row(children: <Widget>[

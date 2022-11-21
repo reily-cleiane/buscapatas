@@ -198,7 +198,14 @@ class _HomeState extends State<Home> {
                                 ),
                               ),
                               onPressed: () {
-                                _infoPostPerdido(postAtual);
+                                if(postAtual!.tipoPost== "ANIMAL_PERDIDO"){
+                                  _infoPostPerdido(postAtual);
+
+                                }else if(postAtual.tipoPost== "ANIMAL_AVISTADO"){
+                                  _infoPostAvistado(postAtual);
+
+                                }
+                               
                               },
                               child: AnimalCard(post: postAtual),
                             ),
@@ -236,11 +243,11 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void _infoPostAvistado() {
+  void _infoPostAvistado(PostModel? postAtual) {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => InfoPostAvistado(title: "Animal Avistado")),
+          builder: (context) => InfoPostAvistado(title: "Animal Avistado", post:postAtual)),
     );
   }
 

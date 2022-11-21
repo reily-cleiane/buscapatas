@@ -120,7 +120,7 @@ class AnimalCardState extends State<AnimalCard> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(
-                            "${postadoHa!}\n${dataHoraExibida}",
+                            "${postadoHa}\n${dataHoraExibida}",
                             textAlign: TextAlign.right,
                             style: const TextStyle(
                                 fontWeight: FontWeight.w200,
@@ -134,7 +134,7 @@ class AnimalCardState extends State<AnimalCard> {
                         style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),
-                      Text(informacoes!),
+                      Text(informacoes),
                       const SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -182,12 +182,12 @@ class AnimalCardState extends State<AnimalCard> {
     String texto = "Postado há ";
 
     diferencaTempo = DateTime.now().difference(dataHora!);
-    if (diferencaTempo!.inDays >= 1 && diferencaTempo!.inDays <= 30) {
-      texto = "${texto} ${diferencaTempo!.inDays} dias.";
-    } else if (diferencaTempo!.inDays < 1) {
-      texto = "${texto} ${diferencaTempo!.inHours} horas.";
+    if (diferencaTempo.inDays >= 1 && diferencaTempo.inDays <= 30) {
+      texto = "${texto} ${diferencaTempo.inDays} dias.";
+    } else if (diferencaTempo.inDays < 1) {
+      texto = "${texto} ${diferencaTempo.inHours} horas.";
     } else {
-      int meses = diferencaTempo!.inDays % 30;
+      int meses = diferencaTempo.inDays % 30;
       texto = "${texto} ${meses} meses.";
     }
     return texto;
