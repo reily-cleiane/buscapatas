@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_session/flutter_session.dart';
+import 'package:buscapatas/utils/localizacao.dart' as localizacao;
 import 'package:buscapatas/model/NotificacaoAvistamentoModel.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
@@ -25,16 +26,14 @@ class InfoNotificacaoAvistado extends StatefulWidget {
 class _InfoNotificacaoAvistadoState extends State<InfoNotificacaoAvistado> {
   NotificacaoAvistamentoModel notificacao = new NotificacaoAvistamentoModel();
   String dataHora = "";
-  String distancia = "";
-  double valorLatitudeAtual = 0;
-  double valorLongitudeAtual = 0;
+  double distancia = 0;
+
   UsuarioModel usuarioLogado = new UsuarioModel();
 
   @override
   void initState() {
     notificacao = widget.notificacao;
 
-    getPosicao();
     formatarDados();
     getUsuarioLogado();
   }
@@ -88,7 +87,7 @@ class _InfoNotificacaoAvistadoState extends State<InfoNotificacaoAvistado> {
                               size: 14,
                               color: estilo.corprimaria,
                             ),
-                            Text(" A ${distancia} de você.",
+                            Text(" A ${distancia} km de você.",
                                 textAlign: TextAlign.right,
                                 style: TextStyle(
                                     color: Colors.black, fontSize: 14))
@@ -148,9 +147,8 @@ class _InfoNotificacaoAvistadoState extends State<InfoNotificacaoAvistado> {
   void formatarDados() {
     dataHora =
         "${notificacao.dataHora!.day.toString().padLeft(2, '0')}/${notificacao.dataHora!.month.toString().padLeft(2, '0')}/${notificacao.dataHora!.year.toString()} às ${notificacao.dataHora!.hour.toString()}:${notificacao.dataHora!.minute.toString()}";
-    double dist = calcularDistancia(valorLatitudeAtual, valorLongitudeAtual,
-        notificacao.latitude, notificacao.longitude);
-    distancia = "${double.parse(dist.toStringAsFixed(2))} km";
+    distancia = localizacao.calcularDistanciaPosicaoAtual(notificacao.latitude, notificacao.longitude);
+
   }
 
   void getUsuarioLogado() async {
@@ -162,44 +160,4 @@ class _InfoNotificacaoAvistadoState extends State<InfoNotificacaoAvistado> {
     });
   }
 
-  void getPosicao() async {
-    try {
-      Position posicao = await _posicaoAtual();
-      valorLatitudeAtual = posicao.latitude;
-      valorLongitudeAtual = posicao.longitude;
-    } catch (e) {
-      e.toString();
-    }
-  }
-
-  Future<Position> _posicaoAtual() async {
-    LocationPermission permissao;
-
-    bool ativado = await Geolocator.isLocationServiceEnabled();
-    if (!ativado) {
-      return Future.error('Por favor, habilite a localização no smartphone');
-    }
-
-    permissao = await Geolocator.checkPermission();
-    if (permissao == LocationPermission.denied) {
-      permissao = await Geolocator.requestPermission();
-      if (permissao == LocationPermission.denied) {
-        return Future.error('Você precisa autorizar o acesso à localização');
-      }
-    }
-
-    if (permissao == LocationPermission.deniedForever) {
-      return Future.error('Você precisa autorizar o acesso à localização');
-    }
-
-    return await Geolocator.getCurrentPosition();
-  }
-
-  double calcularDistancia(lat1, lon1, lat2, lon2) {
-    var p = 0.017453292519943295;
-    var a = 0.5 -
-        cos((lat2 - lat1) * p) / 2 +
-        cos(lat1 * p) * cos(lat2 * p) * (1 - cos((lon2 - lon1) * p)) / 2;
-    return 12742 * asin(sqrt(a));
-  }
 }

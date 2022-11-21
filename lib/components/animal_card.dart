@@ -1,47 +1,42 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
-import 'package:geolocator/geolocator.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
-import 'package:buscapatas/Model/PostModel.dart';
+import 'package:buscapatas/model/PostModel.dart';
+import 'package:buscapatas/utils/localizacao.dart' as localizacao;
 
 class AnimalCard extends StatefulWidget {
 
-  AnimalCard({post}){
+  AnimalCard({super.key, post}){
     super.key;
     if(post?.tipoPost == "ANIMAL_PERDIDO"){
-      this.tipoPost = "perdido";
-      this.backgroundColor = estilo.corperdido;
+      tipoPost = "perdido";
+      backgroundColor = estilo.corperdido;
     }else if(post?.tipoPost == "ANIMAL_AVISTADO"){
-      this.tipoPost = "avistado";
-      this.backgroundColor = estilo.coravistado;
+      tipoPost = "avistado";
+      backgroundColor = estilo.coravistado;
 
     }
-    this.especie = post?.especieAnimal?.getNome();
-    this.dataHora = post?.dataHora;
-    this.latitude = post?.latitude;
-    this.longitude = post?.longitude;
-    this.outrasInformacoes = post?.outrasInformacoes;
-    this.orientacoesGerais = post?.orientacoesGerais;
+    especie = post?.especieAnimal?.getNome();
+    dataHora = post?.dataHora;
+    latitude = post?.latitude;
+    longitude = post?.longitude;
+    outrasInformacoes = post?.outrasInformacoes;
+    orientacoesGerais = post?.orientacoesGerais;
 
-    this.image = 'imagens/animal.jpg';
-
+    image = 'imagens/animal.jpg';
   }
 
-  AnimalCard.perdido({post}) : this( post:post);
-  AnimalCard.avistado({post}) : this( post:post);
-
-  AnimalCard.notificacao({notificacao}){
+  AnimalCard.notificacao({super.key, notificacao}){
     super.key;
     tipoPost = "visto";
-    this.backgroundColor = estilo.coravistado;
+    backgroundColor = estilo.coravistado;
 
-    this.especie = "Seu ${notificacao.post.getEspecie().getNome().toLowerCase()} foi";
-    this.dataHora = notificacao?.dataHora;
-    this.latitude = notificacao?.latitude;
-    this.longitude = notificacao?.longitude;
-    this.outrasInformacoes = notificacao?.mensagem;
+    especie = "Seu ${notificacao.post.getEspecie().getNome().toLowerCase()} foi";
+    dataHora = notificacao?.dataHora;
+    latitude = notificacao?.latitude;
+    longitude = notificacao?.longitude;
+    outrasInformacoes = notificacao?.mensagem;
 
-    this.image = 'imagens/animal.jpg';
+    image = 'imagens/animal.jpg';
 
   }
 
@@ -62,8 +57,7 @@ class AnimalCard extends StatefulWidget {
 }
 
 class AnimalCardState extends State<AnimalCard> {
-  double valorLatitudeAtual = 0;
-  double valorLongitudeAtual = 0;
+
   double distancia = 0;
   String dataHoraExibida = "";
   String informacoes = "";
@@ -71,16 +65,13 @@ class AnimalCardState extends State<AnimalCard> {
 
   @override
   void initState() {
-    getPosicao();
     informacoes = getInformacoesResumidas(widget.outrasInformacoes, widget.orientacoesGerais);
-    postadoHa = getDistanciaTemporal(widget.dataHora);
+    postadoHa = getTempoDecorrido(widget.dataHora);
     dataHoraExibida =
           "${widget.dataHora!.day.toString().padLeft(2, '0')}/${widget.dataHora!.month.toString().padLeft(2, '0')}/${widget.dataHora!.year.toString()} às ${widget.dataHora!.hour.toString()}:${widget.dataHora!.minute.toString()}";
     
     setState(() {
-      distancia = calcularDistancia(widget.latitude, widget.longitude,
-          valorLatitudeAtual, valorLongitudeAtual);
-      distancia = double.parse(distancia.toStringAsFixed(2));
+      distancia = localizacao.calcularDistanciaPosicaoAtual(widget.latitude, widget.longitude);
       });
       
     super.initState();
@@ -173,7 +164,7 @@ class AnimalCardState extends State<AnimalCard> {
     return informacoes;
   }
 
-  String getDistanciaTemporal(DateTime? dataHora){
+  String getTempoDecorrido(DateTime? dataHora){
     Duration? diferencaTempo;
     String texto = "Postado há";
 
@@ -194,44 +185,4 @@ class AnimalCardState extends State<AnimalCard> {
 
   }
 
-  void getPosicao() async {
-    try {
-      Position posicao = await _posicaoAtual();
-      valorLatitudeAtual = posicao.latitude;
-      valorLongitudeAtual = posicao.longitude;
-    } catch (e) {
-      e.toString();
-    }
-  }
-
-  Future<Position> _posicaoAtual() async {
-    LocationPermission permissao;
-
-    bool ativado = await Geolocator.isLocationServiceEnabled();
-    if (!ativado) {
-      return Future.error('Por favor, habilite a localização no smartphone');
-    }
-
-    permissao = await Geolocator.checkPermission();
-    if (permissao == LocationPermission.denied) {
-      permissao = await Geolocator.requestPermission();
-      if (permissao == LocationPermission.denied) {
-        return Future.error('Você precisa autorizar o acesso à localização');
-      }
-    }
-
-    if (permissao == LocationPermission.deniedForever) {
-      return Future.error('Você precisa autorizar o acesso à localização');
-    }
-
-    return await Geolocator.getCurrentPosition();
-  }
-
-  double calcularDistancia(lat1, lon1, lat2, lon2) {
-    var p = 0.017453292519943295;
-    var a = 0.5 -
-        cos((lat2 - lat1) * p) / 2 +
-        cos(lat1 * p) * cos(lat2 * p) * (1 - cos((lon2 - lon1) * p)) / 2;
-    return 12742 * asin(sqrt(a));
-  }
 }

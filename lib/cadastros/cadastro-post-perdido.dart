@@ -9,7 +9,7 @@ import 'package:buscapatas/model/RacaModel.dart';
 import 'package:buscapatas/model/CorModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
-import 'package:geolocator/geolocator.dart';
+import 'package:buscapatas/utils/localizacao.dart' as localizacao;
 
 class CadastroPostPerdido extends StatefulWidget {
   const CadastroPostPerdido({super.key, required this.title});
@@ -32,8 +32,6 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
   String valorSexoMarcado = "";
   String? valorEspecieSelecionado;
   String? valorRacaSelecionado;
-  double? valorLatitude;
-  double? valorLongitude;
 
   List<dynamic> listaEspecies = [];
   List<dynamic> listaRacas = [];
@@ -47,7 +45,6 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
   void initState() {
     cargaInicialBD();
     getUsuarioLogado();
-    getPosicao();
     super.initState();
   }
 
@@ -267,6 +264,8 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
   void _addPost() async {
     //Refatorar para o método ficar em PostModel e não aqui
     var url = PostModel.getUrlSalvarPost();
+    double valorLatitude = localizacao.getLatitudeAtual();
+    double valorLongitude = localizacao.getLongitudeAtual();
 
     List<CorModel> cores = [];
 
@@ -310,39 +309,6 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
         },
       );
     }
-  }
-
-  void getPosicao() async {
-    try {
-      Position posicao = await _posicaoAtual();
-      valorLatitude = posicao.latitude;
-      valorLongitude = posicao.longitude;
-    } catch (e) {
-      e.toString();
-    }
-  }
-
-  Future<Position> _posicaoAtual() async {
-    LocationPermission permissao;
-
-    bool ativado = await Geolocator.isLocationServiceEnabled();
-    if (!ativado) {
-      return Future.error('Por favor, habilite a localização no smartphone');
-    }
-
-    permissao = await Geolocator.checkPermission();
-    if (permissao == LocationPermission.denied) {
-      permissao = await Geolocator.requestPermission();
-      if (permissao == LocationPermission.denied) {
-        return Future.error('Você precisa autorizar o acesso à localização');
-      }
-    }
-
-    if (permissao == LocationPermission.deniedForever) {
-      return Future.error('Você precisa autorizar o acesso à localização');
-    }
-
-    return await Geolocator.getCurrentPosition();
   }
 
   void selecionarRaca(String racaSelecionada) {
