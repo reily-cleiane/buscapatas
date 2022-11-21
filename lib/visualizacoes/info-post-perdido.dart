@@ -1,10 +1,6 @@
 import 'package:buscapatas/cadastros/cadastro-notificacao-avistado.dart';
 import 'package:buscapatas/model/PostModel.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
-import 'package:flutter_session/flutter_session.dart';
-import 'package:buscapatas/perfil_usuario.dart';
-import 'package:buscapatas/publico/cadastro-usuario.dart';
-import 'package:buscapatas/publico/esqueceu-senha.dart';
 import 'package:buscapatas/visualizacoes/contato.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/listagens/lista-notificacoes-avistado.dart';

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
-//import 'package:buscapatas/componentes-interface/campo_input.dart';
 
 class NaoImplementado extends StatefulWidget {
   const NaoImplementado({super.key, required this.title});

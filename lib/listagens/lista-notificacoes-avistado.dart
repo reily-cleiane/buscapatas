@@ -1,9 +1,6 @@
 import 'package:buscapatas/components/animal_card.dart';
 import 'package:buscapatas/components/navbar_extra.dart';
-import 'package:buscapatas/model/PostModel.dart';
 import 'package:buscapatas/visualizacoes/info-notificacao-avistado.dart';
-import 'package:buscapatas/visualizacoes/info-post-avistado.dart';
-import 'package:buscapatas/visualizacoes/info-post-perdido.dart';
 import 'package:buscapatas/model/NotificacaoAvistamentoModel.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;

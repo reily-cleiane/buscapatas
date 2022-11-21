@@ -1,9 +1,7 @@
 import 'package:buscapatas/visualizacoes/contato.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_session/flutter_session.dart';
 import 'package:buscapatas/utils/localizacao.dart' as localizacao;
 import 'package:buscapatas/model/NotificacaoAvistamentoModel.dart';
-import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
 class InfoNotificacaoAvistado extends StatefulWidget {

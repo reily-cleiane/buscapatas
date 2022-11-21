@@ -1,5 +1,3 @@
-//import 'dart:html';
-
 import 'package:buscapatas/perfil_usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;

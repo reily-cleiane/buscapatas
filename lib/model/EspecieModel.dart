@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-EspecieModel usuairoModelJson(String str) =>
+EspecieModel especieModelJson(String str) =>
     EspecieModel.fromJson(json.decode(str));
 
 String especieModelToJson(EspecieModel data) => json.encode(data.toJson());

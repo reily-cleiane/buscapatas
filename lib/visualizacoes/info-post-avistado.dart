@@ -1,7 +1,5 @@
-import 'package:buscapatas/perfil_usuario.dart';
 import 'package:buscapatas/model/PostModel.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
-import 'package:flutter_session/flutter_session.dart';
 import 'package:buscapatas/visualizacoes/contato.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;

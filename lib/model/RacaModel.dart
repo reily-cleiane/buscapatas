@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-RacaModel usuairoModelJson(String str) =>
+RacaModel racaModelJson(String str) =>
     RacaModel.fromJson(json.decode(str));
 
 String RacaModelToJson(RacaModel data) => json.encode(data.toJson());

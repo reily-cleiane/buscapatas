@@ -1,7 +1,5 @@
-import 'package:buscapatas/model/EspecieModel.dart';
 import 'package:buscapatas/model/NotificacaoAvistamentoModel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_session/flutter_session.dart';
 import 'dart:convert';
 import 'package:buscapatas/home.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
