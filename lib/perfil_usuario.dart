@@ -67,7 +67,7 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
                     Expanded(
                       flex: 7,
                       child: Text(
-                        usuario.nome,
+                        (usuarioLogado.nome)!=null?usuarioLogado.nome!:"",
                         style: const TextStyle(fontSize: 24),
                       ),
                     ),
@@ -189,7 +189,7 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        EditarPerfil(title: "Editar Perfil")),
+                                        EditarPerfil(title: "Editar Perfil", usuario: usuarioLogado)),
                               );
                               setState(() {});
                             },

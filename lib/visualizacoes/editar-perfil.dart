@@ -1,5 +1,6 @@
 import 'package:buscapatas/components/campo-texto.dart';
 import 'package:buscapatas/model/test-user.dart';
+import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:buscapatas/publico/esqueceu-senha.dart';
 import 'package:buscapatas/visualizacoes/editar-numero.dart';
 import 'package:buscapatas/utils/mock_usuario.dart';
@@ -8,9 +9,13 @@ import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 import 'package:flutter/services.dart';
 
 class EditarPerfil extends StatefulWidget {
-  const EditarPerfil({super.key, required this.title});
+  EditarPerfil({super.key, required title, required usuario}){
+    this.usuario= usuario;
+    this.title = title;
+  }
 
-  final String title;
+  String title = "";
+  UsuarioModel usuario = new UsuarioModel();
 
   @override
   State<EditarPerfil> createState() => _EditarPerfilState();
@@ -18,11 +23,17 @@ class EditarPerfil extends StatefulWidget {
 
 class _EditarPerfilState extends State<EditarPerfil> {
   User usuario = MockUsuario.getUser();
+  UsuarioModel usuarioLogado = new UsuarioModel();
   var _passwordVisible = false;
   // TextEditingController nomeController = TextEditingController();
   // TextEditingController emailController = TextEditingController();
   // TextEditingController telefoneController = TextEditingController();
   // TextEditingController usuarioController = TextEditingController();
+
+  @override
+  void initState() {
+    usuarioLogado = widget.usuario;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,18 +62,18 @@ class _EditarPerfilState extends State<EditarPerfil> {
               ),
               // const SizedBox(height: 20),
               CampoTexto(label: 'Nome', 
-              text: usuario.nome, 
+              text: usuarioLogado.nome!, 
               tipoCampo: TextInputType.name,
               enableEdit: true,
               onChanged: (nome) => usuario = usuario.copy(nome: nome)),
               CampoTexto(label: 'Email', 
-              text: usuario.email, 
+              text: usuarioLogado.email!, 
               tipoCampo: TextInputType.emailAddress,
               enableEdit: true,
               onChanged: (email) => usuario = usuario.copy(email: email)),
               const SizedBox(height: 20),
               TextFormField(
-                initialValue: usuario.telefone,
+                initialValue: usuarioLogado.telefone,
                 decoration: InputDecoration(
                   labelText: "Telefone",
                   border: OutlineInputBorder(
@@ -83,7 +94,7 @@ class _EditarPerfilState extends State<EditarPerfil> {
               ),
               const SizedBox(height: 20),
               TextFormField(
-                initialValue: "12345678",
+                initialValue: usuarioLogado.senha,
                 decoration: InputDecoration(
                     labelText: "Senha",
                     border: OutlineInputBorder(
@@ -119,8 +130,8 @@ class _EditarPerfilState extends State<EditarPerfil> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const EsqueceuSenha(
-                              title: 'Mudar senha')),
+                          builder: (context) => EsqueceuSenha(
+                              title: 'Mudar senha', usuario:usuarioLogado)),
                     );
                   },
                   child: const Text(

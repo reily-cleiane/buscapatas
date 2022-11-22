@@ -1,19 +1,31 @@
 import 'package:buscapatas/components/campo-texto.dart';
+import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:buscapatas/model/test-user.dart';
 import 'package:buscapatas/utils/mock_usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
 class EsqueceuSenha extends StatefulWidget {
-  const EsqueceuSenha({super.key, required this.title});
+  EsqueceuSenha({super.key, required this.title, usuario}){
+    if(usuario!=null){
+      this.usuario = usuario;
+    }
+  }
 
   final String title;
+  UsuarioModel usuario = new UsuarioModel();
 
   @override
   State<EsqueceuSenha> createState() => _EsqueceuSenhaState();
 }
 
 class _EsqueceuSenhaState extends State<EsqueceuSenha> {
+  UsuarioModel usuarioLogado = new UsuarioModel();
+
+  @override
+  void initState() {
+    usuarioLogado = widget.usuario;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +52,7 @@ class _EsqueceuSenhaState extends State<EsqueceuSenha> {
             const Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 1.0)),
 
             CampoTexto(label: 'Email', 
-              text: usuario.email, 
+              text: usuarioLogado.email!=null?usuarioLogado.email!:"", 
               tipoCampo: TextInputType.emailAddress,
               enableEdit: true,
               onChanged: (email) => usuario = usuario.copy(email: email)),
