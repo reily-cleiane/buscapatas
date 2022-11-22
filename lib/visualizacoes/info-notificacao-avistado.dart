@@ -89,8 +89,11 @@ class _InfoNotificacaoAvistadoState extends State<InfoNotificacaoAvistado> {
                           size: 20,
                           color: estilo.corprimaria,
                         ),
-                        Text("   Mensagem: ${notificacao.mensagem!}",
-                            style: TextStyle(color: Colors.black, fontSize: 20))
+                        Padding(
+                      padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
+                        Expanded(child:   
+                        Text("Mensagem: ${notificacao.mensagem!}",
+                            style: TextStyle(color: Colors.black, fontSize: 20)))
                       ])),
                   Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 20)),
                   Row(
