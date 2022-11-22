@@ -39,7 +39,7 @@ class _HomeState extends State<Home> {
   void initState() {
     _center = LatLng(valorLatitude, valorLongitude);
     getPostsAnimaisProximos();
-    mockarUsuarioLogado();
+    //mockarUsuarioLogado();
 
   }
 

@@ -23,8 +23,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: generateMaterialColor(color: estilo.corsecundaria),
       ),
-      home: Home(true, title: "Página Inicial"),
-      //home: Login(title: "Login - BuscaPatas"),
+      //OBS SE FOR ABRIR DIRETO EM OUTRA PÁGINA É BOM SER NA HOME, E IR LA NA HOME E DESCOMENTAR O USUARIO MOCKADO
+      //home: Home(true, title: "Página Inicial"),
+      home: Login(title: "Login - BuscaPatas"),
     );
   }
 }
