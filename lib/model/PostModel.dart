@@ -98,7 +98,7 @@ class PostModel {
 
   }
   static Future<List<PostModel>> getPostsAnimaisPerdidos() async {
-    const request = "http://localhost:8080/posts/perdidos";
+    const request = "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/posts/perdidos";
 
     http.Response response = await http.get(Uri.parse(request));
 
@@ -117,7 +117,7 @@ class PostModel {
   }
 
   static Future<List<PostModel>> getPostsAnimaisAvistados() async {
-    const request = "http://localhost:8080/posts/avistados";
+    const request = "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/posts/avistados";
 
     http.Response response = await http.get(Uri.parse(request));
 
@@ -137,7 +137,7 @@ class PostModel {
 
   static Future<List<PostModel>> getPostsAnimaisProximos() async {
     //AJUSTAR ISSO AQUI PARA SER POSTS PRÓXIMOS E NÃO TODOS OS POSTS
-    const request = "http://localhost:8080/posts";
+    const request = "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/posts";
 
     http.Response response = await http.get(Uri.parse(request));
 
@@ -157,7 +157,7 @@ class PostModel {
 
   static Future<List<PostModel>> getPostsByUsuario(int? idUsuario) async {
 
-    var request = "http://localhost:8080/posts/usuario/${idUsuario}";
+    var request = "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/posts/usuario/${idUsuario}";
 
     http.Response response = await http.get(Uri.parse(request));
 

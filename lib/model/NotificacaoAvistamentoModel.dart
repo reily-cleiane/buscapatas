@@ -48,7 +48,7 @@ class NotificacaoAvistamentoModel {
 
 
   static Future<List<NotificacaoAvistamentoModel>> getNotificacoesByPost(int postId) async {
-    var request = "http://localhost:8080/notificacoes/post/${postId}";
+    var request = "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/notificacoes/post/${postId}";
 
     http.Response response = await http.get(Uri.parse(request));
 
@@ -68,8 +68,7 @@ class NotificacaoAvistamentoModel {
 
   static Future<List<NotificacaoAvistamentoModel>> getNotificacoesByUsuario(int? idUsuario) async {
     //AJUSTAR ISSO AQUI PARA PEGAR DO USUARIO CERTO
-    var request = "http://localhost:8080/notificacoes/usuario/1";
-    //const request = "http://localhost:8080/notificacoes/usuario/${idUsuario}";
+    var request = "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/notificacoes/usuario/${idUsuario}";
 
     http.Response response = await http.get(Uri.parse(request));
 
