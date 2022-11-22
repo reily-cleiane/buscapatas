@@ -9,6 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/publico/login.dart';
 import 'package:flutter_session/flutter_session.dart';
+import 'package:buscapatas/utils/localizacao.dart' as localizacao;
 import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 import 'package:buscapatas/components/navbar.dart';
@@ -27,9 +28,10 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   List<PostModel> postsProximos = [];
   late GoogleMapController mapController;
-  double? valorLatitude = 45.521563;
-  double? valorLongitude = -122.677433;
-  LatLng _center = LatLng(45.521563, -122.677433);
+  //double? valorLatitude = 45.521563;
+  //double? valorLongitude = -122.677433;
+  double? valorLatitude = 0;
+  double? valorLongitude = 0;
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
@@ -37,13 +39,23 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    _center = LatLng(valorLatitude, valorLongitude);
     getPostsAnimaisProximos();
+    carregarLocalizacao();
     //mockarUsuarioLogado();
-
   }
 
-  void mockarUsuarioLogado() async{
+  void carregarLocalizacao() async {
+    await localizacao.getLatitudeAtual().then((value) => valorLatitude = value);
+
+    await localizacao
+        .getLongitudeAtual()
+        .then((value) => valorLongitude = value);
+
+    //Necessário para recarregar a página após ter pegado o valor de usuarioLogado
+    setState(() {});
+  }
+
+  void mockarUsuarioLogado() async {
     //MOCKAR UM USUARIO LOGADO PARA QUANDO INICIA DIRETO PELA MAIN
     UsuarioModel usuarioLogado = new UsuarioModel(
         id: 1,
@@ -52,7 +64,7 @@ class _HomeState extends State<Home> {
         senha: "abc",
         telefone: "8498778787");
 
-      await FlutterSession().set("sessao_usuarioLogado", usuarioLogado);
+    await FlutterSession().set("sessao_usuarioLogado", usuarioLogado);
   }
 
   @override
@@ -77,16 +89,17 @@ class _HomeState extends State<Home> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(10, 10, 10, 10.0),
                   ),
-                  Container(
-                    height: 300,
-                    child: GoogleMap(
-                      onMapCreated: _onMapCreated,
-                      initialCameraPosition: CameraPosition(
-                        target: _center,
-                        zoom: 11.0,
-                      ),
+                  if (valorLatitude != 0 && valorLongitude != 0)
+                    Container(
+                      height: 300,
+                      child: GoogleMap(
+                          onMapCreated: _onMapCreated,
+                          initialCameraPosition: CameraPosition(
+                              bearing: 192.8334901395799,
+                              target: LatLng(valorLatitude, valorLongitude),
+                              tilt: 59.440717697143555,
+                              zoom: 15)),
                     ),
-                  ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 10, 0, 10.0),
                   ),
@@ -196,14 +209,12 @@ class _HomeState extends State<Home> {
                                 ),
                               ),
                               onPressed: () {
-                                if(postAtual!.tipoPost== "ANIMAL_PERDIDO"){
+                                if (postAtual!.tipoPost == "ANIMAL_PERDIDO") {
                                   _infoPostPerdido(postAtual);
-
-                                }else if(postAtual.tipoPost== "ANIMAL_AVISTADO"){
+                                } else if (postAtual.tipoPost ==
+                                    "ANIMAL_AVISTADO") {
                                   _infoPostAvistado(postAtual);
-
                                 }
-                               
                               },
                               child: AnimalCard(post: postAtual),
                             ),
@@ -236,8 +247,7 @@ class _HomeState extends State<Home> {
   void _infoPostPerdido(PostModel? postAtual) {
     Navigator.push(
       context,
-      MaterialPageRoute(
-          builder: (context) => InfoPostPerdido(post:postAtual)),
+      MaterialPageRoute(builder: (context) => InfoPostPerdido(post: postAtual)),
     );
   }
 
@@ -245,7 +255,8 @@ class _HomeState extends State<Home> {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => InfoPostAvistado(title: "Animal Avistado", post:postAtual)),
+          builder: (context) =>
+              InfoPostAvistado(title: "Animal Avistado", post: postAtual)),
     );
   }
 
