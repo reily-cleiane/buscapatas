@@ -13,6 +13,7 @@ import 'package:buscapatas/utils/localizacao.dart' as localizacao;
 import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 import 'package:buscapatas/components/navbar.dart';
+import 'dart:math';
 
 class Home extends StatefulWidget {
   bool autorizado;
@@ -32,27 +33,12 @@ class _HomeState extends State<Home> {
   //double? valorLongitude = -122.677433;
   double? valorLatitude = 0;
   double? valorLongitude = 0;
-
-  void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
-  }
+  Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
   @override
   void initState() {
     getPostsAnimaisProximos();
-    carregarLocalizacao();
     //mockarUsuarioLogado();
-  }
-
-  void carregarLocalizacao() async {
-    await localizacao.getLatitudeAtual().then((value) => valorLatitude = value);
-
-    await localizacao
-        .getLongitudeAtual()
-        .then((value) => valorLongitude = value);
-
-    //Necessário para recarregar a página após ter pegado o valor de usuarioLogado
-    setState(() {});
   }
 
   void mockarUsuarioLogado() async {
@@ -94,6 +80,7 @@ class _HomeState extends State<Home> {
                       height: 300,
                       child: GoogleMap(
                           onMapCreated: _onMapCreated,
+                          markers: markers.values.toSet(),
                           initialCameraPosition: CameraPosition(
                               bearing: 192.8334901395799,
                               target: LatLng(valorLatitude, valorLongitude),
@@ -226,6 +213,37 @@ class _HomeState extends State<Home> {
     }
   }
 
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+
+    for (var post in postsProximos) {
+      String tipo ="";
+      var funcao;
+      if(post.tipoPost=="ANIMAL_PERDIDO"){
+        tipo = "perdido";
+        funcao = _infoPostPerdido;
+      }else{
+        tipo = "avistado";
+        funcao = _infoPostAvistado;
+      }
+      final marker = Marker(
+        onTap: () => funcao(post), 
+        markerId: MarkerId(post.id.toString()),
+        position: LatLng(post.latitude, post.longitude),
+        // icon: BitmapDescriptor.,
+        infoWindow: InfoWindow(
+          title: "",
+          snippet: "${post.especieAnimal!.nome} ${tipo}",
+        ),
+      );
+
+      markers[MarkerId(post.id.toString())] = marker;
+    }
+
+    setState(() {
+    });
+  }
+
   void _cadastrarAnimalPerdido() {
     Navigator.push(
       context,
@@ -262,8 +280,31 @@ class _HomeState extends State<Home> {
 
   void getPostsAnimaisProximos() async {
     List<PostModel> posts = await PostModel.getPostsAnimaisProximos();
+    await carregarLocalizacao();
+    List<PostModel> postsProximosTemp = [];
+
+    double distancia = 0;
+    for (var post in posts) {
+      distancia = localizacao.calcularDistancia(
+          valorLatitude, valorLongitude, post.latitude, post.longitude);
+      if (distancia < 5) {
+        postsProximosTemp.add(post);
+      }
+    }
+
     setState(() {
-      postsProximos = posts;
+      postsProximos = postsProximosTemp;
     });
+  }
+
+  Future<void> carregarLocalizacao() async {
+    await localizacao.getLatitudeAtual().then((value) => valorLatitude = value);
+
+    await localizacao
+        .getLongitudeAtual()
+        .then((value) => valorLongitude = value);
+
+    //Necessário para recarregar a página após ter pegado o valor de usuarioLogado
+    setState(() {});
   }
 }
