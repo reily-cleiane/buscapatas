@@ -1,12 +1,14 @@
 import 'package:buscapatas/components/campo-texto.dart';
 import 'package:buscapatas/model/test-user.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
+import 'package:buscapatas/perfil_usuario.dart';
 import 'package:buscapatas/publico/esqueceu-senha.dart';
 import 'package:buscapatas/visualizacoes/editar-numero.dart';
 import 'package:buscapatas/utils/mock_usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 import 'package:flutter/services.dart';
+import 'package:buscapatas/utils/usuario_logado.dart' as usuarioSessao;
 
 class EditarPerfil extends StatefulWidget {
   EditarPerfil({super.key, required title, required usuario}){
@@ -22,13 +24,8 @@ class EditarPerfil extends StatefulWidget {
 }
 
 class _EditarPerfilState extends State<EditarPerfil> {
-  User usuario = MockUsuario.getUser();
-  UsuarioModel usuarioLogado = new UsuarioModel();
+  UsuarioModel usuarioLogado = UsuarioModel();
   var _passwordVisible = false;
-  // TextEditingController nomeController = TextEditingController();
-  // TextEditingController emailController = TextEditingController();
-  // TextEditingController telefoneController = TextEditingController();
-  // TextEditingController usuarioController = TextEditingController();
 
   @override
   void initState() {
@@ -65,12 +62,12 @@ class _EditarPerfilState extends State<EditarPerfil> {
               text: usuarioLogado.nome!, 
               tipoCampo: TextInputType.name,
               enableEdit: true,
-              onChanged: (nome) => usuario = usuario.copy(nome: nome)),
+              onChanged: (nome) => usuarioLogado = usuarioLogado.copy(nome: nome)),
               CampoTexto(label: 'Email', 
               text: usuarioLogado.email!, 
               tipoCampo: TextInputType.emailAddress,
               enableEdit: true,
-              onChanged: (email) => usuario = usuario.copy(email: email)),
+              onChanged: (email) => usuarioLogado = usuarioLogado.copy(email: email)),
               const SizedBox(height: 20),
               TextFormField(
                 initialValue: usuarioLogado.telefone,
@@ -149,8 +146,13 @@ class _EditarPerfilState extends State<EditarPerfil> {
                         estilo.corprimaria),
                   ),
                   onPressed: () {
-                    MockUsuario.setUser(usuario);
-                    Navigator.of(context).pop();
+                    usuarioSessao.setUsuarioLogado(usuarioLogado);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const VisualizarPerfil(
+                              title: 'Perfil')),
+                    );
                   },
                   child: const Text(
                     "Salvar",
