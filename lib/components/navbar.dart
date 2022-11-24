@@ -75,11 +75,11 @@ class BuscapatasNavBarState extends State<BuscapatasNavBar> {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.search),
-          label: 'Animais perdidos',
+          label: 'Perdidos',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.search),
-          label: 'Animais avistados',
+          label: 'Avistados',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),

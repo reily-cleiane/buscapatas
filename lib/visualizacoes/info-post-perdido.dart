@@ -117,8 +117,7 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
                         size: 20,
                         color: estilo.corprimaria,
                       ),
-                      Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
+                      Padding(padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
                       Text("Espécie: ${especieAnimal}",
                           style: TextStyle(color: Colors.black, fontSize: 20))
                     ])),
@@ -131,8 +130,7 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
                           size: 20,
                           color: estilo.corprimaria,
                         ),
-                        Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
+                        Padding(padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
                         Text("Raça: ${racaAnimal}",
                             style: TextStyle(color: Colors.black, fontSize: 20))
                       ])),
@@ -145,8 +143,7 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
                           size: 20,
                           color: estilo.corprimaria,
                         ),
-                        Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
+                        Padding(padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
                         Text("Sexo: ${sexoAnimal}",
                             style: TextStyle(color: Colors.black, fontSize: 20))
                       ])),
@@ -158,29 +155,27 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
                         size: 20,
                         color: estilo.corprimaria,
                       ),
-                      Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
-                        Expanded(child:                     
-                      Text("Cor do pelo: ${coresAnimal}",
-                          style: TextStyle(color: Colors.black, fontSize: 20)))
+                      Padding(padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
+                      Expanded(
+                          child: Text("Cor do pelo: ${coresAnimal}",
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 20)))
                     ])),
                 if (post.outrasInformacoes != null &&
                     post.outrasInformacoes!.isNotEmpty)
                   Padding(
                       padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
-                      child: Row(                        
-                        children: <Widget>[
+                      child: Row(children: <Widget>[
                         const Icon(
                           Icons.info,
                           size: 20,
                           color: estilo.corprimaria,
                         ),
-                         Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
+                        Padding(padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
                         Expanded(
-                          child:Text("Descrição: ${post.outrasInformacoes!}",
-                            style: TextStyle(color: Colors.black, fontSize: 20))),
-                        
+                            child: Text("Descrição: ${post.outrasInformacoes!}",
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 20))),
                       ])),
                 if (post.orientacoesGerais != null &&
                     post.orientacoesGerais!.isNotEmpty)
@@ -192,11 +187,12 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
                           size: 20,
                           color: estilo.corprimaria,
                         ),
-                        Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
-                        Expanded(child:   
-                        Text("Orientações gerais: ${post.orientacoesGerais}",
-                            style: TextStyle(color: Colors.black, fontSize: 20)))
+                        Padding(padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
+                        Expanded(
+                            child: Text(
+                                "Orientações gerais: ${post.orientacoesGerais}",
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 20)))
                       ])),
                 Padding(
                     padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
@@ -206,8 +202,7 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
                         size: 20,
                         color: estilo.corprimaria,
                       ),
-                      Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
+                      Padding(padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
                       Text(coleira,
                           style: TextStyle(color: Colors.black, fontSize: 20))
                     ])),
@@ -220,8 +215,7 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
                           size: 20,
                           color: estilo.corprimaria,
                         ),
-                        Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
+                        Padding(padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
                         Text("Recompensa: R\$ ${post.recompensa}",
                             style: TextStyle(color: Colors.black, fontSize: 20))
                       ])),
@@ -310,8 +304,9 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
         ));
   }
 
-  void formatarDados() async{
-    await localizacao.calcularDistanciaPosicaoAtual(post.latitude, post.longitude)
+  void formatarDados() async {
+    await localizacao
+        .calcularDistanciaPosicaoAtual(post.latitude, post.longitude)
         .then((value) => distancia = value);
     setState(() {
       if (post.especieAnimal?.getNome() != null) {

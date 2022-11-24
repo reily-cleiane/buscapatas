@@ -123,9 +123,10 @@ class AnimalCardState extends State<AnimalCard> {
                       Text(
                         "${widget.especie!} ${widget.tipoPost!}",
                         style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18, color: estilo.corpreto),
+                            fontWeight: FontWeight.bold, fontSize: 16, color: estilo.corpreto),
                       ),
-                      Text(informacoes),
+                      Text(informacoes, style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 12)),
                       const SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
