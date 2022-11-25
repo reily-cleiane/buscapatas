@@ -53,8 +53,8 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
                   height: 50,
                   child: ElevatedButton(
                     style: const ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll<Color>(
-                          estilo.corprimaria),
+                      backgroundColor:
+                          MaterialStatePropertyAll<Color>(estilo.corprimaria),
                     ),
                     onPressed: () {
                       _cadastrarUsuario();
@@ -101,7 +101,7 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
 
     if (response.statusCode == 200) {
       var resposta = json.decode(response.body);
-      
+
       for (var usuario in resposta) {
         if (usuario['email'].isNotEmpty) {
           _jaExisteUsuario = true;
@@ -128,9 +128,8 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
 
   void _addUsuario(String nome, String email, String senha, String telefone,
       BuildContext context) async {
-
-        //Refatorar para o método ficar em UsuarioModel e não aqui
-        var url = UsuarioModel.getUrlSalvarUsuario();
+    //Refatorar para o método ficar em UsuarioModel e não aqui
+    var url = UsuarioModel.getUrlSalvarUsuario();
 
     var response = await http.post(
       Uri.parse(url),
@@ -175,14 +174,17 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
               } else if (controller == telefoneController &&
                   telefoneController.text.length != 11) {
                 return "O campo Telefone deve ser preenchido com um número válido de 11 dígitos";
-              } else if (controller == emailController &&
-                  (!(emailController.text.contains('@')) ||
-                      !(emailController.text.contains('.')))) {
-                return "O campo E-mail deve ser preenchido com um e-mail válido";
               } else if (controller == emailController) {
                 if (_usuarioExistente == true) {
                   return "Já existe usuário cadastrado com esse e-mail";
                 }
+                String padraoEmail =
+                    r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+                RegExp regExp = RegExp(padraoEmail);
+                if (!regExp.hasMatch(emailController.text)) {
+                  return "O campo E-mail deve ser preenchido com um e-mail válido";
+                }               
+              } else if (controller == emailController) {
               } else {
                 return null;
               }
@@ -233,8 +235,8 @@ class MyAlertDialog extends StatelessWidget {
       actions: <Widget>[
         ElevatedButton(
             style: const ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll<Color>(
-                  estilo.corprimaria),
+              backgroundColor:
+                  MaterialStatePropertyAll<Color>(estilo.corprimaria),
             ),
             onPressed: () {
               Navigator.pushReplacement(

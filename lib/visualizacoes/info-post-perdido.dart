@@ -298,6 +298,26 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
                               style:
                                   TextStyle(color: Colors.white, fontSize: 20)),
                         ))),
+              Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 10)),
+              if (usuarioLogado.id == post.usuario!.id)
+                Center(
+                    child: SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Color.fromARGB(255, 245, 245, 245)),
+                              shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(0)))),
+                          onPressed: () {
+                            _popupConfirmar(context, post.id!);
+                          },
+                          child: const Text("Encontrei meu pet!",
+                              style: TextStyle(
+                                  color: estilo.corpreto, fontSize: 20)),
+                        ))),
               Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 30)),
             ],
           ),
@@ -355,6 +375,46 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
       MaterialPageRoute(
           builder: (context) => ListaNotificoesAvistado(
               title: "Listar Notificações", postId: postId)),
+    );
+  }
+
+  void _popupConfirmar(BuildContext context, int postId) {
+    // set up the buttons
+    Widget cancelar = ElevatedButton(
+      style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all( estilo.corprimaria)
+          ),
+      child: Text("Não apagar",
+          style: TextStyle(color:  Color.fromARGB(255, 255, 255, 255), fontSize: 12)),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget confirmar = ElevatedButton(
+      style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 245, 245, 245)),
+          shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(0)))),
+      child: Text("Apagar",
+          style: TextStyle(color: estilo.corpreto, fontSize: 12)),
+      onPressed: () {
+        //colocar a função para deletar o post;
+      },
+    ); // set up the AlertDialog
+    AlertDialog popup = AlertDialog(
+      title: Text("Excluir post"),
+      content: Text("Se você achou seu pet, pode excluir o post. Gostaria de apagar o post de animal perdido?"),
+      actions: [
+        confirmar,
+        cancelar,
+      ],
+    ); // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return popup;
+      },
     );
   }
 }
