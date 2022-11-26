@@ -1,5 +1,5 @@
-import 'package:buscapatas/cadastros/cadastro-post-avistado.dart';
-import 'package:buscapatas/cadastros/cadastro-post-perdido.dart';
+import 'package:buscapatas/cadastros/cadastro_post_avistado.dart';
+import 'package:buscapatas/cadastros/cadastro_post_perdido.dart';
 import 'package:buscapatas/components/animal_card.dart';
 import 'package:buscapatas/visualizacoes/info-post-avistado.dart';
 import 'package:buscapatas/visualizacoes/info-post-perdido.dart';

@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:buscapatas/home.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:http/http.dart' as http;
+import 'package:buscapatas/components/caixa_dialogo_alerta.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 import 'package:buscapatas/utils/localizacao.dart' as localizacao;
 import 'package:buscapatas/utils/usuario_logado.dart' as usuarioSessao;
@@ -121,11 +122,19 @@ class _CadastroNotificacaoAvistadoState
         context: context,
         barrierDismissible: true,
         builder: (BuildContext dialogContext) {
-          return MyAlertDialog(
-              titulo: "Mensagem do servidor", conteudo: response.body);
+          return CaixaDialogoAlerta(
+              titulo: "Mensagem do servidor",
+              conteudo: response.body,
+              funcao: _redirecionarPaginaAposSalvar);
         },
       );
     }
+  }
+  void _redirecionarPaginaAposSalvar() {
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Home(true, title: 'Busca Patas')));
   }
 
   Widget campoInputLongo(String label, TextEditingController controller,
@@ -153,48 +162,5 @@ class _CadastroNotificacaoAvistadoState
           controller: controller,
           maxLines: 4,
         ));
-  }
-}
-
-class MyAlertDialog extends StatelessWidget {
-  final String titulo;
-  final String conteudo;
-
-  MyAlertDialog({
-    this.titulo = '',
-    this.conteudo = '',
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(
-        this.titulo,
-        style: Theme.of(context).textTheme.titleMedium,
-      ),
-      actions: <Widget>[
-        ElevatedButton(
-            style: const ButtonStyle(
-              backgroundColor:
-                  MaterialStatePropertyAll<Color>(estilo.corprimaria),
-            ),
-            onPressed: () {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Home(true, title: 'Busca Patas')));
-
-              //Navigator.of(context).pop();
-            },
-            child: const Text(
-              'OK',
-              style: TextStyle(color: Colors.white, fontSize: 10.0),
-            ))
-      ],
-      content: Text(
-        conteudo,
-        style: Theme.of(context).textTheme.bodyText1,
-      ),
-    );
   }
 }

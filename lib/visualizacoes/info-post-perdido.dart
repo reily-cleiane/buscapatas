@@ -1,4 +1,4 @@
-import 'package:buscapatas/cadastros/cadastro-notificacao-avistado.dart';
+import 'package:buscapatas/cadastros/cadastro_notificacao_avistado.dart';
 import 'package:buscapatas/model/PostModel.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:buscapatas/visualizacoes/contato.dart';
@@ -391,7 +391,7 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
           titulo: "Excluir post",
           conteudo:
               "Se você achou seu pet, pode excluir o post. Gostaria de apagar o post agora?",
-          textoPrincipal: "Apagar",
+          textoPrincipal: "Encontrei meu pet! Quero apagar o post",
           textoSecundario: "Não apagar",
           funcaoSecundaria: (context) => Navigator.of(context).pop(),
           funcaoPrincipal: (postId) => excluirPost(postId),

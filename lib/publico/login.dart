@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 import 'package:buscapatas/publico/esqueceu-senha.dart';
-import 'package:buscapatas/publico/nao-implementado.dart';
+import 'package:buscapatas/publico/nao_implementado.dart';
 import 'package:buscapatas/publico/cadastro-usuario.dart';
 import 'package:buscapatas/home.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
