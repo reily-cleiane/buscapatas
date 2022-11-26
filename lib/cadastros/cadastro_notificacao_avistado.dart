@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:buscapatas/home.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
+import 'package:buscapatas/components/campo_texto_longo.dart';
 import 'package:http/http.dart' as http;
 import 'package:buscapatas/components/caixa_dialogo_alerta.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 import 'package:buscapatas/utils/localizacao.dart' as localizacao;
-import 'package:buscapatas/utils/usuario_logado.dart' as usuarioSessao;
+import 'package:buscapatas/utils/usuario_logado.dart' as usuario_sessao;
 
 class CadastroNotificacaoAvistado extends StatefulWidget {
-  const CadastroNotificacaoAvistado({super.key, required this.title, required this.postId});
+  const CadastroNotificacaoAvistado(
+      {super.key, required this.title, required this.postId});
 
   final String title;
   final int postId;
@@ -33,20 +35,21 @@ class _CadastroNotificacaoAvistadoState
     super.initState();
   }
 
-  void carregarUsuarioLogado() async{
-    await usuarioSessao.getUsuarioLogado().then((value) => usuarioLogado=value);
+  void carregarUsuarioLogado() async {
+    await usuario_sessao
+        .getUsuarioLogado()
+        .then((value) => usuarioLogado = value);
     //Necessário para recarregar a página após ter pegado o valor de usuarioLogado
-    setState(() {     
-    });
+    setState(() {});
   }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
           title: const Text("Cadastro de Notificação",
-            style: TextStyle(color: Colors.white)),
+              style: TextStyle(color: Colors.white)),
           centerTitle: true,
           backgroundColor: estilo.corprimaria,
           foregroundColor: Colors.white),
@@ -57,11 +60,12 @@ class _CadastroNotificacaoAvistadoState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                campoInputLongo(
-                    "Mensagem para o dono",
-                    mensagemController,
-                    TextInputType.multiline,
-                    "Informe o estado, a descrição ou algumas informações sobre o animal avistado:"),
+                CampoTextoLongo(
+                    rotulo: "Mensagem para o dono",
+                    controlador: mensagemController,
+                    placeholder:
+                        "Informe o estado, a descrição ou algumas informações sobre o animal avistado",
+                    obrigatorio: true),
                 const Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 10)),
                 SizedBox(
                     width: double.infinity,
@@ -86,22 +90,20 @@ class _CadastroNotificacaoAvistadoState
     );
   }
 
-
-
-  void _cadastrarNotificacao() {    
-    if (_formKey.currentState!.validate()){
+  void _cadastrarNotificacao() {
+    if (_formKey.currentState!.validate()) {
       _addNotificacao();
-    } 
+    }
   }
 
   void _addNotificacao() async {
     var url = NotificacaoAvistamentoModel.getUrlSalvarNotificacao();
     double valorLatitude = 0;
-    await localizacao.getLatitudeAtual()
-        .then((value) => valorLatitude = value);
-    
+    await localizacao.getLatitudeAtual().then((value) => valorLatitude = value);
+
     double valorLongitude = 0;
-    await localizacao.getLongitudeAtual()
+    await localizacao
+        .getLongitudeAtual()
         .then((value) => valorLongitude = value);
 
     var response = await http.post(Uri.parse(url),
@@ -130,37 +132,11 @@ class _CadastroNotificacaoAvistadoState
       );
     }
   }
+
   void _redirecionarPaginaAposSalvar() {
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
             builder: (context) => Home(true, title: 'Busca Patas')));
-  }
-
-  Widget campoInputLongo(String label, TextEditingController controller,
-      TextInputType tipoCampo, String placeholder) {
-    return Padding(
-        padding: const EdgeInsets.fromLTRB(0, 20.0, 0, 10.0),
-        child: TextFormField(
-          keyboardType: tipoCampo,
-          validator: (value) {
-            if (controller.text.isEmpty) {
-              return "O campo deve ser preenchido";
-            }
-          },
-          decoration: InputDecoration(
-              labelText: label,
-              labelStyle:
-                  const TextStyle(fontSize: 21, color: estilo.corprimaria),
-              border: const OutlineInputBorder(),
-              hintText: placeholder,
-              hintStyle: const TextStyle(
-                  fontSize: 14.0, color: Color.fromARGB(255, 187, 179, 179)),
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-              floatingLabelStyle:
-                  const TextStyle(color: estilo.corprimaria, fontSize: 16)),
-          controller: controller,
-          maxLines: 4,
-        ));
   }
 }

@@ -8,9 +8,10 @@ import 'package:buscapatas/model/RacaModel.dart';
 import 'package:buscapatas/model/CorModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:buscapatas/components/caixa_dialogo_alerta.dart';
+import 'package:buscapatas/components/campo_texto_longo.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 import 'package:buscapatas/utils/localizacao.dart' as localizacao;
-import 'package:buscapatas/utils/usuario_logado.dart' as usuarioSessao;
+import 'package:buscapatas/utils/usuario_logado.dart' as usuario_sessao;
 
 class CadastroPostPerdido extends StatefulWidget {
   const CadastroPostPerdido({super.key, required this.title});
@@ -50,7 +51,7 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
   }
 
   void carregarUsuarioLogado() async {
-    await usuarioSessao
+    await usuario_sessao
         .getUsuarioLogado()
         .then((value) => usuarioLogado = value);
     //Necessário para recarregar a página após ter pegado o valor de usuarioLogado
@@ -168,16 +169,18 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
                     });
                   },
                 ),
-                campoInputLongo(
-                    "Outras informações",
-                    outrasinformacoesController,
-                    TextInputType.multiline,
-                    "Outras características para ajudar na identificação do animal"),
-                campoInputLongo(
-                    "Orientações gerais",
-                    orientacoesController,
-                    TextInputType.multiline,
-                    "Temperamento do animal e outras instruções importantes"),
+                CampoTextoLongo(
+                    rotulo: "Outras informações",
+                    controlador: outrasinformacoesController,
+                    placeholder:
+                        "Outras características para ajudar na identificação do animal",
+                    obrigatorio: false),
+                CampoTextoLongo(
+                    rotulo: "Orientações gerais",
+                    controlador: orientacoesController,
+                    placeholder:
+                        "Temperamento do animal e outras instruções importantes",
+                    obrigatorio: false),
                 campoInput("Recompensa", recompensaController,
                     TextInputType.number, "R\$ 0"),
                 const Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 10)),
@@ -307,7 +310,7 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
         context: context,
         barrierDismissible: true,
         builder: (BuildContext dialogContext) {
-           return CaixaDialogoAlerta(
+          return CaixaDialogoAlerta(
               titulo: "Mensagem do servidor",
               conteudo: response.body,
               funcao: _redirecionarPaginaAposSalvar);
@@ -387,28 +390,6 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
             floatingLabelBehavior: FloatingLabelBehavior.always,
           ),
           controller: controller,
-        ));
-  }
-
-  Widget campoInputLongo(String label, TextEditingController controller,
-      TextInputType tipoCampo, String placeholder) {
-    return Padding(
-        padding: const EdgeInsets.fromLTRB(0, 20.0, 0, 10.0),
-        child: TextFormField(
-          keyboardType: tipoCampo,
-          decoration: InputDecoration(
-              labelText: label,
-              labelStyle:
-                  const TextStyle(fontSize: 21, color: estilo.corprimaria),
-              border: const OutlineInputBorder(),
-              hintText: placeholder,
-              hintStyle: const TextStyle(
-                  fontSize: 14.0, color: Color.fromARGB(255, 187, 179, 179)),
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-              floatingLabelStyle:
-                  const TextStyle(color: estilo.corprimaria, fontSize: 16)),
-          controller: controller,
-          maxLines: 4,
         ));
   }
 }

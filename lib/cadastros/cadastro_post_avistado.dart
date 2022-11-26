@@ -7,10 +7,11 @@ import 'package:buscapatas/model/PostModel.dart';
 import 'package:buscapatas/model/RacaModel.dart';
 import 'package:buscapatas/model/CorModel.dart';
 import 'package:buscapatas/components/caixa_dialogo_alerta.dart';
+import 'package:buscapatas/components/campo_texto_longo.dart';
 import 'package:http/http.dart' as http;
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 import 'package:buscapatas/utils/localizacao.dart' as localizacao;
-import 'package:buscapatas/utils/usuario_logado.dart' as usuarioSessao;
+import 'package:buscapatas/utils/usuario_logado.dart' as usuario_sessao;
 
 class CadastroPostAvistado extends StatefulWidget {
   const CadastroPostAvistado({super.key, required this.title});
@@ -48,11 +49,12 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
     super.initState();
   }
 
-  void carregarUsuarioLogado() async{
-    await usuarioSessao.getUsuarioLogado().then((value) => usuarioLogado=value);
+  void carregarUsuarioLogado() async {
+    await usuario_sessao
+        .getUsuarioLogado()
+        .then((value) => usuarioLogado = value);
     //Necessário para recarregar a página após ter pegado o valor de usuarioLogado
-    setState(() {     
-    });
+    setState(() {});
   }
 
   @override
@@ -195,11 +197,12 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
                     });
                   },
                 ),
-                campoInputLongo(
-                    "Outras informações",
-                    outrasinformacoesController,
-                    TextInputType.multiline,
-                    "Outras características para ajudar na identificação do animal"),
+                CampoTextoLongo(
+                    rotulo: "Outras informações",
+                    controlador: outrasinformacoesController,
+                    placeholder:
+                        "Outras características para ajudar na identificação do animal",
+                    obrigatorio: false),
                 const Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 10)),
                 Text(
                   _mensagemValidacao,
@@ -229,7 +232,6 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
     );
   }
 
-
   void cargaInicialBD() async {
     List<dynamic> especiesTemp = await EspecieModel.getEspecies();
     Map<String, int> coresNomeIdTemp = await CorModel.getCores();
@@ -250,8 +252,9 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
       valorRacaSelecionado = null;
     });
 
-    List<dynamic> racasTemp = await RacaModel.getRacasByEspecie(valorEspecieSelecionado);
-    
+    List<dynamic> racasTemp =
+        await RacaModel.getRacasByEspecie(valorEspecieSelecionado);
+
     setState(() {
       listaRacas.clear();
       listaRacas = racasTemp;
@@ -271,11 +274,10 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
           _mensagemValidacao += "O campo Espécie deve ser preenchido. ";
         });
       }
-      if(listaCoresSelecionadas.isEmpty){
+      if (listaCoresSelecionadas.isEmpty) {
         setState(() {
           _mensagemValidacao += "\nO campo Cor deve ser preenchido. ";
         });
-
       }
     }
   }
@@ -283,11 +285,11 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
   void _addPost() async {
     var url = PostModel.getUrlSalvarPost();
     double valorLatitude = 0;
-    await localizacao.getLatitudeAtual()
-        .then((value) => valorLatitude = value);
-    
+    await localizacao.getLatitudeAtual().then((value) => valorLatitude = value);
+
     double valorLongitude = 0;
-    await localizacao.getLongitudeAtual()
+    await localizacao
+        .getLongitudeAtual()
         .then((value) => valorLongitude = value);
 
     List<CorModel> cores = [];
@@ -326,7 +328,7 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
         context: context,
         barrierDismissible: true,
         builder: (BuildContext dialogContext) {
-           return CaixaDialogoAlerta(
+          return CaixaDialogoAlerta(
               titulo: "Mensagem do servidor",
               conteudo: response.body,
               funcao: _redirecionarPaginaAposSalvar);
@@ -406,28 +408,6 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
             floatingLabelBehavior: FloatingLabelBehavior.always,
           ),
           controller: controller,
-        ));
-  }
-
-  Widget campoInputLongo(String label, TextEditingController controller,
-      TextInputType tipoCampo, String placeholder) {
-    return Padding(
-        padding: const EdgeInsets.fromLTRB(0, 20.0, 0, 10.0),
-        child: TextFormField(
-          keyboardType: tipoCampo,
-          decoration: InputDecoration(
-              labelText: label,
-              labelStyle:
-                  const TextStyle(fontSize: 21, color: estilo.corprimaria),
-              border: const OutlineInputBorder(),
-              hintText: placeholder,
-              hintStyle: const TextStyle(
-                  fontSize: 14.0, color: Color.fromARGB(255, 187, 179, 179)),
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-              floatingLabelStyle:
-                  const TextStyle(color: estilo.corprimaria, fontSize: 16)),
-          controller: controller,
-          maxLines: 4,
         ));
   }
 }
