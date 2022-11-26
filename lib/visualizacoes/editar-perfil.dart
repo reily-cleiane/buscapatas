@@ -150,7 +150,7 @@ class _EditarPerfilState extends State<EditarPerfil> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const VisualizarPerfil(
+                          builder: (context) => VisualizarPerfil(
                               title: 'Perfil')),
                     );
                   },

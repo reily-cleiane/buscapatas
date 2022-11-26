@@ -175,4 +175,18 @@ class PostModel {
     }
   }
 
+  static Future<http.Response> deletePost(int idPost) async{
+
+    var request = "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/posts/${idPost}";
+
+    http.Response response = await http.delete(Uri.parse(request));
+    
+    if (response.statusCode == 200) {
+      return response;
+    } else {
+      throw Exception('Falha no servidor ao excluir o post');
+    }
+
+  }
+
 }

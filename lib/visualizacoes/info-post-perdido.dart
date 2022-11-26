@@ -2,8 +2,11 @@ import 'package:buscapatas/cadastros/cadastro-notificacao-avistado.dart';
 import 'package:buscapatas/model/PostModel.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:buscapatas/visualizacoes/contato.dart';
+import 'package:buscapatas/perfil_usuario.dart';
 import 'package:buscapatas/utils/localizacao.dart' as localizacao;
 import 'package:flutter/material.dart';
+import 'package:buscapatas/components/caixa_dialogo_opcao.dart';
+import 'package:buscapatas/components/caixa_dialogo_alerta.dart';
 import 'package:buscapatas/listagens/lista-notificacoes-avistado.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 import 'package:buscapatas/utils/usuario_logado.dart' as usuarioSessao;
@@ -38,7 +41,7 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
   void initState() {
     carregarUsuarioLogado();
     post = widget.post;
-    formatarDados();
+    _formatarDados();
   }
 
   void carregarUsuarioLogado() async {
@@ -292,7 +295,7 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
                                   RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(0)))),
                           onPressed: () {
-                            _listaNotificacaoAvistado(post.id!);
+                            _listarNotificacaoAvistado(post.id!);
                           },
                           child: const Text("Ver notificacões",
                               style:
@@ -306,13 +309,13 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
                         height: 50,
                         child: ElevatedButton(
                           style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Color.fromARGB(255, 245, 245, 245)),
+                              backgroundColor: MaterialStateProperty.all(
+                                  Color.fromARGB(255, 245, 245, 245)),
                               shape: MaterialStateProperty.all(
                                   RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(0)))),
                           onPressed: () {
-                            _popupConfirmar(context, post.id!);
+                            _confirmarAcao(context, post.id!);
                           },
                           child: const Text("Encontrei meu pet!",
                               style: TextStyle(
@@ -324,7 +327,7 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
         ));
   }
 
-  void formatarDados() async {
+  void _formatarDados() async {
     await localizacao
         .calcularDistanciaPosicaoAtual(post.latitude, post.longitude)
         .then((value) => distancia = value);
@@ -350,7 +353,6 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
           sexoAnimal = "Fêmea";
         }
       }
-
       if (post.coresAnimal!.isNotEmpty) {
         for (var cor in post.coresAnimal!) {
           coresAnimal = coresAnimal + ", " + cor.nome!;
@@ -369,7 +371,7 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
     );
   }
 
-  void _listaNotificacaoAvistado(int postId) {
+  void _listarNotificacaoAvistado(int postId) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -378,43 +380,46 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
     );
   }
 
-  void _popupConfirmar(BuildContext context, int postId) {
-    // set up the buttons
-    Widget cancelar = ElevatedButton(
-      style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all( estilo.corprimaria)
-          ),
-      child: Text("Não apagar",
-          style: TextStyle(color:  Color.fromARGB(255, 255, 255, 255), fontSize: 12)),
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-    );
-    Widget confirmar = ElevatedButton(
-      style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 245, 245, 245)),
-          shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(0)))),
-      child: Text("Apagar",
-          style: TextStyle(color: estilo.corpreto, fontSize: 12)),
-      onPressed: () {
-        //colocar a função para deletar o post;
-      },
-    ); // set up the AlertDialog
-    AlertDialog popup = AlertDialog(
-      title: Text("Excluir post"),
-      content: Text("Se você achou seu pet, pode excluir o post. Gostaria de apagar o post de animal perdido?"),
-      actions: [
-        confirmar,
-        cancelar,
-      ],
-    ); // show the dialog
+  void _confirmarAcao(BuildContext context, int postId) {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
-        return popup;
+      barrierDismissible: true,
+      builder: (BuildContext dialogContext) {
+        return CaixaDialogoOpcao(
+          parametrofs: context,
+          parametrofp: postId,
+          titulo: "Excluir post",
+          conteudo:
+              "Se você achou seu pet, pode excluir o post. Gostaria de apagar o post agora?",
+          textoPrincipal: "Apagar",
+          textoSecundario: "Não apagar",
+          funcaoSecundaria: (context) => Navigator.of(context).pop(),
+          funcaoPrincipal: (postId) => excluirPost(postId),
+        );
       },
     );
   }
+
+  void excluirPost(int postId) async {
+    var response = await PostModel.deletePost(postId);
+
+    if (response.statusCode == 200) {
+      showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext dialogContext) {
+          return CaixaDialogoAlerta(
+              titulo: "Mensagem do servidor",
+              conteudo: response.body,
+              funcao: _redirecionarPaginaAposExcluir);
+        },
+      );
+    }
+  }
+
+  void _redirecionarPaginaAposExcluir() {
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => VisualizarPerfil()));
+  }
+
 }

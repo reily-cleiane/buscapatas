@@ -15,7 +15,7 @@ import 'package:buscapatas/components/navbar.dart';
 import 'package:buscapatas/components/animal_card.dart';
 
 class VisualizarPerfil extends StatefulWidget {
-  const VisualizarPerfil({super.key, required this.title});
+  VisualizarPerfil({super.key, this.title= ""});
 
   final String title;
 
