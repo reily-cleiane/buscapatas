@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:buscapatas/components/campo-texto.dart';
 import 'package:buscapatas/model/test-user.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
@@ -9,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 import 'package:flutter/services.dart';
 import 'package:buscapatas/utils/usuario_logado.dart' as usuarioSessao;
+import 'package:image_picker/image_picker.dart';
 
 class EditarPerfil extends StatefulWidget {
   EditarPerfil({super.key, required title, required usuario}){
@@ -24,6 +27,8 @@ class EditarPerfil extends StatefulWidget {
 }
 
 class _EditarPerfilState extends State<EditarPerfil> {
+  File? imageTest ;
+
   UsuarioModel usuarioLogado = UsuarioModel();
   var _passwordVisible = false;
 
@@ -49,15 +54,26 @@ class _EditarPerfilState extends State<EditarPerfil> {
               Center(
                 child: Stack(
                   children: [
-                    const CircleAvatar(
-                      radius: 50,
-                      backgroundImage: AssetImage('imagens/homem.jpg'),
+                    ClipOval(child: Material(
+                              color: Colors.transparent,
+                              child: Ink.image(
+                                image: (imageTest!=null) ? 
+                                  FileImage(imageTest!) as ImageProvider : 
+                                  const AssetImage('imagens/perfilvazio.png'),
+                                fit: BoxFit.cover,
+                                width: 128,
+                                height: 128,
+                                child: InkWell(onTap: () {
+                                    mostrarDialogo(context);
+                                }),
+                              ),
+                          ),
                     ),
                     Positioned(bottom: 0, right: 4,child: construirBotaoEdicao()),
                   ],
                 ),
               ),
-              // const SizedBox(height: 20),
+              const SizedBox(height: 20),
               CampoTexto(label: 'Nome', 
               text: usuarioLogado.nome!, 
               tipoCampo: TextInputType.name,
@@ -167,31 +183,115 @@ class _EditarPerfilState extends State<EditarPerfil> {
     );
   }
 
-  Widget construirBotaoEdicao() => construirCirculo(
-        color: Colors.white,
-        all: 3,
-        child: construirCirculo(
-          color: estilo.corprimaria,
-          all: 8,
-          child: const Icon(
-            Icons.add_a_photo,
-            color: Colors.white,
-            size: 15,
+  void mostrarDialogo(BuildContext context) => showDialog(
+    context: context, 
+    builder: (BuildContext context) {
+      return SimpleDialog(
+      title: Text("Selecione uma das opções"),
+      children: <Widget>[
+        SimpleDialogOption(
+          onPressed: () {
+            pegarImagem(ImageSource.camera);
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              const Icon(
+                Icons.add_a_photo,
+                size: 18,
+                color: estilo.corprimaria,
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(10, 0, 0, 0.0),
+                child: InkWell(
+                    child: Ink(
+                      child: RichText(
+                        text: const TextSpan(
+                          text: "Tirar Foto",
+                          style: TextStyle(
+                            decoration: TextDecoration.none,
+                            color: Colors.black,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    )),
+              ),
+            ],
           ),
         ),
-      );
+        SimpleDialogOption(
+          onPressed: () {
+            pegarImagem(ImageSource.gallery);
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              const Icon(
+                Icons.add_photo_alternate,
+                size: 18,
+                color: estilo.corprimaria,
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(10, 0, 0, 0.0),
+                child: InkWell(
+                    child: Ink(
+                      child: RichText(
+                        text: const TextSpan(
+                          text: "Selecionar da galeria",
+                          style: TextStyle(
+                            decoration: TextDecoration.none,
+                            color: Colors.black,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    )),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+    });
+
+  Future pegarImagem(ImageSource source) async {
+    try {
+      final imagem = await ImagePicker.pickImage(source: source);
+      if (imagem == null) return;
+      
+      final imagemTemporaria = File(imagem.path);
+      setState(() => imageTest = imagemTemporaria);
+    } on PlatformException catch (e) {
+      print ('Não conseguiu pegar a imagem: $e');
+    }
+  } 
+
+  Widget construirBotaoEdicao() => construirCirculo(
+    color: Colors.white,
+    all: 3,
+    child: construirCirculo(
+      color: estilo.corprimaria,
+      all: 8,
+      child: const Icon(
+        Icons.edit,
+        color: Colors.white,
+        size: 15,
+      ),
+    ),
+  );
 
   Widget construirCirculo({
     required Widget child,
     required double all,
     required Color color,
   }) =>
-      ClipOval(
-        child: Container(
-          padding: EdgeInsets.all(all),
-          color: color,
-          child: child,
-        ),
-      );
+    ClipOval(
+      child: Container(
+        padding: EdgeInsets.all(all),
+        color: color,
+        child: child,
+      ),
+    );
 
 }
