@@ -198,11 +198,11 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
                   },
                 ),
                 CampoTextoLongo(
-                    rotulo: "Outras informações",
-                    controlador: outrasinformacoesController,
-                    placeholder:
-                        "Outras características para ajudar na identificação do animal",
-                    obrigatorio: false),
+                  rotulo: "Outras informações",
+                  controlador: outrasinformacoesController,
+                  placeholder:
+                      "Outras características para ajudar na identificação do animal",
+                ),
                 const Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 10)),
                 Text(
                   _mensagemValidacao,
@@ -391,23 +391,4 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
         ));
   }
 
-  Widget campoInput(String label, TextEditingController controller,
-      TextInputType tipoCampo, String placeholder) {
-    return Padding(
-        padding: const EdgeInsets.fromLTRB(0, 20.0, 0, 20.0),
-        child: TextFormField(
-          keyboardType: tipoCampo,
-          decoration: InputDecoration(
-            labelText: label,
-            labelStyle:
-                const TextStyle(fontSize: 21, color: estilo.corprimaria),
-            hintText: placeholder,
-            hintStyle: const TextStyle(
-                fontSize: 14.0, color: Color.fromARGB(255, 187, 179, 179)),
-            border: const OutlineInputBorder(),
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-          ),
-          controller: controller,
-        ));
-  }
 }

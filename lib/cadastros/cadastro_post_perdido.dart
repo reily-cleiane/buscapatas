@@ -9,6 +9,7 @@ import 'package:buscapatas/model/CorModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:buscapatas/components/caixa_dialogo_alerta.dart';
 import 'package:buscapatas/components/campo_texto_longo.dart';
+import 'package:buscapatas/components/campo_texto_curto.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 import 'package:buscapatas/utils/localizacao.dart' as localizacao;
 import 'package:buscapatas/utils/usuario_logado.dart' as usuario_sessao;
@@ -73,8 +74,12 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                campoInput("Nome do animal", nomeController, TextInputType.name,
-                    "Nome ou apelido"),
+                CampoTextoCurto(
+                    rotulo: "Nome do pet",
+                    controlador: nomeController,
+                    tipoCampo: TextInputType.name,
+                    rotuloSuperior: true,
+                    placeholder: "Nome/apelido"),
                 campoSelect("Espécie", valorEspecieSelecionado, listaEspecies,
                     selecionarEspecie),
                 campoSelect(
@@ -170,19 +175,23 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
                   },
                 ),
                 CampoTextoLongo(
-                    rotulo: "Outras informações",
-                    controlador: outrasinformacoesController,
-                    placeholder:
-                        "Outras características para ajudar na identificação do animal",
-                    obrigatorio: false),
+                  rotulo: "Outras informações",
+                  controlador: outrasinformacoesController,
+                  placeholder:
+                      "Outras características para ajudar na identificação do animal",
+                ),
                 CampoTextoLongo(
-                    rotulo: "Orientações gerais",
-                    controlador: orientacoesController,
-                    placeholder:
-                        "Temperamento do animal e outras instruções importantes",
-                    obrigatorio: false),
-                campoInput("Recompensa", recompensaController,
-                    TextInputType.number, "R\$ 0"),
+                  rotulo: "Orientações gerais",
+                  controlador: orientacoesController,
+                  placeholder:
+                      "Temperamento do animal e outras instruções importantes",
+                ),
+                CampoTextoCurto(
+                    rotulo: "Recompensa",
+                    controlador: recompensaController,
+                    tipoCampo: TextInputType.number,
+                    rotuloSuperior: true,
+                    placeholder: "R\$ 0"),
                 const Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 10)),
                 Text(
                   _mensagemValidacao,
@@ -370,26 +379,6 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
               child: Text(mapa["nome"]),
             );
           }).toList(),
-        ));
-  }
-
-  Widget campoInput(String label, TextEditingController controller,
-      TextInputType tipoCampo, String placeholder) {
-    return Padding(
-        padding: const EdgeInsets.fromLTRB(0, 20.0, 0, 20.0),
-        child: TextFormField(
-          keyboardType: tipoCampo,
-          decoration: InputDecoration(
-            labelText: label,
-            labelStyle:
-                const TextStyle(fontSize: 21, color: estilo.corprimaria),
-            hintText: placeholder,
-            hintStyle: const TextStyle(
-                fontSize: 14.0, color: Color.fromARGB(255, 187, 179, 179)),
-            border: const OutlineInputBorder(),
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-          ),
-          controller: controller,
         ));
   }
 }

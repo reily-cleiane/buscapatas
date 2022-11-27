@@ -5,14 +5,14 @@ class CampoTextoLongo extends StatefulWidget {
   final String rotulo;
   final TextEditingController controlador;
   final String placeholder;
-  final bool obrigatorio;
+  bool obrigatorio;
 
-  const CampoTextoLongo({
+  CampoTextoLongo({
     Key? key,
     required this.rotulo,
     required this.controlador,
     required this.placeholder,
-    required this.obrigatorio,
+    this.obrigatorio = false,
   }) : super(key: key);
 
   @override

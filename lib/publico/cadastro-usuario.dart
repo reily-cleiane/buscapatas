@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
-
+import 'package:buscapatas/components/caixa_dialogo_alerta.dart';
+import 'package:buscapatas/components/campo_texto_curto.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:buscapatas/publico/login.dart';
 import 'package:flutter/material.dart';
@@ -43,10 +44,21 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
               campoInput("Email", emailController, TextInputType.emailAddress),
               campoInput(
                   "Telefone(com DDD)", telefoneController, TextInputType.phone),
-              campoInputObscuro(
-                  "Senha", senhaController, TextInputType.visiblePassword),
-              campoInputObscuro("Confirmar senha", repetirSenhaController,
-                  TextInputType.visiblePassword),
+              CampoTextoCurto(
+                  rotulo: "Senha",
+                  controlador: senhaController,
+                  tipoCampo: TextInputType.visiblePassword,
+                  obrigatorio: true,
+                  mascarado: true,
+                  validador: (_) => _validarSenha(context)),
+              CampoTextoCurto(
+                  rotulo: "Confirmar senha",
+                  controlador: repetirSenhaController,
+                  tipoCampo: TextInputType.visiblePassword,
+                  obrigatorio: true,
+                  mascarado: true,
+                  validador: (_) => _validarSenha(context)),
+
               const Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 1.0)),
               SizedBox(
                   width: double.infinity,
@@ -149,11 +161,20 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
         context: context,
         barrierDismissible: true,
         builder: (BuildContext dialogContext) {
-          return MyAlertDialog(
-              titulo: "Mensagem do servidor", conteudo: response.body);
+          return CaixaDialogoAlerta(
+              titulo: "Mensagem do servidor",
+              conteudo: response.body,
+              funcao: _redirecionarPaginaAposSalvar);
         },
       );
     }
+  }
+
+  void _redirecionarPaginaAposSalvar() {
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Login(title: 'Busca Patas - Login')));
   }
 
   Widget campoInput(
@@ -183,7 +204,7 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
                 RegExp regExp = RegExp(padraoEmail);
                 if (!regExp.hasMatch(emailController.text)) {
                   return "O campo E-mail deve ser preenchido com um e-mail válido";
-                }               
+                }
               } else if (controller == emailController) {
               } else {
                 return null;
@@ -191,71 +212,11 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
             }));
   }
 
-  Widget campoInputObscuro(
-      String label, TextEditingController controller, TextInputType tipoCampo) {
-    return Padding(
-        padding: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
-        child: TextFormField(
-          keyboardType: tipoCampo,
-          decoration: InputDecoration(
-            labelText: label,
-            border: const OutlineInputBorder(),
-          ),
-          controller: controller,
-          validator: (texto) {
-            if (controller.text.isEmpty) {
-              return "O campo deve ser preenchido";
-            } else if (senhaController.text != repetirSenhaController.text) {
-              return "Os valores dos campos Senha e Confirmação de senha estão diferentes";
-            } else {
-              return null;
-            }
-          },
-          obscureText: true,
-        ));
-  }
-}
-
-class MyAlertDialog extends StatelessWidget {
-  final String titulo;
-  final String conteudo;
-
-  MyAlertDialog({
-    this.titulo = '',
-    this.conteudo = '',
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(
-        this.titulo,
-        style: Theme.of(context).textTheme.titleMedium,
-      ),
-      actions: <Widget>[
-        ElevatedButton(
-            style: const ButtonStyle(
-              backgroundColor:
-                  MaterialStatePropertyAll<Color>(estilo.corprimaria),
-            ),
-            onPressed: () {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          Login(title: 'Busca Patas - Login')));
-
-              //Navigator.of(context).pop();
-            },
-            child: const Text(
-              'OK',
-              style: TextStyle(color: Colors.white, fontSize: 10.0),
-            ))
-      ],
-      content: Text(
-        conteudo,
-        style: Theme.of(context).textTheme.bodyText1,
-      ),
-    );
+  String? _validarSenha(BuildContext context) {
+    if (senhaController.text != repetirSenhaController.text) {
+      return "Os valores dos campos Senha e Confirmação de senha estão diferentes";
+    } else {
+      return null;
+    }
   }
 }
