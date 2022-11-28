@@ -58,7 +58,6 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
                   obrigatorio: true,
                   mascarado: true,
                   validador: (_) => _validarSenha(context)),
-
               const Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 1.0)),
               SizedBox(
                   width: double.infinity,
@@ -143,18 +142,17 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
     //Refatorar para o método ficar em UsuarioModel e não aqui
     var url = UsuarioModel.getUrlSalvarUsuario();
 
-    var response = await http.post(
-      Uri.parse(url),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        "nome": nome,
-        "email": email,
-        "senha": senha,
-        "telefone": telefone,
-      }),
-    );
+    var request = new http.MultipartRequest("POST", Uri.parse(url));
+
+    request.fields['jsondata'] = jsonEncode(<String, String>{
+      "nome": nome,
+      "email": email,
+      "senha": senha,
+      "telefone": telefone,
+    });
+
+    var response = await request.send();
+    var responsed = await http.Response.fromStream(response);
 
     if (response.statusCode == 200) {
       showDialog(
@@ -163,7 +161,7 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
         builder: (BuildContext dialogContext) {
           return CaixaDialogoAlerta(
               titulo: "Mensagem do servidor",
-              conteudo: response.body,
+              conteudo: responsed.body,
               funcao: _redirecionarPaginaAposSalvar);
         },
       );

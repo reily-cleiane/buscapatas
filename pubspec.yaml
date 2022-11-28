@@ -52,6 +52,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   pin_code_fields: ^7.4.0
   geolocator:
+  path_provider:
+  mime:
 
 dev_dependencies:
   flutter_test:
