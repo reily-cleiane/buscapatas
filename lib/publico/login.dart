@@ -6,8 +6,7 @@ import 'package:buscapatas/publico/cadastro-usuario.dart';
 import 'package:buscapatas/home.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:flutter_session/flutter_session.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:buscapatas/components/campo_texto_curto.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key, required this.title});
@@ -22,7 +21,7 @@ class _LoginState extends State<Login> {
   TextEditingController emailController = TextEditingController();
   TextEditingController senhaController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  bool _usuarioAutorizado = false;
+  bool _existeUsuario = false;
 
   @override
   Widget build(BuildContext context) {
@@ -51,24 +50,33 @@ class _LoginState extends State<Login> {
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 50.0, 0, 10.0),
-                  child: campoInput("E-mail", emailController,
-                      TextInputType.emailAddress, false),
                 ),
+                CampoTextoCurto(
+                    rotulo: "E-mail",
+                    controlador: emailController,
+                    tipoCampo: TextInputType.emailAddress,
+                    obrigatorio: true,
+                    validador: (_) => validarEmailSenha(context)),
+                CampoTextoCurto(
+                    rotulo: "Senha",
+                    controlador: senhaController,
+                    tipoCampo: TextInputType.visiblePassword,
+                    obrigatorio: true,
+                    mascarado: true,
+                    validador: (_) => validarEmailSenha(context)),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 10.0),
-                  child: campoInput("Senha", senhaController,
-                      TextInputType.visiblePassword, true),
                 ),
                 SizedBox(
                     width: double.infinity,
                     height: 50,
                     child: ElevatedButton(
                       style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll<Color>(
-                            estilo.corprimaria),
+                        backgroundColor:
+                            MaterialStatePropertyAll<Color>(estilo.corprimaria),
                       ),
                       onPressed: () {
-                        _entrar();
+                        _verificarCredenciais();
                       },
                       child: const Text(
                         "Entrar",
@@ -79,8 +87,7 @@ class _LoginState extends State<Login> {
           const Padding(
             padding: EdgeInsets.fromLTRB(0, 20.0, 0, 15.0),
             child: Text("OU",
-                style: TextStyle(
-                    color: estilo.corprimaria, fontSize: 20)),
+                style: TextStyle(color: estilo.corprimaria, fontSize: 20)),
           ),
           FractionallySizedBox(
               widthFactor: 1,
@@ -165,82 +172,46 @@ class _LoginState extends State<Login> {
     ));
   }
 
-  void _entrar() async {
+  void _verificarCredenciais() async {
     UsuarioModel? usuarioLogado;
+
+    List<UsuarioModel> listaUsuarioTemp = [];
+
     if (emailController.text.isNotEmpty && senhaController.text.isNotEmpty) {
-      usuarioLogado = await _verificarUsuarioAutorizado();
+      listaUsuarioTemp = await UsuarioModel.getUsuariosByEmailSenha(
+          emailController.text, senhaController.text);
+    }
+
+    if (listaUsuarioTemp.isNotEmpty) {
+      usuarioLogado = listaUsuarioTemp[0];
+      _existeUsuario = true;
+    } else {
+      _existeUsuario = false;
     }
 
     if (_formKey.currentState!.validate()) {
-      if(_usuarioAutorizado){
+      if (_existeUsuario) {
         await FlutterSession().set("sessao_usuarioLogado", usuarioLogado);
+        _redirecionarPaginaAposLogar();
       }
-      
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                Home(_usuarioAutorizado, title: "Página inicial")),
-      );
     }
-    
   }
 
-  Future<UsuarioModel?> _verificarUsuarioAutorizado() async {
-    var url = UsuarioModel.getUrlVerificarUsuarioAutorizado(emailController.text, senhaController.text);
-
-    var response = await http.get(
-      Uri.parse(url),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
+  void _redirecionarPaginaAposLogar() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+          builder: (context) => Home(_existeUsuario, title: "Página inicial")),
     );
+  }
 
-    UsuarioModel? usuarioLogado;
-
-    if (response.statusCode == 200) {
-      var resposta = json.decode(response.body);
-      
-      for (var usuario in resposta) {
-        if (usuario['email'].isNotEmpty) {
-          usuarioLogado = UsuarioModel(
-              id: usuario['id'],
-              nome: usuario['nome'],
-              email: usuario['email'],
-              senha: usuario['senha'],
-              telefone: usuario['telefone']);
-          setState(() {
-            _usuarioAutorizado = true;
-          });
-          break;
-        }
-      }
-      //print(jsonDecode(response.body));
+  String? validarEmailSenha(BuildContext context) {
+    if (senhaController.text.isNotEmpty &&
+        emailController.text.isNotEmpty &&
+        !_existeUsuario) {
+      return "Não foi possível encontrar um usuário cadastrado com esse email/senha";
     } else {
-      throw Exception('Falha no servidor ao carregar usuários');
+      return null;
     }
-    return usuarioLogado;
-  }
-
-  Widget campoInput(String label, TextEditingController controller,
-      TextInputType tipoCampo, bool oculto) {
-    return TextFormField(
-      keyboardType: tipoCampo,
-      decoration: InputDecoration(
-        labelText: label,
-        border: const OutlineInputBorder(),
-      ),
-      controller: controller,
-      validator: (texto) {
-        if (controller.text.isEmpty) {
-          return "O campo deve ser preenchido";
-        } else if (!_usuarioAutorizado) {
-          return "Não foi possível encontrar um usuário cadastrado com esse email/senha";
-        } else {
-          return null;
-        }
-      },
-      obscureText: oculto,
-    );
   }
 }

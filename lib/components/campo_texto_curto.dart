@@ -60,7 +60,9 @@ class _CampoTextoCurtoState extends State<CampoTextoCurto> {
               if (widget.controlador.text.isEmpty) {
                 return "O campo deve ser preenchido";
               } else {
-                return widget.validador!(context);
+                if (widget.validador != null){
+                  return widget.validador!(context);
+                }
               }
             }
             return null;

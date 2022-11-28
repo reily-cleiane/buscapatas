@@ -23,7 +23,7 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
   TextEditingController senhaController = TextEditingController();
   TextEditingController repetirSenhaController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  bool _usuarioExistente = true;
+  bool _emailUnico = false;
 
   @override
   Widget build(BuildContext context) {
@@ -40,25 +40,38 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
           key: _formKey,
           child: Column(
             children: [
-              campoInput("Nome", nomeController, TextInputType.name),
-              campoInput("Email", emailController, TextInputType.emailAddress),
-              campoInput(
-                  "Telefone(com DDD)", telefoneController, TextInputType.phone),
+              CampoTextoCurto(
+                rotulo: "Nome",
+                controlador: nomeController,
+                tipoCampo: TextInputType.name,
+                obrigatorio: true,
+              ),
+              CampoTextoCurto(
+                  rotulo: "Email",
+                  controlador: emailController,
+                  tipoCampo: TextInputType.emailAddress,
+                  obrigatorio: true,
+                  validador: (_) => validarEmail(context)),
+              CampoTextoCurto(
+                  rotulo: "Telefone(com DDD)",
+                  controlador: telefoneController,
+                  tipoCampo: TextInputType.phone,
+                  obrigatorio: true,
+                  validador: (_) => validarTelefone(context)),
               CampoTextoCurto(
                   rotulo: "Senha",
                   controlador: senhaController,
                   tipoCampo: TextInputType.visiblePassword,
                   obrigatorio: true,
                   mascarado: true,
-                  validador: (_) => _validarSenha(context)),
+                  validador: (_) => validarSenha(context)),
               CampoTextoCurto(
                   rotulo: "Confirmar senha",
                   controlador: repetirSenhaController,
                   tipoCampo: TextInputType.visiblePassword,
                   obrigatorio: true,
                   mascarado: true,
-                  validador: (_) => _validarSenha(context)),
-
+                  validador: (_) => validarSenha(context)),
               const Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 1.0)),
               SizedBox(
                   width: double.infinity,
@@ -85,7 +98,12 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
 
   void _cadastrarUsuario() async {
     if (emailController.text.isNotEmpty) {
-      _usuarioExistente = await _verificarEmailJaCadastrado();
+      List<UsuarioModel> listaTemp = await UsuarioModel.getUsuariosByEmail(emailController.text);
+      if(listaTemp.isEmpty){
+        _emailUnico = true;
+      } else{
+        _emailUnico = false;
+      }
     }
     if (_formKey.currentState!.validate()) {
       String nome = nomeController.text;
@@ -93,81 +111,26 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
       String senha = senhaController.text;
       String telefone = telefoneController.text;
 
-      _addUsuario(nome, email, senha, telefone, context);
+      _salvarUsuario(nome, email, senha, telefone, context);
     }
   }
 
-  Future<bool> _verificarEmailJaCadastrado() async {
-    //Refatorar para o método ficar em UsuarioModel e não aqui
-    var url = UsuarioModel.getUrlFindByEmail(emailController.text);
-    //http.Response response = await http.get(Uri.parse(url));
-
-    var response = await http.get(
-      Uri.parse(url),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-    );
-
-    bool _jaExisteUsuario = false;
-
-    if (response.statusCode == 200) {
-      var resposta = json.decode(response.body);
-
-      for (var usuario in resposta) {
-        if (usuario['email'].isNotEmpty) {
-          _jaExisteUsuario = true;
-          break;
-        }
-      }
-      //print(jsonDecode(response.body));
-    } else {
-      throw Exception('Falha no servidor ao carregar usuários');
-    }
-
-    if (_jaExisteUsuario) {
-      setState(() {
-        _usuarioExistente = true;
-      });
-      return true;
-    } else {
-      setState(() {
-        _usuarioExistente = false;
-      });
-      return false;
-    }
-  }
-
-  void _addUsuario(String nome, String email, String senha, String telefone,
+  void _salvarUsuario(String nome, String email, String senha, String telefone,
       BuildContext context) async {
-    //Refatorar para o método ficar em UsuarioModel e não aqui
-    var url = UsuarioModel.getUrlSalvarUsuario();
 
-    var response = await http.post(
-      Uri.parse(url),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
+    UsuarioModel usuario = UsuarioModel(nome:nome, email:email, senha:senha, telefone:telefone);
+    http.Response response = await usuario.salvar();
+
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext dialogContext) {
+        return CaixaDialogoAlerta(
+            titulo: "Mensagem do servidor",
+            conteudo: response.body,
+            funcao: _redirecionarPaginaAposSalvar);
       },
-      body: jsonEncode(<String, String>{
-        "nome": nome,
-        "email": email,
-        "senha": senha,
-        "telefone": telefone,
-      }),
     );
-
-    if (response.statusCode == 200) {
-      showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (BuildContext dialogContext) {
-          return CaixaDialogoAlerta(
-              titulo: "Mensagem do servidor",
-              conteudo: response.body,
-              funcao: _redirecionarPaginaAposSalvar);
-        },
-      );
-    }
   }
 
   void _redirecionarPaginaAposSalvar() {
@@ -177,42 +140,26 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
             builder: (context) => Login(title: 'Busca Patas - Login')));
   }
 
-  Widget campoInput(
-      String label, TextEditingController controller, TextInputType tipoCampo) {
-    return Padding(
-        padding: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
-        child: TextFormField(
-            keyboardType: tipoCampo,
-            decoration: InputDecoration(
-              labelText: label,
-              border: const OutlineInputBorder(),
-              //errorText: validarCamposObrigatorios(controller.text),
-            ),
-            controller: controller,
-            validator: (texto) {
-              if (controller.text.isEmpty) {
-                return "O campo deve ser preenchido";
-              } else if (controller == telefoneController &&
-                  telefoneController.text.length != 11) {
-                return "O campo Telefone deve ser preenchido com um número válido de 11 dígitos";
-              } else if (controller == emailController) {
-                if (_usuarioExistente == true) {
-                  return "Já existe usuário cadastrado com esse e-mail";
-                }
-                String padraoEmail =
-                    r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                RegExp regExp = RegExp(padraoEmail);
-                if (!regExp.hasMatch(emailController.text)) {
-                  return "O campo E-mail deve ser preenchido com um e-mail válido";
-                }
-              } else if (controller == emailController) {
-              } else {
-                return null;
-              }
-            }));
+  String? validarTelefone(BuildContext context) {
+    if (telefoneController.text.length != 11) {
+      return "O campo Telefone deve ser preenchido com um número válido de 11 dígitos";
+    }
   }
 
-  String? _validarSenha(BuildContext context) {
+  String? validarEmail(BuildContext context) {
+    if (!_emailUnico) {
+      return "Já existe usuário cadastrado com esse e-mail";
+    }
+    String padraoEmail =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regExp = RegExp(padraoEmail);
+    if (!regExp.hasMatch(emailController.text)) {
+      return "O campo E-mail deve ser preenchido com um e-mail válido";
+    }
+    return null;
+  }
+
+  String? validarSenha(BuildContext context) {
     if (senhaController.text != repetirSenhaController.text) {
       return "Os valores dos campos Senha e Confirmação de senha estão diferentes";
     } else {
