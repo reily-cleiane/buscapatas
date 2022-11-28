@@ -41,16 +41,9 @@ class _EditarPerfilState extends State<EditarPerfil> {
 
   @override
   void initState() {
-    carregarUsuarioLogado();
+    usuarioLogado = widget.usuario;
   }
 
-  void carregarUsuarioLogado() async {
-    await usuarioSessao
-        .getUsuarioLogado()
-        .then((value) => usuarioLogado = value);
-    //Necessário para recarregar a página após ter pegado o valor de usuarioLogado
-    setState(() {});
-  }
 
   @override
   Widget build(BuildContext context) {

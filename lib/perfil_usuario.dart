@@ -185,13 +185,13 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
                         padding: EdgeInsets.fromLTRB(10, 0, 0, 0.0),
                         child: InkWell(
                             onTap: () async {
-                              await Navigator.push(
+                              await Navigator.push(                              
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         EditarPerfil(title: "Editar Perfil", usuario: usuarioLogado)),
                               );
-                              setState(() {});
+                              //setState(() {});
                             },
                             child: Ink(
                               child: RichText(
