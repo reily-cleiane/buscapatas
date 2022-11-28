@@ -2,15 +2,13 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:buscapatas/components/caixa_dialogo_alerta.dart';
 import 'package:buscapatas/components/campo-texto.dart';
-import 'package:buscapatas/model/test-user.dart';
+import 'package:buscapatas/components/imagem_dialogo.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:buscapatas/perfil_usuario.dart';
 import 'package:buscapatas/publico/esqueceu-senha.dart';
 import 'package:buscapatas/visualizacoes/editar-numero.dart';
-import 'package:buscapatas/utils/mock_usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
-import 'package:flutter/services.dart';
 import 'package:buscapatas/utils/usuario_logado.dart' as usuarioSessao;
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
@@ -26,7 +24,7 @@ class EditarPerfil extends StatefulWidget {
   }
 
   String title = "";
-  UsuarioModel usuario = new UsuarioModel();
+  UsuarioModel usuario = UsuarioModel();
 
   @override
   State<EditarPerfil> createState() => _EditarPerfilState();
@@ -47,6 +45,11 @@ class _EditarPerfilState extends State<EditarPerfil> {
 
   @override
   Widget build(BuildContext context) {
+    //quando houver armazenamento das imagens no usuario
+    //foto passa a ser o arquivo de imagem do usuário
+    ImageProvider fotoUsuario = (imageTest != null)
+                              ? FileImage(imageTest!) as ImageProvider
+                              : const NetworkImage('https://buscapatas.s3.sa-east-1.amazonaws.com/usuario-foto-padrao.png');
     return Scaffold(
       appBar: AppBar(
           title: const Text(
@@ -69,15 +72,15 @@ class _EditarPerfilState extends State<EditarPerfil> {
                       child: Material(
                         color: Colors.transparent,
                         child: Ink.image(
-                          image: (imageTest != null)
-                              ? FileImage(imageTest!) as ImageProvider
-                              : NetworkImage(
-                                  'https://buscapatas.s3.sa-east-1.amazonaws.com/usuario-foto-padrao.png'),
+                          image: fotoUsuario,
                           fit: BoxFit.cover,
                           width: 128,
                           height: 128,
-                          child: InkWell(onTap: () {
-                            mostrarDialogo(context);
+                          child: InkWell(onTap: () async {
+                              await showDialog(
+                                context: context,
+                                builder: (_) => ImagemDialogo(foto: fotoUsuario)
+                              );
                           }),
                         ),
                       ),
@@ -328,30 +331,29 @@ class _EditarPerfilState extends State<EditarPerfil> {
       });
 
   Future pegarImagem(ImageSource source) async {
-    try {
-      final imagem = await ImagePicker.pickImage(source: source);
-      if (imagem == null) return;
-
-      final imagemTemporaria = File(imagem.path);
-      setState(() => imageTest = imagemTemporaria);
-    } on PlatformException catch (e) {
-      print('Não conseguiu pegar a imagem: $e');
-    }
-  }
+    final imagem = await ImagePicker.pickImage(source: source);
+    if (imagem == null) return;
+    
+    final imagemTemporaria = File(imagem.path);
+    setState(() => imageTest = imagemTemporaria);
+  } 
 
   Widget construirBotaoEdicao() => construirCirculo(
-        color: Colors.white,
-        all: 3,
-        child: construirCirculo(
-          color: estilo.corprimaria,
-          all: 8,
-          child: const Icon(
-            Icons.edit,
-            color: Colors.white,
-            size: 15,
-          ),
+    color: Colors.white,
+    all: 3,
+    child: InkWell(
+      onTap: () => {mostrarDialogo(context)},
+      child: construirCirculo(
+        color: estilo.corprimaria,
+        all: 8,
+        child: const Icon(
+          Icons.edit,
+          color: Colors.white,
+          size: 15,
         ),
-      );
+      ),
+    ),
+  );
 
   Widget construirCirculo({
     required Widget child,
