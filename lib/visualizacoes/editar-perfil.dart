@@ -203,7 +203,8 @@ class _EditarPerfilState extends State<EditarPerfil> {
   }
 
   void _atualizarUsuario(BuildContext context) async {
-    var url = UsuarioModel.getUrlSalvarUsuario();
+    var url =
+        'http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/users';
 
     http.MultipartRequest request =
         http.MultipartRequest('PUT', Uri.parse(url));

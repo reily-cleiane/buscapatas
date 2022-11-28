@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 UsuarioModel usuairoModelJson(String str) =>
     UsuarioModel.fromJson(json.decode(str));
@@ -61,18 +62,73 @@ class UsuarioModel {
         caminhoImagem: caminhoImagem ?? this.caminhoImagem,
       );
 
-  //Refatorar para o método completo para salvar usuário ficar aqui, e não só a URL
-  static String getUrlSalvarUsuario() {
-    return "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/users";
+  Future<http.Response> salvar() async {
+    var url =
+        "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/users";
+
+    var request = new http.MultipartRequest("POST", Uri.parse(url));
+
+    request.fields['jsondata'] = json.encode(this.toJson());
+
+    var response = await request.send();
+    var responsed = await http.Response.fromStream(response);
+
+    return response as http.Response;
   }
 
-//Refatorar para o método completo para pesquisar usuário por email ficar aqui, e não só a URL
-  static String getUrlFindByEmail(var email) {
-    return "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/findbyemail?email=${email}";
+  static Future<List<UsuarioModel>> getUsuariosByEmailSenha(
+      String email, String senha) async {
+    var url =
+        "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/usuarioautorizado?email=${email}&senha=${senha}";
+
+    var response = await http.get(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    List<UsuarioModel> listaUsarios = [];
+    if (response.statusCode == 200) {
+      var resposta = json.decode(response.body);
+
+      for (var usuario in resposta) {
+        if (usuario['email'].isNotEmpty) {
+          listaUsarios.add(UsuarioModel.fromJson(usuario));
+        }
+      }
+      //print(jsonDecode(response.body));
+    } else {
+      throw Exception('Falha no servidor ao carregar usuários');
+    }
+
+    return listaUsarios;
   }
 
-  //Refatorar para o método completo para verificar usuário cadastrado ficar aqui, e não só a URL
-  static String getUrlVerificarUsuarioAutorizado(var email, var senha) {
-    return "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/usuarioautorizado?email=${email}&senha=${senha}";
+  static Future<List<UsuarioModel>> getUsuariosByEmail(String email) async {
+    var url =
+        "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/findbyemail?email=${email}";
+    var response = await http.get(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    List<UsuarioModel> listaUsarios = [];
+    if (response.statusCode == 200) {
+      var resposta = json.decode(response.body);
+
+      for (var usuario in resposta) {
+        if (usuario['email'].isNotEmpty) {
+          listaUsarios.add(UsuarioModel.fromJson(usuario));
+        }
+      }
+
+      //print(jsonDecode(response.body));
+    } else {
+      throw Exception('Falha no servidor ao carregar usuários');
+    }
+    return listaUsarios;
   }
 }
