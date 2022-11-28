@@ -73,7 +73,7 @@ class UsuarioModel {
     var response = await request.send();
     var responsed = await http.Response.fromStream(response);
 
-    return response as http.Response;
+    return responsed;
   }
 
   static Future<List<UsuarioModel>> getUsuariosByEmailSenha(

@@ -120,7 +120,7 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
       BuildContext context) async {
     UsuarioModel usuario = UsuarioModel(
         nome: nome, email: email, senha: senha, telefone: telefone);
-    http.Response response = await usuario.salvar();
+    var response = await usuario.salvar();
 
     showDialog(
       context: context,
