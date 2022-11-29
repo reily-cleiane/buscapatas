@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:buscapatas/components/caixa_dialogo_alerta.dart';
 import 'package:buscapatas/components/campo-texto.dart';
+import 'package:buscapatas/components/campo_texto_senha.dart';
 import 'package:buscapatas/components/imagem_dialogo.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:buscapatas/perfil_usuario.dart';
@@ -35,8 +36,6 @@ class _EditarPerfilState extends State<EditarPerfil> {
   File? imageTest;
 
   UsuarioModel usuarioLogado = UsuarioModel();
-
-  var _passwordVisible = false;
 
   @override
   void initState() {
@@ -127,53 +126,13 @@ class _EditarPerfilState extends State<EditarPerfil> {
                         })),
                 readOnly: true,
               ),
-              const SizedBox(height: 20),
-              TextFormField(
-                initialValue: usuarioLogado.senha,
-                decoration: InputDecoration(
-                  labelText: "Senha",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _passwordVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                      color: estilo.corprimaria,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _passwordVisible = !_passwordVisible;
-                      });
-                    },
-                  ),
-                ),
-                obscureText: !_passwordVisible,
-                readOnly: true,
-              ),
-              const SizedBox(height: 20),
-              SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                    style: const ButtonStyle(
-                      backgroundColor:
-                          MaterialStatePropertyAll<Color>(estilo.corprimaria),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => EsqueceuSenha(
-                                title: 'Mudar senha', usuario: usuarioLogado)),
-                      );
-                    },
-                    child: const Text(
-                      "Mudar Senha",
-                      style: TextStyle(color: Colors.white, fontSize: 20.0),
-                    ),
-                  )),
+              CampoTextoSenha(
+                  label: 'Senha',
+                  text: usuarioLogado.senha!,
+                  tipoCampo: TextInputType.visiblePassword,
+                  enableEdit: true,
+                  onChanged: (senha) =>
+                      usuarioLogado = usuarioLogado.copy(senha: senha)),
               const SizedBox(height: 20),
               SizedBox(
                   width: double.infinity,
