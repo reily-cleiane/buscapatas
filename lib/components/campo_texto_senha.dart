@@ -7,8 +7,6 @@ class CampoTextoSenha extends StatefulWidget {
   final String label;
   final String text;
   final TextInputType tipoCampo;
-  // final bool visibilidade;
-  final bool enableEdit;
   final ValueChanged<String> onChanged;
 
   const CampoTextoSenha({
@@ -17,8 +15,6 @@ class CampoTextoSenha extends StatefulWidget {
     required this.label,
     required this.text,
     required this.tipoCampo,
-    // required this.visibilidade,
-    required this.enableEdit,
     required this.onChanged,
   }) : super(key: key);
 
@@ -81,7 +77,6 @@ class _CampoTextoSenhaState extends State<CampoTextoSenha> {
                   return null;
                 }
               },
-              enabled: widget.enableEdit,
               onChanged: widget.onChanged,
             ),
           ),
