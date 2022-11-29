@@ -33,6 +33,9 @@ class EditarPerfil extends StatefulWidget {
 }
 
 class _EditarPerfilState extends State<EditarPerfil> {
+
+  final _formKey = GlobalKey<FormState>();
+
   File? imageTest;
 
   UsuarioModel usuarioLogado = UsuarioModel();
@@ -91,50 +94,55 @@ class _EditarPerfilState extends State<EditarPerfil> {
                 ),
               ),
               const SizedBox(height: 20),
-              CampoTexto(
-                  usuarioId: usuarioLogado.id!,
-                  label: 'Nome',
-                  text: usuarioLogado.nome!,
-                  tipoCampo: TextInputType.name,
-                  enableEdit: true,
-                  onChanged: (nome) =>
-                      usuarioLogado = usuarioLogado.copy(nome: nome)),
-              CampoTexto(
-                  usuarioId: usuarioLogado.id!,
-                  label: 'Email',
-                  text: usuarioLogado.email!,
-                  tipoCampo: TextInputType.emailAddress,
-                  enableEdit: true,
-                  onChanged: (email) =>
-                      usuarioLogado = usuarioLogado.copy(email: email)),
-              const SizedBox(height: 20),
-              TextFormField(
-                initialValue: usuarioLogado.telefone,
-                decoration: InputDecoration(
-                    labelText: "Telefone",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
+              Form(
+                key: _formKey,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                child: Column(
+                  children: [
+                    CampoTexto(
+                        usuarioId: usuarioLogado.id!,
+                        label: 'Nome',
+                        text: usuarioLogado.nome!,
+                        tipoCampo: TextInputType.name,
+                        onChanged: (nome) =>
+                            usuarioLogado = usuarioLogado.copy(nome: nome)),
+                    CampoTexto(
+                        usuarioId: usuarioLogado.id!,
+                        label: 'Email',
+                        text: usuarioLogado.email!,
+                        tipoCampo: TextInputType.emailAddress,
+                        onChanged: (email) =>
+                            usuarioLogado = usuarioLogado.copy(email: email)),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      initialValue: usuarioLogado.telefone,
+                      decoration: InputDecoration(
+                          labelText: "Telefone",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          suffixIcon: IconButton(
+                              icon: const Icon(Icons.edit),
+                              color: estilo.corprimaria,
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const EditarNumero(title: 'Mudar número')),
+                                );
+                              })),
+                      readOnly: true,
                     ),
-                    suffixIcon: IconButton(
-                        icon: const Icon(Icons.edit),
-                        color: estilo.corprimaria,
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const EditarNumero(title: 'Mudar número')),
-                          );
-                        })),
-                readOnly: true,
+                    CampoTextoSenha(
+                        label: 'Senha',
+                        text: usuarioLogado.senha!,
+                        tipoCampo: TextInputType.visiblePassword,
+                        onChanged: (senha) =>
+                            usuarioLogado = usuarioLogado.copy(senha: senha)),
+                  ],
+                ),
               ),
-              CampoTextoSenha(
-                  label: 'Senha',
-                  text: usuarioLogado.senha!,
-                  tipoCampo: TextInputType.visiblePassword,
-                  enableEdit: true,
-                  onChanged: (senha) =>
-                      usuarioLogado = usuarioLogado.copy(senha: senha)),
               const SizedBox(height: 20),
               SizedBox(
                   width: double.infinity,
@@ -145,8 +153,10 @@ class _EditarPerfilState extends State<EditarPerfil> {
                           MaterialStatePropertyAll<Color>(estilo.corprimaria),
                     ),
                     onPressed: () {
-                      usuarioSessao.setUsuarioLogado(usuarioLogado);
-                      _atualizarUsuario(context);
+                      if (_formKey.currentState!.validate()) {
+                        usuarioSessao.setUsuarioLogado(usuarioLogado);
+                        _atualizarUsuario(context);
+                      }
                     },
                     child: const Text(
                       "Salvar",

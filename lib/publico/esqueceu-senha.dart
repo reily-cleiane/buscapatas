@@ -55,7 +55,6 @@ class _EsqueceuSenhaState extends State<EsqueceuSenha> {
               usuarioId: usuarioLogado.id!,
               text: usuarioLogado.email!=null?usuarioLogado.email!:"", 
               tipoCampo: TextInputType.emailAddress,
-              enableEdit: true,
               onChanged: (email) => usuario = usuario.copy(email: email)),
             
             const Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 1.0)),
