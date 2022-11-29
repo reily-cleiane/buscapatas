@@ -10,12 +10,13 @@ import 'package:flutter_session/flutter_session.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 import 'package:buscapatas/visualizacoes/editar-perfil.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:buscapatas/utils/usuario_logado.dart' as usuarioSessao;
 import 'package:buscapatas/components/navbar.dart';
 import 'package:buscapatas/components/animal_card.dart';
 
 class VisualizarPerfil extends StatefulWidget {
-  VisualizarPerfil({super.key, this.title= ""});
+  VisualizarPerfil({super.key, this.title = ""});
 
   final String title;
 
@@ -31,15 +32,16 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
   void initState() {
     carregarUsuarioLogado();
     super.initState();
-    
   }
-  void carregarUsuarioLogado() async{
-    await usuarioSessao.getUsuarioLogado().then((value) => usuarioLogado=value);
+
+  void carregarUsuarioLogado() async {
+    await usuarioSessao
+        .getUsuarioLogado()
+        .then((value) => usuarioLogado = value);
     //Posts depende do usuário, precisar estar em uma função async após o await do usuário
     //o getPostByUsuario recarrega a tela com um setState, necessário para ter acesso ao usuarioLogado
     getPostsByUsuario();
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +69,7 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
                     Expanded(
                       flex: 7,
                       child: Text(
-                        (usuarioLogado.nome)!=null?usuarioLogado.nome!:"",
+                        (usuarioLogado.nome) != null ? usuarioLogado.nome! : "",
                         style: const TextStyle(fontSize: 24),
                       ),
                     ),
@@ -185,11 +187,12 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
                         padding: EdgeInsets.fromLTRB(10, 0, 0, 0.0),
                         child: InkWell(
                             onTap: () async {
-                              await Navigator.push(                              
+                              await Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        EditarPerfil(title: "Editar Perfil", usuario: usuarioLogado)),
+                                    builder: (context) => EditarPerfil(
+                                        title: "Editar Perfil",
+                                        usuario: usuarioLogado)),
                               );
                               //setState(() {});
                             },
@@ -254,6 +257,9 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
   }
 
   void _deslogar() async {
+    SharedPreferences preferencias = await SharedPreferences.getInstance();
+    preferencias.remove('buscapatas.usuarioEmail');
+    preferencias.remove('buscapatas.usuarioSenha');
     await FlutterSession().set("sessao_usuarioLogado", "");
   }
 
@@ -262,20 +268,20 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => InfoPostPerdido(title: "Animal Perdido", post:post),
+            builder: (context) =>
+                InfoPostPerdido(title: "Animal Perdido", post: post),
           ));
     } else {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => InfoPostAvistado(title: "Animal Avistado", post:post),
+            builder: (context) =>
+                InfoPostAvistado(title: "Animal Avistado", post: post),
           ));
     }
   }
 
-
   void getPostsByUsuario() async {
-    
     List<PostModel> posts = await PostModel.getPostsByUsuario(usuarioLogado.id);
     setState(() {
       postsUsuario = posts;

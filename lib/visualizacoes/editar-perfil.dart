@@ -15,6 +15,7 @@ import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:http_parser/http_parser.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mime/mime.dart';
 
 class EditarPerfil extends StatefulWidget {
@@ -42,14 +43,14 @@ class _EditarPerfilState extends State<EditarPerfil> {
     usuarioLogado = widget.usuario;
   }
 
-
   @override
   Widget build(BuildContext context) {
     //quando houver armazenamento das imagens no usuario
     //foto passa a ser o arquivo de imagem do usuário
     ImageProvider fotoUsuario = (imageTest != null)
-                              ? FileImage(imageTest!) as ImageProvider
-                              : const NetworkImage('https://buscapatas.s3.sa-east-1.amazonaws.com/usuario-foto-padrao.png');
+        ? FileImage(imageTest!) as ImageProvider
+        : const NetworkImage(
+            'https://buscapatas.s3.sa-east-1.amazonaws.com/usuario-foto-padrao.png');
     return Scaffold(
       appBar: AppBar(
           title: const Text(
@@ -77,10 +78,10 @@ class _EditarPerfilState extends State<EditarPerfil> {
                           width: 128,
                           height: 128,
                           child: InkWell(onTap: () async {
-                              await showDialog(
+                            await showDialog(
                                 context: context,
-                                builder: (_) => ImagemDialogo(foto: fotoUsuario)
-                              );
+                                builder: (_) =>
+                                    ImagemDialogo(foto: fotoUsuario));
                           }),
                         ),
                       ),
@@ -226,6 +227,10 @@ class _EditarPerfilState extends State<EditarPerfil> {
     var responsed = await http.Response.fromStream(response);
 
     if (response.statusCode == 200) {
+      //atualizar o usuário local para poder logar com biometria
+      SharedPreferences preferencias = await SharedPreferences.getInstance();
+      preferencias.setString('buscapatas.usuarioEmail', usuarioLogado.email);
+      preferencias.setString('buscapatas.usuarioSenha', usuarioLogado.senha);
       showDialog(
         context: context,
         barrierDismissible: true,
@@ -333,27 +338,27 @@ class _EditarPerfilState extends State<EditarPerfil> {
   Future pegarImagem(ImageSource source) async {
     final imagem = await ImagePicker.pickImage(source: source);
     if (imagem == null) return;
-    
+
     final imagemTemporaria = File(imagem.path);
     setState(() => imageTest = imagemTemporaria);
-  } 
+  }
 
   Widget construirBotaoEdicao() => construirCirculo(
-    color: Colors.white,
-    all: 3,
-    child: InkWell(
-      onTap: () => {mostrarDialogo(context)},
-      child: construirCirculo(
-        color: estilo.corprimaria,
-        all: 8,
-        child: const Icon(
-          Icons.edit,
-          color: Colors.white,
-          size: 15,
+        color: Colors.white,
+        all: 3,
+        child: InkWell(
+          onTap: () => {mostrarDialogo(context)},
+          child: construirCirculo(
+            color: estilo.corprimaria,
+            all: 8,
+            child: const Icon(
+              Icons.edit,
+              color: Colors.white,
+              size: 15,
+            ),
+          ),
         ),
-      ),
-    ),
-  );
+      );
 
   Widget construirCirculo({
     required Widget child,
