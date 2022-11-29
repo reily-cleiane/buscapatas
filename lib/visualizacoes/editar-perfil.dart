@@ -92,6 +92,7 @@ class _EditarPerfilState extends State<EditarPerfil> {
               ),
               const SizedBox(height: 20),
               CampoTexto(
+                  usuarioId: usuarioLogado.id!,
                   label: 'Nome',
                   text: usuarioLogado.nome!,
                   tipoCampo: TextInputType.name,
@@ -99,6 +100,7 @@ class _EditarPerfilState extends State<EditarPerfil> {
                   onChanged: (nome) =>
                       usuarioLogado = usuarioLogado.copy(nome: nome)),
               CampoTexto(
+                  usuarioId: usuarioLogado.id!,
                   label: 'Email',
                   text: usuarioLogado.email!,
                   tipoCampo: TextInputType.emailAddress,

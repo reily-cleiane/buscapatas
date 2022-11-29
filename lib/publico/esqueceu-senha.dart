@@ -52,6 +52,7 @@ class _EsqueceuSenhaState extends State<EsqueceuSenha> {
             const Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 1.0)),
 
             CampoTexto(label: 'Email', 
+              usuarioId: usuarioLogado.id!,
               text: usuarioLogado.email!=null?usuarioLogado.email!:"", 
               tipoCampo: TextInputType.emailAddress,
               enableEdit: true,

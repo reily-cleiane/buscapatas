@@ -1,8 +1,10 @@
+import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 
 class CampoTexto extends StatefulWidget {
-  final int maxLines;
+  // final int maxLines;
+  final int usuarioId;
   final String label;
   final String text;
   final TextInputType tipoCampo;
@@ -11,7 +13,8 @@ class CampoTexto extends StatefulWidget {
 
   const CampoTexto({
     Key? key,
-    this.maxLines = 1,
+    // this.maxLines = 1,
+    required this.usuarioId,
     required this.label,
     required this.text,
     required this.tipoCampo,
@@ -25,6 +28,7 @@ class CampoTexto extends StatefulWidget {
 
 class _CampoTextoState extends State<CampoTexto> {
   late final TextEditingController _controller;
+  bool _emailUnico = false;
 
   @override
   void initState() {
@@ -67,14 +71,19 @@ class _CampoTextoState extends State<CampoTexto> {
                     return 'Nome inválido';
                   }
                 } else if (widget.tipoCampo == TextInputType.emailAddress) {
+                  if (_controller.text.isNotEmpty) {
+                    validarEmail(context);
+                  }
+                  if (!_emailUnico) {
+                    return "Já existe usuário cadastrado com esse e-mail";
+                  }
                   String padraoEmail =
                       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
                   RegExp regExp = RegExp(padraoEmail);
-                  //final validate = ValidationBuilder().email().maxLength(50).build();
-                  //if(validate(_controller.text)!=null){
                   if (!regExp.hasMatch(_controller.text)) {
-                    return 'Email inválido';
+                    return "O campo E-mail deve ser preenchido com um e-mail válido";
                   }
+                  return null;
 
                 } else if (widget.tipoCampo == TextInputType.phone) {
                   String pattern = r'(^\(?\d{2}\)?[\s-]?[\s9]?\d{4}-?\d{4}$)';
@@ -92,4 +101,21 @@ class _CampoTextoState extends State<CampoTexto> {
           ),
         ],
       );
+
+  void validarEmail(BuildContext context) async {
+    if (_controller.text.isNotEmpty) {
+      List<UsuarioModel> listaTemp =
+          await UsuarioModel.getUsuariosByEmail(_controller.text);
+      bool mesmoIdLogado = listaTemp.any((element) => element.id == widget.usuarioId);
+      if (listaTemp.isEmpty || mesmoIdLogado) {
+        setState(() {
+           _emailUnico = true;
+        });
+      } else {
+        setState(() {
+          _emailUnico = false;
+        });
+      }
+    }
+  }
 }
