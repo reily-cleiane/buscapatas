@@ -5,6 +5,7 @@ import 'package:buscapatas/visualizacoes/info-post-avistado.dart';
 import 'package:buscapatas/visualizacoes/info-post-perdido.dart';
 import 'package:buscapatas/model/PostModel.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/publico/login.dart';
@@ -80,7 +81,12 @@ class _HomeState extends State<Home> {
                         //bearing: 192.8334901395799,
                         target: LatLng(valorLatitude, valorLongitude),
                         //tilt: 59.440717697143555,
-                        zoom: 15)),
+                        zoom: 15),
+                    gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
+                      Factory<OneSequenceGestureRecognizer>(
+                        () => EagerGestureRecognizer(),
+                      ),
+                    ].toSet()),
               ),
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 20, 20, 5),
@@ -167,15 +173,15 @@ class _HomeState extends State<Home> {
                                 )))),
                   ],
                 )),
-                 Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 15.0, 0, 0),
-                  ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 15.0, 0, 0),
+                ),
                 Column(children: <Widget>[
                   Container(
                       height: 400,
                       padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                       child: ListView.builder(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 180),
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 180),
                           //shrinkWrap: true,
                           itemCount: postsProximos.length,
                           itemBuilder: (context, index) {
