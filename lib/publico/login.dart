@@ -100,7 +100,7 @@ class _LoginState extends State<Login> {
                         style: TextStyle(color: Colors.white, fontSize: 20.0),
                       ),
                     )),
-                const Padding(padding: EdgeInsets.fromLTRB(0, 20.0, 0, 15.0)),
+                const Padding(padding: EdgeInsets.fromLTRB(0, 10.0, 0, 10.0)),
                 if (preferencias != null &&
                     preferencias!.containsKey('buscapatas.usuarioEmail') &&
                     preferencias!.containsKey('buscapatas.usuarioSenha'))
@@ -112,7 +112,7 @@ class _LoginState extends State<Login> {
                           backgroundColor: MaterialStatePropertyAll<Color>(
                               estilo.corprimaria),
                         ),
-                        onPressed: () async {
+                        onPressed: () {
                           autenticarBiometria();
                         },
                         child: const Text(
