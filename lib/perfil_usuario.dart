@@ -254,7 +254,7 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
   }
 
   void _deslogar() async {
-    await FlutterSession().set("sessao_usuarioLogado", null);
+    await FlutterSession().set("sessao_usuarioLogado", "");
   }
 
   void _infoPost(post) {

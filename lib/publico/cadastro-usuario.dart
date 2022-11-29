@@ -4,6 +4,7 @@ import 'package:buscapatas/components/caixa_dialogo_alerta.dart';
 import 'package:buscapatas/components/campo_texto_curto.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:buscapatas/publico/login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -121,6 +122,12 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
     UsuarioModel usuario = UsuarioModel(
         nome: nome, email: email, senha: senha, telefone: telefone);
     var response = await usuario.salvar();
+
+    if (response.statusCode == 200) {
+      SharedPreferences preferencias = await SharedPreferences.getInstance();
+      preferencias.setString('buscapatas.usuarioEmail', email);
+      preferencias.setString('buscapatas.usuarioSenha', senha);
+    }
 
     showDialog(
       context: context,

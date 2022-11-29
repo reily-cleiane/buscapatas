@@ -4,16 +4,14 @@ import 'package:buscapatas/model/PostModel.dart';
 import 'package:buscapatas/utils/localizacao.dart' as localizacao;
 
 class AnimalCard extends StatefulWidget {
-
-  AnimalCard({super.key, post}){
+  AnimalCard({super.key, post}) {
     super.key;
-    if(post?.tipoPost == "ANIMAL_PERDIDO"){
+    if (post?.tipoPost == "ANIMAL_PERDIDO") {
       tipoPost = "perdido";
       backgroundColor = estilo.corperdido;
-    }else if(post?.tipoPost == "ANIMAL_AVISTADO"){
+    } else if (post?.tipoPost == "ANIMAL_AVISTADO") {
       tipoPost = "avistado";
       backgroundColor = estilo.coravistado;
-
     }
     especie = post?.especieAnimal?.getNome();
     dataHora = post?.dataHora;
@@ -25,19 +23,19 @@ class AnimalCard extends StatefulWidget {
     image = 'imagens/animal.jpg';
   }
 
-  AnimalCard.notificacao({super.key, notificacao}){
+  AnimalCard.notificacao({super.key, notificacao}) {
     super.key;
     tipoPost = "visto";
     backgroundColor = estilo.coravistado;
 
-    especie = "Seu ${notificacao.post.getEspecie().getNome().toLowerCase()} foi";
+    especie =
+        "Seu ${notificacao.post.getEspecie().getNome().toLowerCase()} foi";
     dataHora = notificacao?.dataHora;
     latitude = notificacao?.latitude;
     longitude = notificacao?.longitude;
     outrasInformacoes = notificacao?.mensagem;
 
     image = 'imagens/animal.jpg';
-
   }
 
   String? especie;
@@ -57,7 +55,6 @@ class AnimalCard extends StatefulWidget {
 }
 
 class AnimalCardState extends State<AnimalCard> {
-
   double distancia = 0;
   String dataHoraExibida = "";
   String informacoes = "";
@@ -66,19 +63,25 @@ class AnimalCardState extends State<AnimalCard> {
   @override
   void initState() {
     carregarDistancia();
-    informacoes = getInformacoesResumidas(widget.outrasInformacoes, widget.orientacoesGerais);
+    informacoes = getInformacoesResumidas(
+        widget.outrasInformacoes, widget.orientacoesGerais);
     postadoHa = getTempoDecorrido(widget.dataHora);
     dataHoraExibida =
-          "${widget.dataHora!.day.toString().padLeft(2, '0')}/${widget.dataHora!.month.toString().padLeft(2, '0')}/${widget.dataHora!.year.toString()} às ${widget.dataHora!.hour.toString()}:${widget.dataHora!.minute.toString()}";
-    
+        "${widget.dataHora!.day.toString().padLeft(2, '0')}/${widget.dataHora!.month.toString().padLeft(2, '0')}/${widget.dataHora!.year.toString()} às ${widget.dataHora!.hour.toString()}:${widget.dataHora!.minute.toString()}";
+
     super.initState();
   }
 
   void carregarDistancia() async {
-    await localizacao.calcularDistanciaPosicaoAtual(widget.latitude, widget.longitude)
+    await localizacao
+        .calcularDistanciaPosicaoAtual(widget.latitude, widget.longitude)
         .then((value) => distancia = value);
     //Necessário para recarregar a página após ter pegado o valor de distancia
-    setState(() {});
+    if (this.mounted) {
+      setState(() {
+
+      });
+    }
   }
 
   @override
@@ -123,10 +126,13 @@ class AnimalCardState extends State<AnimalCard> {
                       Text(
                         "${widget.especie!} ${widget.tipoPost!}",
                         style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16, color: estilo.corpreto),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: estilo.corpreto),
                       ),
-                      Text(informacoes, style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 12)),
+                      Text(informacoes,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 12)),
                       const SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -152,7 +158,7 @@ class AnimalCardState extends State<AnimalCard> {
 
   String getInformacoesResumidas(
       String? outrasInformacoes, String? orientacoesGerais) {
-        String informacoes = "";
+    String informacoes = "";
     if (outrasInformacoes != null && outrasInformacoes.isNotEmpty) {
       if (outrasInformacoes.length > 100) {
         informacoes = outrasInformacoes.substring(0, 100);
@@ -169,17 +175,17 @@ class AnimalCardState extends State<AnimalCard> {
     return informacoes;
   }
 
-  String getTempoDecorrido(DateTime? dataHora){
+  String getTempoDecorrido(DateTime? dataHora) {
     Duration? diferencaTempo;
     String texto = "Postado há";
 
     diferencaTempo = DateTime.now().difference(dataHora!);
     if (diferencaTempo.inDays >= 1 && diferencaTempo.inDays <= 30) {
-      if(diferencaTempo.inDays == 1){
+      if (diferencaTempo.inDays == 1) {
         texto = "${texto} ${diferencaTempo.inDays} dia.";
-      }else{
+      } else {
         texto = "${texto} ${diferencaTempo.inDays} dias.";
-      }    
+      }
     } else if (diferencaTempo.inDays < 1) {
       texto = "${texto} ${diferencaTempo.inHours} horas.";
     } else {
@@ -187,7 +193,5 @@ class AnimalCardState extends State<AnimalCard> {
       texto = "${texto} ${meses} meses.";
     }
     return texto;
-
   }
-
 }

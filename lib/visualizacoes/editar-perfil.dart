@@ -180,7 +180,7 @@ class _EditarPerfilState extends State<EditarPerfil> {
                           MaterialStatePropertyAll<Color>(estilo.corprimaria),
                     ),
                     onPressed: () {
-                      usuarioSessao.setUsuarioLogado(usuarioLogado);
+                      //usuarioSessao.setUsuarioLogado(usuarioLogado);
                       _atualizarUsuario(context);
                     },
                     child: const Text(

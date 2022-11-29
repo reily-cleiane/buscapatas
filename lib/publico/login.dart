@@ -6,6 +6,9 @@ import 'package:buscapatas/publico/cadastro-usuario.dart';
 import 'package:buscapatas/home.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:flutter_session/flutter_session.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:local_auth/auth_strings.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:buscapatas/components/campo_texto_curto.dart';
 
 class Login extends StatefulWidget {
@@ -22,6 +25,20 @@ class _LoginState extends State<Login> {
   TextEditingController senhaController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _existeUsuario = false;
+  LocalAuthentication auth = LocalAuthentication();
+  SharedPreferences? preferencias;
+
+  @override
+  void initState() {
+    carregarUsuarioLocal();
+    super.initState();
+  }
+
+  void carregarUsuarioLocal() async {
+    preferencias = await SharedPreferences.getInstance();
+    setState(() {      
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +100,26 @@ class _LoginState extends State<Login> {
                         style: TextStyle(color: Colors.white, fontSize: 20.0),
                       ),
                     )),
+                const Padding(padding: EdgeInsets.fromLTRB(0, 20.0, 0, 15.0)),
+                if (preferencias != null &&
+                    preferencias!.containsKey('buscapatas.usuarioEmail') &&
+                    preferencias!.containsKey('buscapatas.usuarioSenha'))
+                  SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton(
+                        style: const ButtonStyle(
+                          backgroundColor: MaterialStatePropertyAll<Color>(
+                              estilo.corprimaria),
+                        ),
+                        onPressed: () async {
+                          autenticarBiometria();
+                        },
+                        child: const Text(
+                          "Entrar com biometria",
+                          style: TextStyle(color: Colors.white, fontSize: 20.0),
+                        ),
+                      )),
               ])),
           const Padding(
             padding: EdgeInsets.fromLTRB(0, 20.0, 0, 15.0),
@@ -191,6 +228,10 @@ class _LoginState extends State<Login> {
 
     if (_formKey.currentState!.validate()) {
       if (_existeUsuario) {
+        preferencias?.setString(
+            'buscapatas.usuarioEmail', emailController.text);
+        preferencias?.setString(
+            'buscapatas.usuarioSenha', senhaController.text);
         await FlutterSession().set("sessao_usuarioLogado", usuarioLogado);
         _redirecionarPaginaAposLogar();
       }
@@ -212,6 +253,48 @@ class _LoginState extends State<Login> {
       return "Não foi possível encontrar um usuário cadastrado com esse email/senha";
     } else {
       return null;
+    }
+  }
+
+  Future autenticarBiometria() async {
+    bool isBiometricsAvailable = await auth.canCheckBiometrics;
+
+    if (!isBiometricsAvailable) return false;
+
+    const iosStrings = IOSAuthMessages(
+        cancelButton: 'cancelar', goToSettingsButton: 'configurações');
+
+    bool didAuthenticate = await auth.authenticateWithBiometrics(
+        localizedReason: 'Faça login com biometria',
+        iOSAuthStrings: iosStrings);
+
+    if (didAuthenticate) {
+      if (preferencias != null &&
+          preferencias!.containsKey('buscapatas.usuarioEmail') &&
+          preferencias!.containsKey('buscapatas.usuarioSenha')) {
+        UsuarioModel? usuarioLogado;
+
+        List<UsuarioModel> listaUsuarioTemp = [];
+
+        listaUsuarioTemp = await UsuarioModel.getUsuariosByEmailSenha(
+            preferencias!.getString('buscapatas.usuarioEmail'),
+            preferencias!.getString('buscapatas.usuarioSenha'));
+
+        if (listaUsuarioTemp.isNotEmpty) {
+          usuarioLogado = listaUsuarioTemp[0];
+          _existeUsuario = true;
+        } else {
+          _existeUsuario = false;
+          preferencias!.remove('buscapatas.usuarioEmail');
+          preferencias!.remove('buscapatas.usuarioSenha');
+          setState(() {});
+        }
+
+        if (_existeUsuario) {
+          await FlutterSession().set("sessao_usuarioLogado", usuarioLogado);
+          _redirecionarPaginaAposLogar();
+        }
+      }
     }
   }
 }
