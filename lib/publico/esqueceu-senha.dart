@@ -1,7 +1,5 @@
-import 'package:buscapatas/components/campo-texto.dart';
+import 'package:buscapatas/components/campo_texto.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
-import 'package:buscapatas/model/test-user.dart';
-import 'package:buscapatas/utils/mock_usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
@@ -13,25 +11,23 @@ class EsqueceuSenha extends StatefulWidget {
   }
 
   final String title;
-  UsuarioModel usuario = new UsuarioModel();
+  UsuarioModel usuario = UsuarioModel();
 
   @override
   State<EsqueceuSenha> createState() => _EsqueceuSenhaState();
 }
 
 class _EsqueceuSenhaState extends State<EsqueceuSenha> {
-  UsuarioModel usuarioLogado = new UsuarioModel();
+  UsuarioModel usuarioLogado = UsuarioModel();
 
   @override
   void initState() {
     usuarioLogado = widget.usuario;
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    User usuario = MockUsuario.getUser();
-    
-    // TextEditingController emailController = TextEditingController();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -55,7 +51,7 @@ class _EsqueceuSenhaState extends State<EsqueceuSenha> {
               usuarioId: usuarioLogado.id!,
               text: usuarioLogado.email!=null?usuarioLogado.email!:"", 
               tipoCampo: TextInputType.emailAddress,
-              onChanged: (email) => usuario = usuario.copy(email: email)),
+              onChanged: (email) => {}),
             
             const Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 1.0)),
             SizedBox(

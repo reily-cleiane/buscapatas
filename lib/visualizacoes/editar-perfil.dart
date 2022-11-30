@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:buscapatas/components/caixa_dialogo_alerta.dart';
-import 'package:buscapatas/components/campo-texto.dart';
+import 'package:buscapatas/components/campo_texto.dart';
 import 'package:buscapatas/components/campo_texto_senha.dart';
 import 'package:buscapatas/components/imagem_dialogo.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
@@ -226,7 +226,7 @@ class _EditarPerfilState extends State<EditarPerfil> {
 
   void _redirecionarPaginaAposSalvar() {
     Navigator.push(
-      context as BuildContext,
+      context,
       MaterialPageRoute(
           builder: (context) => VisualizarPerfil(title: 'Perfil')),
     );
@@ -236,7 +236,7 @@ class _EditarPerfilState extends State<EditarPerfil> {
       context: context,
       builder: (BuildContext context) {
         return SimpleDialog(
-          title: Text("Selecione uma das opções"),
+          title: const Text("Selecione uma das opções"),
           children: <Widget>[
             SimpleDialogOption(
               onPressed: () {
@@ -251,7 +251,7 @@ class _EditarPerfilState extends State<EditarPerfil> {
                     color: estilo.corprimaria,
                   ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(10, 0, 0, 0.0),
+                    padding: const EdgeInsets.fromLTRB(10, 0, 0, 0.0),
                     child: InkWell(
                         child: Ink(
                       child: RichText(
@@ -282,7 +282,7 @@ class _EditarPerfilState extends State<EditarPerfil> {
                     color: estilo.corprimaria,
                   ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(10, 0, 0, 0.0),
+                    padding: const EdgeInsets.fromLTRB(10, 0, 0, 0.0),
                     child: InkWell(
                         child: Ink(
                       child: RichText(
