@@ -6,7 +6,6 @@ import 'package:buscapatas/components/campo_texto_senha.dart';
 import 'package:buscapatas/components/imagem_dialogo.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:buscapatas/perfil_usuario.dart';
-import 'package:buscapatas/publico/esqueceu-senha.dart';
 import 'package:buscapatas/visualizacoes/editar-numero.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
@@ -47,10 +46,9 @@ class _EditarPerfilState extends State<EditarPerfil> {
 
   @override
   Widget build(BuildContext context) {
-    //quando houver armazenamento das imagens no usuario
-    //foto passa a ser o arquivo de imagem do usuário
-    ImageProvider fotoUsuario = (imageTest != null)
-        ? FileImage(imageTest!) as ImageProvider
+    ImageProvider fotoUsuario = (usuarioLogado.caminhoImagem != null)
+        ? NetworkImage(
+            'https://buscapatas.s3.sa-east-1.amazonaws.com/${usuarioLogado.caminhoImagem}')
         : const NetworkImage(
             'https://buscapatas.s3.sa-east-1.amazonaws.com/usuario-foto-padrao.png');
     return Scaffold(

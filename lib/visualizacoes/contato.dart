@@ -10,14 +10,14 @@ class ContatoUsuario extends StatefulWidget {
   ContatoUsuario({super.key, required this.title, required this.usuario});
 
   final String title;
-  UsuarioModel usuario = new UsuarioModel();
+  UsuarioModel usuario = UsuarioModel();
 
   @override
   State<ContatoUsuario> createState() => _ContatoUsuarioState();
 }
 
 class _ContatoUsuarioState extends State<ContatoUsuario> {
-  UsuarioModel usuarioVisitado = new UsuarioModel();
+  UsuarioModel usuarioVisitado = UsuarioModel();
   List<PostModel> postsUsuario = [];
 
    @override
@@ -30,6 +30,11 @@ class _ContatoUsuarioState extends State<ContatoUsuario> {
 
   @override
   Widget build(BuildContext context) {
+    ImageProvider fotoUsuario = (usuarioVisitado.caminhoImagem != null)
+        ? NetworkImage(
+            'https://buscapatas.s3.sa-east-1.amazonaws.com/${usuarioVisitado.caminhoImagem}')
+        : const NetworkImage(
+            'https://buscapatas.s3.sa-east-1.amazonaws.com/usuario-foto-padrao.png');
     return Scaffold(
       appBar: AppBar(
           title: const Text(
@@ -60,16 +65,16 @@ class _ContatoUsuarioState extends State<ContatoUsuario> {
                       child: Text(
                         usuarioVisitado.nome!,
                         style:
-                            TextStyle(fontSize: 24, color: estilo.corprimaria),
+                            const TextStyle(fontSize: 24, color: estilo.corprimaria),
                       ),
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     Expanded(
                       flex: 3,
                       child: Center(
                         child: CircleAvatar(
                           radius: 40,
-                          backgroundImage: AssetImage('imagens/salsicha.jpg'),
+                          backgroundImage: fotoUsuario,
                         ),
                       ),
                     )
@@ -85,30 +90,30 @@ class _ContatoUsuarioState extends State<ContatoUsuario> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Informações de contato',
+                      const Text('Informações de contato',
                           style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                               color: estilo.corprimaria)),
-                      SizedBox(height: 10),
-                      Text(
+                      const SizedBox(height: 10),
+                      const Text(
                         'Número de celular: ',
                         style: TextStyle(fontSize: 16),
                       ),
-                      SizedBox(width: 5),
+                      const SizedBox(width: 5),
                       Text(usuarioVisitado.telefone!, style: TextStyle(fontSize: 16)),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
-                      Text('Email: ', style: TextStyle(fontSize: 16)),
+                      const Text('Email: ', style: TextStyle(fontSize: 16)),
                       Text.rich(TextSpan(
                         text: usuarioVisitado.email!,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                           decoration: TextDecoration.underline,
                         ),
                       )),
-                      SizedBox(height: 25),
+                      const SizedBox(height: 25),
                     ],
                   ),
                   Column(
@@ -120,7 +125,7 @@ class _ContatoUsuarioState extends State<ContatoUsuario> {
                             fontWeight: FontWeight.bold,
                             color: estilo.corprimaria),
                       ),
-                      const SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Container(
                     height: 300,
                     child: ListView.builder(

@@ -45,7 +45,11 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
 
   @override
   Widget build(BuildContext context) {
-    final usuario = MockUsuario.getUser();
+    ImageProvider fotoUsuario = (usuarioLogado.caminhoImagem != null)
+        ? NetworkImage(
+            'https://buscapatas.s3.sa-east-1.amazonaws.com/${usuarioLogado.caminhoImagem}')
+        : const NetworkImage(
+            'https://buscapatas.s3.sa-east-1.amazonaws.com/usuario-foto-padrao.png');
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -78,7 +82,7 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
                       borderRadius: BorderRadius.circular(20.0),
                       child: CircleAvatar(
                         radius: 50,
-                        backgroundImage: AssetImage(usuario.imagem),
+                        backgroundImage: fotoUsuario,
                       ),
                     ),
                   ],
@@ -194,7 +198,6 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
                                         title: "Editar Perfil",
                                         usuario: usuarioLogado)),
                               );
-                              //setState(() {});
                             },
                             child: Ink(
                               child: RichText(
