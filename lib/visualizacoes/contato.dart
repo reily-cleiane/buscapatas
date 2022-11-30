@@ -26,6 +26,7 @@ class _ContatoUsuarioState extends State<ContatoUsuario> {
 
     getPostsByUsuario(usuarioVisitado.id!);
     
+    super.initState();
   }
 
   @override

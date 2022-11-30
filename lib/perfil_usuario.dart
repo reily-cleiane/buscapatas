@@ -1,6 +1,5 @@
 import 'package:buscapatas/cadastros/cadastro_post_avistado.dart';
 import 'package:buscapatas/cadastros/cadastro_post_perdido.dart';
-import 'package:buscapatas/utils/mock_usuario.dart';
 import 'package:buscapatas/publico/login.dart';
 import 'package:buscapatas/model/PostModel.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
