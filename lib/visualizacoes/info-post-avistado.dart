@@ -50,6 +50,11 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
 
   @override
   Widget build(BuildContext context) {
+    ImageProvider fotoUsuarioPost = (post.usuario!.caminhoImagem != null)
+        ? NetworkImage(
+            'https://buscapatas.s3.sa-east-1.amazonaws.com/${post.usuario!.caminhoImagem}')
+        : const NetworkImage(
+            'https://buscapatas.s3.sa-east-1.amazonaws.com/usuario-foto-padrao.png');
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -202,9 +207,9 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    const CircleAvatar(
+                    CircleAvatar(
                       radius: 20,
-                      backgroundImage: AssetImage('imagens/salsicha.jpg'),
+                      backgroundImage: fotoUsuarioPost,
                     ),
                     Padding(
                       padding: EdgeInsets.fromLTRB(10, 0, 0, 0.0),
