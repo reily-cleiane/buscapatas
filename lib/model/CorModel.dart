@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-CorModel corModelJson(String str) =>
-    CorModel.fromJson(json.decode(str));
+CorModel corModelJson(String str) => CorModel.fromJson(json.decode(str));
 
 String corModelToJson(CorModel data) => json.encode(data.toJson());
 
@@ -15,9 +14,7 @@ class CorModel {
   CorModel.id(this.id);
 
   factory CorModel.fromJson(Map<String, dynamic> json) {
-    return CorModel(
-        id: json["id"],
-        nome: json["nome"]);
+    return CorModel(id: json["id"], nome: json["nome"]);
   }
 
   Map<String, dynamic> toJson() => {
@@ -25,9 +22,9 @@ class CorModel {
         "nome": nome,
       };
 
-  
-   static Future<Map<String, int>> getCores() async {
-    const request = "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/cores";
+  static Future<Map<String, int>> getCores() async {
+    const request =
+        "http://buscapatasbackend-env.eba-qtcpmdpp.sa-east-1.elasticbeanstalk.com/cores";
 
     http.Response response = await http.get(Uri.parse(request));
 
@@ -43,5 +40,4 @@ class CorModel {
       throw Exception('Falha no servidor ao carregar cores');
     }
   }
-
 }

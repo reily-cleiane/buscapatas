@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-RacaModel racaModelJson(String str) =>
-    RacaModel.fromJson(json.decode(str));
+RacaModel racaModelJson(String str) => RacaModel.fromJson(json.decode(str));
 
 String RacaModelToJson(RacaModel data) => json.encode(data.toJson());
 
@@ -14,19 +13,16 @@ class RacaModel {
 
   RacaModel.id(this.id);
 
-  String? getNome(){
+  String? getNome() {
     return this.nome;
   }
 
   factory RacaModel.fromJson(Map<String, dynamic> json) {
-    if(json==null){
+    if (json == null) {
       return RacaModel();
-    } else{
-      return RacaModel(
-        id: json["id"],
-        nome: json["nome"]);
+    } else {
+      return RacaModel(id: json["id"], nome: json["nome"]);
     }
-    
   }
 
   Map<String, dynamic> toJson() => {
@@ -34,11 +30,10 @@ class RacaModel {
         "nome": nome,
       };
 
-
-  static Future<List<dynamic>> getRacasByEspecie(var valorEspecieSelecionado) async {
-
+  static Future<List<dynamic>> getRacasByEspecie(
+      var valorEspecieSelecionado) async {
     var request =
-        "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/racas/especie/${valorEspecieSelecionado}";
+        "http://buscapatasbackend-env.eba-qtcpmdpp.sa-east-1.elasticbeanstalk.com/racas/especie/${valorEspecieSelecionado}";
 
     http.Response response = await http.get(Uri.parse(request));
 
@@ -51,12 +46,8 @@ class RacaModel {
       }
 
       return racas;
-
     } else {
       throw Exception('Falha no servidor ao carregar raças');
     }
   }
-
-  
-
 }

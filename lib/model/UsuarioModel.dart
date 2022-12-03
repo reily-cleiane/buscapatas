@@ -64,7 +64,7 @@ class UsuarioModel {
 
   Future<http.Response> salvar() async {
     var url =
-        "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/users";
+        "http://buscapatasbackend-env.eba-qtcpmdpp.sa-east-1.elasticbeanstalk.com/users";
 
     var request = new http.MultipartRequest("POST", Uri.parse(url));
 
@@ -79,7 +79,7 @@ class UsuarioModel {
   static Future<List<UsuarioModel>> getUsuariosByEmailSenha(
       String email, String senha) async {
     var url =
-        "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/usuarioautorizado?email=${email}&senha=${senha}";
+        "http://buscapatasbackend-env.eba-qtcpmdpp.sa-east-1.elasticbeanstalk.com/usuarioautorizado?email=${email}&senha=${senha}";
 
     var response = await http.get(
       Uri.parse(url),
@@ -107,7 +107,7 @@ class UsuarioModel {
 
   static Future<List<UsuarioModel>> getUsuariosByEmail(String email) async {
     var url =
-        "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/findbyemail?email=${email}";
+        "http://buscapatasbackend-env.eba-qtcpmdpp.sa-east-1.elasticbeanstalk.com/findbyemail?email=${email}";
     var response = await http.get(
       Uri.parse(url),
       headers: <String, String>{

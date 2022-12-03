@@ -32,7 +32,6 @@ class EditarPerfil extends StatefulWidget {
 }
 
 class _EditarPerfilState extends State<EditarPerfil> {
-
   final _formKey = GlobalKey<FormState>();
 
   File? imageTest;
@@ -48,9 +47,9 @@ class _EditarPerfilState extends State<EditarPerfil> {
   Widget build(BuildContext context) {
     ImageProvider fotoUsuario = (usuarioLogado.caminhoImagem != null)
         ? NetworkImage(
-            'https://buscapatas.s3.sa-east-1.amazonaws.com/${usuarioLogado.caminhoImagem}')
+            'https://buspatas.blob.core.windows.net/buscapatas/${usuarioLogado.caminhoImagem}')
         : const NetworkImage(
-            'https://buscapatas.s3.sa-east-1.amazonaws.com/usuario-foto-padrao.png');
+            'https://buspatas.blob.core.windows.net/buscapatas/usuario-foto-padrao.png');
     return Scaffold(
       appBar: AppBar(
           title: const Text(
@@ -126,8 +125,8 @@ class _EditarPerfilState extends State<EditarPerfil> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          const EditarNumero(title: 'Mudar número')),
+                                      builder: (context) => const EditarNumero(
+                                          title: 'Mudar número')),
                                 );
                               })),
                       readOnly: true,
@@ -170,7 +169,7 @@ class _EditarPerfilState extends State<EditarPerfil> {
 
   void _atualizarUsuario(BuildContext context) async {
     var url =
-        'http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/users';
+        'http://buscapatasbackend-env.eba-qtcpmdpp.sa-east-1.elasticbeanstalk.com/users';
 
     http.MultipartRequest request =
         http.MultipartRequest('PUT', Uri.parse(url));

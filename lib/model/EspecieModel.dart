@@ -14,14 +14,12 @@ class EspecieModel {
 
   EspecieModel.id(this.id);
 
-  String? getNome(){
+  String? getNome() {
     return this.nome;
   }
 
   factory EspecieModel.fromJson(Map<String, dynamic> json) {
-    return EspecieModel(
-        id: json["id"],
-        nome: json["nome"]);
+    return EspecieModel(id: json["id"], nome: json["nome"]);
   }
 
   Map<String, dynamic> toJson() => {
@@ -30,7 +28,8 @@ class EspecieModel {
       };
 
   static Future<List<dynamic>> getEspecies() async {
-    const request = "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/especies";
+    const request =
+        "http://buscapatasbackend-env.eba-qtcpmdpp.sa-east-1.elasticbeanstalk.com/especies";
 
     http.Response response = await http.get(Uri.parse(request));
 

@@ -90,15 +90,16 @@ class PostModel {
 
   //Refatorar para o método completo para salvar post ficar aqui, e não só a URL
   static String getUrlSalvarPost() {
-    return "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/posts";
+    return "http://buscapatasbackend-env.eba-qtcpmdpp.sa-east-1.elasticbeanstalk.com/posts";
   }
 
-  EspecieModel? getEspecie(){
+  EspecieModel? getEspecie() {
     return this.especieAnimal;
-
   }
+
   static Future<List<PostModel>> getPostsAnimaisPerdidos() async {
-    const request = "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/posts/perdidos";
+    const request =
+        "http://buscapatasbackend-env.eba-qtcpmdpp.sa-east-1.elasticbeanstalk.com/posts/perdidos";
 
     http.Response response = await http.get(Uri.parse(request));
 
@@ -117,7 +118,8 @@ class PostModel {
   }
 
   static Future<List<PostModel>> getPostsAnimaisAvistados() async {
-    const request = "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/posts/avistados";
+    const request =
+        "http://buscapatasbackend-env.eba-qtcpmdpp.sa-east-1.elasticbeanstalk.com/posts/avistados";
 
     http.Response response = await http.get(Uri.parse(request));
 
@@ -137,7 +139,8 @@ class PostModel {
 
   static Future<List<PostModel>> getPostsAnimaisProximos() async {
     //AJUSTAR ISSO AQUI PARA SER POSTS PRÓXIMOS E NÃO TODOS OS POSTS
-    const request = "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/posts";
+    const request =
+        "http://buscapatasbackend-env.eba-qtcpmdpp.sa-east-1.elasticbeanstalk.com/posts";
 
     http.Response response = await http.get(Uri.parse(request));
 
@@ -156,8 +159,8 @@ class PostModel {
   }
 
   static Future<List<PostModel>> getPostsByUsuario(int? idUsuario) async {
-
-    var request = "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/posts/usuario/${idUsuario}";
+    var request =
+        "http://buscapatasbackend-env.eba-qtcpmdpp.sa-east-1.elasticbeanstalk.com/posts/usuario/${idUsuario}";
 
     http.Response response = await http.get(Uri.parse(request));
 
@@ -175,18 +178,16 @@ class PostModel {
     }
   }
 
-  static Future<http.Response> deletePost(int idPost) async{
-
-    var request = "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/posts/${idPost}";
+  static Future<http.Response> deletePost(int idPost) async {
+    var request =
+        "http://buscapatasbackend-env.eba-qtcpmdpp.sa-east-1.elasticbeanstalk.com/posts/${idPost}";
 
     http.Response response = await http.delete(Uri.parse(request));
-    
+
     if (response.statusCode == 200) {
       return response;
     } else {
       throw Exception('Falha no servidor ao excluir o post');
     }
-
   }
-
 }

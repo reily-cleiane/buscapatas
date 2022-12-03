@@ -52,9 +52,9 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
   Widget build(BuildContext context) {
     ImageProvider fotoUsuarioPost = (post.usuario!.caminhoImagem != null)
         ? NetworkImage(
-            'https://buscapatas.s3.sa-east-1.amazonaws.com/${post.usuario!.caminhoImagem}')
+            'https://buspatas.blob.core.windows.net/buscapatas/${post.usuario!.caminhoImagem}')
         : const NetworkImage(
-            'https://buscapatas.s3.sa-east-1.amazonaws.com/usuario-foto-padrao.png');
+            'https://buspatas.blob.core.windows.net/buscapatas/usuario-foto-padrao.png');
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -111,8 +111,7 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
                         size: 20,
                         color: estilo.corprimaria,
                       ),
-                      Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
+                      Padding(padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
                       Text("Espécie: ${especieAnimal}",
                           style: TextStyle(color: Colors.black, fontSize: 20))
                     ])),
@@ -125,8 +124,7 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
                           size: 20,
                           color: estilo.corprimaria,
                         ),
-                        Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
+                        Padding(padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
                         Text("Raça: ${racaAnimal}",
                             style: TextStyle(color: Colors.black, fontSize: 20))
                       ])),
@@ -139,8 +137,7 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
                           size: 20,
                           color: estilo.corprimaria,
                         ),
-                        Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
+                        Padding(padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
                         Text("Sexo: ${sexoAnimal}",
                             style: TextStyle(color: Colors.black, fontSize: 20))
                       ])),
@@ -152,11 +149,11 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
                         size: 20,
                         color: estilo.corprimaria,
                       ),
-                      Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
-                        Expanded(child:   
-                      Text("Cor do pelo: ${coresAnimal}",
-                          style: TextStyle(color: Colors.black, fontSize: 20)))
+                      Padding(padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
+                      Expanded(
+                          child: Text("Cor do pelo: ${coresAnimal}",
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 20)))
                     ])),
                 if (post.outrasInformacoes != null &&
                     post.outrasInformacoes!.isNotEmpty)
@@ -168,11 +165,11 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
                           size: 20,
                           color: estilo.corprimaria,
                         ),
-                        Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
-                        Expanded(child:   
-                        Text("Descrição: ${post.outrasInformacoes!}",
-                            style: TextStyle(color: Colors.black, fontSize: 20)))
+                        Padding(padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
+                        Expanded(
+                            child: Text("Descrição: ${post.outrasInformacoes!}",
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 20)))
                       ])),
                 Padding(
                     padding: EdgeInsets.fromLTRB(0, 15, 0, 5.0),
@@ -182,9 +179,8 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
                         size: 20,
                         color: estilo.corprimaria,
                       ),
-                      Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
-                      Text( coleira,
+                      Padding(padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
+                      Text(coleira,
                           style: TextStyle(color: Colors.black, fontSize: 20))
                     ])),
                 Padding(
@@ -195,8 +191,7 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
                         size: 20,
                         color: estilo.corprimaria,
                       ),
-                      Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
+                      Padding(padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
                       Text(larTemporario,
                           style: TextStyle(color: Colors.black, fontSize: 20))
                     ])),
@@ -244,8 +239,9 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
         ));
   }
 
-  void formatarDados() async{
-    await localizacao.calcularDistanciaPosicaoAtual(post.latitude, post.longitude)
+  void formatarDados() async {
+    await localizacao
+        .calcularDistanciaPosicaoAtual(post.latitude, post.longitude)
         .then((value) => distancia = value);
 
     setState(() {

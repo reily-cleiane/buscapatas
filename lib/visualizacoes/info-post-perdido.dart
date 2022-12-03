@@ -56,9 +56,9 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
   Widget build(BuildContext context) {
     ImageProvider fotoUsuarioPost = (post.usuario!.caminhoImagem != null)
         ? NetworkImage(
-            'https://buscapatas.s3.sa-east-1.amazonaws.com/${post.usuario!.caminhoImagem}')
+            'https://buspatas.blob.core.windows.net/buscapatas/${post.usuario!.caminhoImagem}')
         : const NetworkImage(
-            'https://buscapatas.s3.sa-east-1.amazonaws.com/usuario-foto-padrao.png');
+            'https://buspatas.blob.core.windows.net/buscapatas/usuario-foto-padrao.png');
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -426,5 +426,4 @@ class _InfoPostPerdidoState extends State<InfoPostPerdido> {
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => VisualizarPerfil()));
   }
-
 }

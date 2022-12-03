@@ -20,12 +20,12 @@ class _ContatoUsuarioState extends State<ContatoUsuario> {
   UsuarioModel usuarioVisitado = UsuarioModel();
   List<PostModel> postsUsuario = [];
 
-   @override
+  @override
   void initState() {
     usuarioVisitado = widget.usuario;
 
     getPostsByUsuario(usuarioVisitado.id!);
-    
+
     super.initState();
   }
 
@@ -33,9 +33,9 @@ class _ContatoUsuarioState extends State<ContatoUsuario> {
   Widget build(BuildContext context) {
     ImageProvider fotoUsuario = (usuarioVisitado.caminhoImagem != null)
         ? NetworkImage(
-            'https://buscapatas.s3.sa-east-1.amazonaws.com/${usuarioVisitado.caminhoImagem}')
+            'https://buspatas.blob.core.windows.net/buscapatas/${usuarioVisitado.caminhoImagem}')
         : const NetworkImage(
-            'https://buscapatas.s3.sa-east-1.amazonaws.com/usuario-foto-padrao.png');
+            'https://buspatas.blob.core.windows.net/buscapatas/usuario-foto-padrao.png');
     return Scaffold(
       appBar: AppBar(
           title: const Text(
@@ -65,8 +65,8 @@ class _ContatoUsuarioState extends State<ContatoUsuario> {
                       flex: 7,
                       child: Text(
                         usuarioVisitado.nome!,
-                        style:
-                            const TextStyle(fontSize: 24, color: estilo.corprimaria),
+                        style: const TextStyle(
+                            fontSize: 24, color: estilo.corprimaria),
                       ),
                     ),
                     const SizedBox(width: 10),
@@ -102,7 +102,8 @@ class _ContatoUsuarioState extends State<ContatoUsuario> {
                         style: TextStyle(fontSize: 16),
                       ),
                       const SizedBox(width: 5),
-                      Text(usuarioVisitado.telefone!, style: TextStyle(fontSize: 16)),
+                      Text(usuarioVisitado.telefone!,
+                          style: TextStyle(fontSize: 16)),
                       const SizedBox(
                         height: 10,
                       ),
@@ -126,36 +127,36 @@ class _ContatoUsuarioState extends State<ContatoUsuario> {
                             fontWeight: FontWeight.bold,
                             color: estilo.corprimaria),
                       ),
-                    const SizedBox(height: 10),
-                    Container(
-                    height: 300,
-                    child: ListView.builder(
-                        itemCount: postsUsuario.length,
-                        itemBuilder: (context, index) {
-                          PostModel? postAtual = null;
-                          if (postsUsuario[index] != null) {
-                            postAtual = postsUsuario[index];
-                          }
+                      const SizedBox(height: 10),
+                      Container(
+                        height: 300,
+                        child: ListView.builder(
+                            itemCount: postsUsuario.length,
+                            itemBuilder: (context, index) {
+                              PostModel? postAtual = null;
+                              if (postsUsuario[index] != null) {
+                                postAtual = postsUsuario[index];
+                              }
 
-                          return GestureDetector(
-                              child: Card(
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.zero,
-                                minimumSize: Size.zero,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                  side: BorderSide.none,
+                              return GestureDetector(
+                                  child: Card(
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    padding: EdgeInsets.zero,
+                                    minimumSize: Size.zero,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                      side: BorderSide.none,
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    _infoPost(postAtual);
+                                  },
+                                  child: AnimalCard(post: postAtual),
                                 ),
-                              ),
-                              onPressed: () {
-                                _infoPost(postAtual);
-                              },
-                              child: AnimalCard(post: postAtual),
-                            ),
-                          ));
-                        }),
-                  ),
+                              ));
+                            }),
+                      ),
                     ],
                   )
                 ],
@@ -167,7 +168,6 @@ class _ContatoUsuarioState extends State<ContatoUsuario> {
     );
   }
 
-
   void getPostsByUsuario(int usuarioId) async {
     List<PostModel> posts = await PostModel.getPostsByUsuario(usuarioId);
     setState(() {
@@ -175,21 +175,21 @@ class _ContatoUsuarioState extends State<ContatoUsuario> {
     });
   }
 
-   void _infoPost(PostModel? postAtual) {
+  void _infoPost(PostModel? postAtual) {
     if (postAtual?.tipoPost == "ANIMAL_PERDIDO") {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => InfoPostPerdido(title: "Animal Perdido", post:postAtual),
+            builder: (context) =>
+                InfoPostPerdido(title: "Animal Perdido", post: postAtual),
           ));
     } else {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => InfoPostAvistado(title: "Animal Avistado", post:postAtual),
+            builder: (context) =>
+                InfoPostAvistado(title: "Animal Avistado", post: postAtual),
           ));
     }
   }
-
-
 }

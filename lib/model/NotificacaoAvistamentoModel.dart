@@ -3,10 +3,11 @@ import 'package:http/http.dart' as http;
 import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:buscapatas/model/PostModel.dart';
 
+NotificacaoAvistamentoModel notificacaoAvistamentoModelJson(String str) =>
+    NotificacaoAvistamentoModel.fromJson(json.decode(str));
 
-NotificacaoAvistamentoModel notificacaoAvistamentoModelJson(String str) => NotificacaoAvistamentoModel.fromJson(json.decode(str));
-
-String NotificacaoAvistamentoModelToJson(NotificacaoAvistamentoModel data) => json.encode(data.toJson());
+String NotificacaoAvistamentoModelToJson(NotificacaoAvistamentoModel data) =>
+    json.encode(data.toJson());
 
 class NotificacaoAvistamentoModel {
   int? id;
@@ -46,9 +47,10 @@ class NotificacaoAvistamentoModel {
         "usuario": jsonEncode(usuario),
       };
 
-
-  static Future<List<NotificacaoAvistamentoModel>> getNotificacoesByPost(int postId) async {
-    var request = "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/notificacoes/post/${postId}";
+  static Future<List<NotificacaoAvistamentoModel>> getNotificacoesByPost(
+      int postId) async {
+    var request =
+        "http://buscapatasbackend-env.eba-qtcpmdpp.sa-east-1.elasticbeanstalk.com/notificacoes/post/${postId}";
 
     http.Response response = await http.get(Uri.parse(request));
 
@@ -66,9 +68,11 @@ class NotificacaoAvistamentoModel {
     }
   }
 
-  static Future<List<NotificacaoAvistamentoModel>> getNotificacoesByUsuario(int? idUsuario) async {
+  static Future<List<NotificacaoAvistamentoModel>> getNotificacoesByUsuario(
+      int? idUsuario) async {
     //AJUSTAR ISSO AQUI PARA PEGAR DO USUARIO CERTO
-    var request = "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/notificacoes/usuario/${idUsuario}";
+    var request =
+        "http://buscapatasbackend-env.eba-qtcpmdpp.sa-east-1.elasticbeanstalk.com/notificacoes/usuario/${idUsuario}";
 
     http.Response response = await http.get(Uri.parse(request));
 
@@ -87,7 +91,6 @@ class NotificacaoAvistamentoModel {
   }
 
   static String getUrlSalvarNotificacao() {
-    return "http://buscapatasbackend-env-1.eba-buvmp5kg.sa-east-1.elasticbeanstalk.com/notificacoes";
+    return "http://buscapatasbackend-env.eba-qtcpmdpp.sa-east-1.elasticbeanstalk.com/notificacoes";
   }
-
 }

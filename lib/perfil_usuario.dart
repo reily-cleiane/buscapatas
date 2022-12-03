@@ -46,9 +46,9 @@ class _VisualizarPerfilState extends State<VisualizarPerfil> {
   Widget build(BuildContext context) {
     ImageProvider fotoUsuario = (usuarioLogado.caminhoImagem != null)
         ? NetworkImage(
-            'https://buscapatas.s3.sa-east-1.amazonaws.com/${usuarioLogado.caminhoImagem}')
+            'https://buspatas.blob.core.windows.net/buscapatas/${usuarioLogado.caminhoImagem}')
         : const NetworkImage(
-            'https://buscapatas.s3.sa-east-1.amazonaws.com/usuario-foto-padrao.png');
+            'https://buspatas.blob.core.windows.net/buscapatas/usuario-foto-padrao.png');
 
     return Scaffold(
       backgroundColor: Colors.white,
