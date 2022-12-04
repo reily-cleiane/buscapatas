@@ -65,7 +65,7 @@ class _CampoTextoState extends State<CampoTexto> {
                   return 'Nome inválido';
                 }
               } else if (widget.tipoCampo == TextInputType.emailAddress) {
-                if (_controller.text.isNotEmpty) {
+                if (valorDigitado.isNotEmpty) {
                   validarEmail(context);
                 }
                 if (!_emailUnico) {
