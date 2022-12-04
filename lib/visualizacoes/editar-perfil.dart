@@ -8,6 +8,7 @@ import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:buscapatas/perfil_usuario.dart';
 import 'package:buscapatas/visualizacoes/editar-numero.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_session/flutter_session.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 import 'package:buscapatas/utils/usuario_logado.dart' as usuarioSessao;
 import 'package:image_picker/image_picker.dart';
@@ -167,6 +168,24 @@ class _EditarPerfilState extends State<EditarPerfil> {
     );
   }
 
+  Future<void> _pegarUsuarioLogadoAtualizado() async {
+    UsuarioModel usuarioLogadoAtualizado;
+
+    List<UsuarioModel> listaUsuarioTemp = [];
+
+    listaUsuarioTemp = await UsuarioModel.getUsuariosByEmailSenha(
+        usuarioLogado.email!, usuarioLogado.senha!);
+
+    if (listaUsuarioTemp.isNotEmpty) {
+      usuarioLogadoAtualizado = listaUsuarioTemp[0];
+      setState(() {  
+        usuarioLogado = usuarioLogadoAtualizado;    
+      });   
+    }
+
+    await FlutterSession().set("sessao_usuarioLogado", usuarioLogado);
+  }
+
   void _atualizarUsuario(BuildContext context) async {
     var url =
         'http://buscapatasbackend-env.eba-qtcpmdpp.sa-east-1.elasticbeanstalk.com/users';
@@ -195,7 +214,9 @@ class _EditarPerfilState extends State<EditarPerfil> {
     var responsed = await http.Response.fromStream(response);
 
     if (response.statusCode == 200) {
+
       //atualizar o usuário local para poder logar com biometria
+      await _pegarUsuarioLogadoAtualizado();
       SharedPreferences preferencias = await SharedPreferences.getInstance();
       preferencias.setString('buscapatas.usuarioEmail', usuarioLogado.email);
       preferencias.setString('buscapatas.usuarioSenha', usuarioLogado.senha);

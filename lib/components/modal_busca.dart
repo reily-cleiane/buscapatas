@@ -1,39 +1,33 @@
 import 'package:buscapatas/components/campo_select.dart';
+import 'package:buscapatas/components/campo_texto_longo.dart';
 import 'package:buscapatas/model/EspecieModel.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:buscapatas/home.dart';
-import 'package:buscapatas/model/UsuarioModel.dart';
-import 'package:buscapatas/model/PostModel.dart';
-import 'package:buscapatas/model/RacaModel.dart';
-import 'package:buscapatas/model/CorModel.dart';
-import 'package:buscapatas/components/caixa_dialogo_alerta.dart';
-import 'package:buscapatas/components/campo_texto_longo.dart';
-import 'package:http/http.dart' as http;
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
-import 'package:buscapatas/utils/localizacao.dart' as localizacao;
-import 'package:buscapatas/utils/usuario_logado.dart' as usuario_sessao;
 
-class CadastroPostAvistado extends StatefulWidget {
-  const CadastroPostAvistado({super.key, required this.title});
+import '../model/CorModel.dart';
+import '../model/RacaModel.dart';
+import '../model/UsuarioModel.dart';
 
-  final String title;
+class ModalBusca extends StatefulWidget {
+
+  ModalBusca({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  State<CadastroPostAvistado> createState() => _CadastroPostAvistadoState();
+  _ModalBuscaState createState() => _ModalBuscaState();
 }
 
-class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
+class _ModalBuscaState extends State<ModalBusca> {
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController outrasinformacoesController = TextEditingController();
 
-  bool valorColeiraMarcado = false;
-  bool valorLarTemporario = false;
+  String valorColeiraMarcado = "";
+  String valorLarTemporario = "";
   String valorSexoMarcado = "";
   String? valorEspecieSelecionado;
   String? valorRacaSelecionado;
-  String _mensagemValidacao = "";
 
   List<dynamic> listaEspecies = [];
   List<dynamic> listaRacas = [];
@@ -46,34 +40,19 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
   @override
   void initState() {
     cargaInicialBD();
-    carregarUsuarioLogado();
     super.initState();
-  }
-
-  void carregarUsuarioLogado() async {
-    await usuario_sessao
-        .getUsuarioLogado()
-        .then((value) => usuarioLogado = value);
-    //Necessário para recarregar a página após ter pegado o valor de usuarioLogado
-    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          title: const Text("Cadastro de Animal Avistado"),
-          centerTitle: true,
-          foregroundColor: Colors.white,
-          backgroundColor: estilo.corprimaria),
-      body: SingleChildScrollView(
+    return SingleChildScrollView(
         padding: EdgeInsets.fromLTRB(30.0, 50, 30.0, 20.0),
         child: Form(
             key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CampoSelect(rotulo: "Espécie", valorSelecionado: valorEspecieSelecionado, funcaoOnChange: selecionarEspecie, listaItens: listaEspecies, obrigatorio: true),
+                CampoSelect(rotulo: "Espécie", valorSelecionado: valorEspecieSelecionado, funcaoOnChange: selecionarEspecie, listaItens: listaEspecies),
                 if(listaRacas.isNotEmpty)
                 CampoSelect(rotulo: "Raça", valorSelecionado: valorRacaSelecionado, funcaoOnChange: selecionarRaca, listaItens: listaRacas),
                 const Text("Sexo:",
@@ -144,11 +123,11 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
                   title: const Text("Sim",
                       style:
                           TextStyle(color: estilo.corprimaria, fontSize: 16)),
-                  value: true,
+                  value: "Sim",
                   groupValue: valorColeiraMarcado,
                   onChanged: (value) {
                     setState(() {
-                      valorColeiraMarcado = value!;
+                      valorColeiraMarcado = value.toString();
                     });
                   },
                 ),
@@ -158,11 +137,11 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
                   title: const Text("Não",
                       style:
                           TextStyle(color: estilo.corprimaria, fontSize: 16)),
-                  value: false,
+                  value: "Não",
                   groupValue: valorColeiraMarcado,
                   onChanged: (value) {
                     setState(() {
-                      valorColeiraMarcado = value!;
+                      valorColeiraMarcado = value.toString();
                     });
                   },
                 ),
@@ -175,11 +154,11 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
                   title: const Text("Sim",
                       style:
                           TextStyle(color: estilo.corprimaria, fontSize: 16)),
-                  value: true,
+                  value: "Sim",
                   groupValue: valorLarTemporario,
                   onChanged: (value) {
                     setState(() {
-                      valorLarTemporario = value!;
+                      valorLarTemporario = value.toString();
                     });
                   },
                 ),
@@ -189,11 +168,11 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
                   title: const Text("Não",
                       style:
                           TextStyle(color: estilo.corprimaria, fontSize: 16)),
-                  value: false,
+                  value: "Não",
                   groupValue: valorLarTemporario,
                   onChanged: (value) {
                     setState(() {
-                      valorLarTemporario = value!;
+                      valorLarTemporario = value.toString();
                     });
                   },
                 ),
@@ -202,11 +181,6 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
                   controlador: outrasinformacoesController,
                   placeholder:
                       "Outras características para ajudar na identificação do animal",
-                ),
-                const Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 10)),
-                Text(
-                  _mensagemValidacao,
-                  style: TextStyle(color: Color(0xFFe53935)),
                 ),
                 const Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 10)),
                 SizedBox(
@@ -218,7 +192,7 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
                             MaterialStatePropertyAll<Color>(estilo.corprimaria),
                       ),
                       onPressed: () {
-                        _cadastrarPost();
+                        _filtrarPosts();
                       },
                       child: const Text(
                         "Cadastrar",
@@ -228,8 +202,12 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
                 const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 10)),
               ],
             )),
-      ),
-    );
+      );
+
+  }
+
+  void _filtrarPosts(){
+
   }
 
   void cargaInicialBD() async {
@@ -261,79 +239,6 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
     });
   }
 
-  void _cadastrarPost() {
-
-    if (_formKey.currentState!.validate() &&
-        valorEspecieSelecionado != null &&
-        listaCoresSelecionadas.isNotEmpty) {
-      _salvarPost();
-    } else {
-      _mensagemValidacao = "";
-      if (valorEspecieSelecionado == null) {
-        setState(() {
-          _mensagemValidacao += "O campo Espécie deve ser preenchido. ";
-        });
-      }
-      if (listaCoresSelecionadas.isEmpty) {
-        setState(() {
-          _mensagemValidacao += "\nO campo Cor deve ser preenchido. ";
-        });
-      }
-    }
-  }
-
-  void _salvarPost() async {
-
-    PostModel post = PostModel();
-
-    double valorLatitude = 0;
-    await localizacao.getLatitudeAtual().then((value) => valorLatitude = value);
-    double valorLongitude = 0;
-    await localizacao
-        .getLongitudeAtual()
-        .then((value) => valorLongitude = value);
-
-    List<CorModel> cores = [];
-
-    for (int corId in listaCoresSelecionadas) {
-      CorModel corSelecionada = CorModel.id(corId);
-      cores.add(corSelecionada);
-    }
-
-    post.coleira = valorColeiraMarcado;
-    post.coresAnimal = cores;
-    post.especieAnimal = EspecieModel(id:int.parse(valorEspecieSelecionado!));
-    if(valorRacaSelecionado!=null) post.racaAnimal = RacaModel(id:int.parse(valorRacaSelecionado!));
-    post.latitude = valorLatitude;
-    post.longitude = valorLongitude;
-    if(outrasinformacoesController.text.isNotEmpty) post.outrasInformacoes = outrasinformacoesController.text;
-    post.larTemporario = valorLarTemporario;
-    if(valorSexoMarcado.isNotEmpty) post.sexoAnimal = valorSexoMarcado;
-    post.tipoPost = "ANIMAL_AVISTADO";
-    post.usuario = usuarioLogado;
-
-    var response = await post.salvar();
-
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext dialogContext) {
-        return CaixaDialogoAlerta(
-            titulo: "Mensagem do servidor",
-            conteudo: response.body,
-            funcao: _redirecionarPaginaAposSalvar);
-      },
-    );
-
-  }
-
-  void _redirecionarPaginaAposSalvar() {
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => Home(true, title: 'Busca Patas')));
-  }
-
   void selecionarRaca(String racaSelecionada) {
     setState(() {
       valorRacaSelecionado = racaSelecionada;
@@ -347,5 +252,4 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
     });
     getRacas();
   }
-
 }

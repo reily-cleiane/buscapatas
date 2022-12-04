@@ -1,5 +1,6 @@
 import 'package:buscapatas/components/animal_card.dart';
 import 'package:buscapatas/components/navbar.dart';
+import 'package:buscapatas/components/modal_busca.dart';
 import 'package:buscapatas/visualizacoes/info-post-perdido.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/model/PostModel.dart';
@@ -26,7 +27,6 @@ class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -39,15 +39,48 @@ class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
       body: Padding(
           padding: const EdgeInsets.fromLTRB(30.0, 10, 30.0, 10.0),
           child: Column(children: <Widget>[
-            campoInput("Busca", buscaController, TextInputType.name,
-                "Informe sua Busca"),
+            SizedBox(
+              width: 250,
+              height: 50,
+              child:
+            Row(
+              mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(
+                  width: 200,
+                  height: 50,
+                  child:
+                TextFormField(
+                  decoration: InputDecoration(
+                      labelText: "Buscar",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      suffixIcon: IconButton(
+                          icon: const Icon(Icons.search),
+                          color: estilo.corprimaria,
+                          onPressed: () {
+                            //COLOCAR AQUI A FUNÇÃO DE BUSCA
+                          })),
+                  readOnly: true,
+                )),
+                IconButton(
+                    icon: const Icon(Icons.filter_alt),
+                    color: estilo.corprimaria,
+                    onPressed: () {
+                      //COLOCAR AQUI A FUNÇÃO DE BUSCA
+                    })
+              ],
+            )),
             Expanded(
               child: ListView.builder(
                   itemCount: postsPerdidos.length,
                   itemBuilder: (context, index) {
-                    PostModel? postAtual = null ;
-                    if(postsPerdidos[index]!=null){
-                      postAtual = postsPerdidos[index];                         
+                    PostModel? postAtual = null;
+                    if (postsPerdidos[index] != null) {
+                      postAtual = postsPerdidos[index];
                     }
 
                     return GestureDetector(
@@ -64,10 +97,7 @@ class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
                         onPressed: () {
                           _infoPostPerdido(postAtual);
                         },
-
-                        child: AnimalCard(post:postAtual
-
-                  ),
+                        child: AnimalCard(post: postAtual),
                       ),
                     ));
                   }),
@@ -80,7 +110,8 @@ class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => InfoPostPerdido(title: "Animal Avistado", post:postAtual)),
+          builder: (context) =>
+              InfoPostPerdido(title: "Animal Avistado", post: postAtual)),
     );
   }
 
@@ -88,7 +119,6 @@ class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
     List<PostModel> posts = await PostModel.getPostsAnimaisPerdidos();
     setState(() {
       postsPerdidos = posts;
-
     });
   }
 
