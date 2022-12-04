@@ -175,6 +175,8 @@ class PostModel {
       var resposta = json.decode(utf8.decode(response.bodyBytes));
       List<PostModel> posts = [];
 
+      print(resposta);
+
       for (var post in resposta) {
         posts.add(PostModel?.fromJson(post));
       }

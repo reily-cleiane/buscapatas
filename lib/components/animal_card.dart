@@ -15,6 +15,7 @@ class AnimalCard extends StatefulWidget {
     }
     especie = post?.especieAnimal?.getNome();
     dataHora = post?.dataHora;
+    dataHora = dataHora!.subtract(const Duration(hours: 3));
     latitude = post?.latitude;
     longitude = post?.longitude;
     outrasInformacoes = post?.outrasInformacoes;
@@ -31,6 +32,7 @@ class AnimalCard extends StatefulWidget {
     especie =
         "Seu ${notificacao.post.getEspecie().getNome().toLowerCase()} foi";
     dataHora = notificacao?.dataHora;
+    dataHora = dataHora!.subtract(const Duration(hours: 3));
     latitude = notificacao?.latitude;
     longitude = notificacao?.longitude;
     outrasInformacoes = notificacao?.mensagem;
@@ -66,6 +68,7 @@ class AnimalCardState extends State<AnimalCard> {
     informacoes = getInformacoesResumidas(
         widget.outrasInformacoes, widget.orientacoesGerais);
     postadoHa = getTempoDecorrido(widget.dataHora);
+
     dataHoraExibida =
         "${widget.dataHora!.day.toString().padLeft(2, '0')}/${widget.dataHora!.month.toString().padLeft(2, '0')}/${widget.dataHora!.year.toString()} às ${widget.dataHora!.hour.toString()}:${widget.dataHora!.minute.toString()}";
 
@@ -78,9 +81,7 @@ class AnimalCardState extends State<AnimalCard> {
         .then((value) => distancia = value);
     //Necessário para recarregar a página após ter pegado o valor de distancia
     if (this.mounted) {
-      setState(() {
-
-      });
+      setState(() {});
     }
   }
 
@@ -187,7 +188,11 @@ class AnimalCardState extends State<AnimalCard> {
         texto = "${texto} ${diferencaTempo.inDays} dias.";
       }
     } else if (diferencaTempo.inDays < 1) {
-      texto = "${texto} ${diferencaTempo.inHours} horas.";
+      if (diferencaTempo.inHours == 1) {
+        texto = "${texto} ${diferencaTempo.inHours} hora.";
+      } else {
+        texto = "${texto} ${diferencaTempo.inHours} horas.";
+      }
     } else {
       int meses = diferencaTempo.inDays % 30;
       texto = "${texto} ${meses} meses.";
