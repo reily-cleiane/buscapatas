@@ -36,20 +36,24 @@ class _EditarPerfilState extends State<EditarPerfil> {
 
   File? imageTest;
 
+  ImageProvider? fotoUsuario;
+
   UsuarioModel usuarioLogado = UsuarioModel();
 
   @override
   void initState() {
     usuarioLogado = widget.usuario;
-  }
 
-  @override
-  Widget build(BuildContext context) {
-    ImageProvider fotoUsuario = (usuarioLogado.caminhoImagem != null)
+    fotoUsuario = (usuarioLogado.caminhoImagem != null)
         ? NetworkImage(
             'https://buspatas.blob.core.windows.net/buscapatas/${usuarioLogado.caminhoImagem}')
         : const NetworkImage(
             'https://buspatas.blob.core.windows.net/buscapatas/usuario-foto-padrao.png');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(
           title: const Text(
@@ -72,7 +76,7 @@ class _EditarPerfilState extends State<EditarPerfil> {
                       child: Material(
                         color: Colors.transparent,
                         child: Ink.image(
-                          image: fotoUsuario,
+                          image: fotoUsuario!,
                           fit: BoxFit.cover,
                           width: 128,
                           height: 128,
@@ -80,7 +84,7 @@ class _EditarPerfilState extends State<EditarPerfil> {
                             await showDialog(
                                 context: context,
                                 builder: (_) =>
-                                    ImagemDialogo(foto: fotoUsuario));
+                                    ImagemDialogo(foto: fotoUsuario!));
                           }),
                         ),
                       ),
@@ -93,7 +97,6 @@ class _EditarPerfilState extends State<EditarPerfil> {
               const SizedBox(height: 20),
               Form(
                 key: _formKey,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: Column(
                   children: [
                     CampoTexto(
@@ -224,11 +227,13 @@ class _EditarPerfilState extends State<EditarPerfil> {
   }
 
   void _redirecionarPaginaAposSalvar() {
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
           builder: (context) => VisualizarPerfil(title: 'Perfil')),
     );
+    // int count = 0;
+    // Navigator.of(context).popUntil((_) => count++ >= 2);
   }
 
   void mostrarDialogo(BuildContext context) => showDialog(
@@ -308,6 +313,7 @@ class _EditarPerfilState extends State<EditarPerfil> {
     if (imagem == null) return;
 
     final imagemTemporaria = File(imagem.path);
+    setState(() => fotoUsuario = FileImage(imagemTemporaria));
     setState(() => imageTest = imagemTemporaria);
   }
 
