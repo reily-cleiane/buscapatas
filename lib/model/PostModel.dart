@@ -48,6 +48,10 @@ class PostModel {
       this.tipoPost,
       this.usuario});
 
+  EspecieModel? getEspecie() {
+    return this.especieAnimal;
+  }
+  
   factory PostModel.fromJson(Map<String, dynamic> json) {
     return PostModel(
         id: json["id"],
@@ -88,13 +92,37 @@ class PostModel {
         "usuario": jsonEncode(usuario),
       };
 
-  //Refatorar para o método completo para salvar post ficar aqui, e não só a URL
-  static String getUrlSalvarPost() {
-    return "http://buscapatasbackend-env.eba-qtcpmdpp.sa-east-1.elasticbeanstalk.com/posts";
-  }
+      Map<String, dynamic> toJsonData() => {
+        "id": id,
+        "outrasInformacoes": outrasInformacoes,
+        "orientacoesGerais": orientacoesGerais,
+        "recompensa": recompensa,
+        "larTemporario": larTemporario,
+        "latitude": latitude,
+        "longitude": longitude,
+        "nomeAnimal": nomeAnimal,
+        "coleira": coleira,
+        "especieAnimal": especieAnimal,
+        "racaAnimal": racaAnimal,
+        "coresAnimal": coresAnimal,
+        //"coresAnimal": List<CorModel>.from(coresAnimal!.map((x) => x.toJson())),
+        "sexoAnimal": sexoAnimal,
+        "tipoPost": tipoPost,
+        "usuario": usuario,
+      };
 
-  EspecieModel? getEspecie() {
-    return this.especieAnimal;
+  Future<http.Response> salvar() async {
+    var url =
+        "http://buscapatasbackend-env.eba-qtcpmdpp.sa-east-1.elasticbeanstalk.com/posts";
+
+    var request = new http.MultipartRequest("POST", Uri.parse(url));
+
+    request.fields['jsondata'] = json.encode(this.toJsonData());
+
+    var response = await request.send();
+    var responsed = await http.Response.fromStream(response);
+
+    return responsed;
   }
 
   static Future<List<PostModel>> getPostsAnimaisPerdidos() async {
@@ -138,7 +166,6 @@ class PostModel {
   }
 
   static Future<List<PostModel>> getPostsAnimaisProximos() async {
-    //AJUSTAR ISSO AQUI PARA SER POSTS PRÓXIMOS E NÃO TODOS OS POSTS
     const request =
         "http://buscapatasbackend-env.eba-qtcpmdpp.sa-east-1.elasticbeanstalk.com/posts";
 

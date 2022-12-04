@@ -1,3 +1,4 @@
+import 'package:buscapatas/components/campo_select.dart';
 import 'package:buscapatas/model/EspecieModel.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
@@ -72,10 +73,9 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                campoSelect("Espécie", valorEspecieSelecionado, listaEspecies,
-                    selecionarEspecie),
-                campoSelect(
-                    "Raça", valorRacaSelecionado, listaRacas, selecionarRaca),
+                CampoSelect(rotulo: "Espécie", valorSelecionado: valorEspecieSelecionado, funcaoOnChange: selecionarEspecie, listaItens: listaEspecies, obrigatorio: true),
+                if(listaRacas.isNotEmpty)
+                CampoSelect(rotulo: "Raça", valorSelecionado: valorRacaSelecionado, funcaoOnChange: selecionarRaca, listaItens: listaRacas),
                 const Text("Sexo:",
                     style: TextStyle(color: estilo.corprimaria, fontSize: 16)),
                 RadioListTile(
@@ -266,7 +266,7 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
     if (_formKey.currentState!.validate() &&
         valorEspecieSelecionado != null &&
         listaCoresSelecionadas.isNotEmpty) {
-      _addPost();
+      _salvarPost();
     } else {
       _mensagemValidacao = "";
       if (valorEspecieSelecionado == null) {
@@ -282,11 +282,12 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
     }
   }
 
-  void _addPost() async {
-    var url = PostModel.getUrlSalvarPost();
+  void _salvarPost() async {
+
+    PostModel post = PostModel();
+
     double valorLatitude = 0;
     await localizacao.getLatitudeAtual().then((value) => valorLatitude = value);
-
     double valorLongitude = 0;
     await localizacao
         .getLongitudeAtual()
@@ -299,42 +300,31 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
       cores.add(corSelecionada);
     }
 
-    var response = await http.post(Uri.parse(url),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, dynamic>{
-          if (outrasinformacoesController.text.isNotEmpty)
-            "outrasInformacoes": outrasinformacoesController.text,
-          //ajustar quando pegar latitude
-          "latitude": valorLatitude,
-          //ajustar quando pegar longitude
-          "longitude": valorLongitude,
-          "coleira": valorColeiraMarcado,
-          "larTemporario": valorLarTemporario,
-          if (valorEspecieSelecionado != null)
-            "especieAnimal": {"id": int.parse(valorEspecieSelecionado!)},
-          if (valorRacaSelecionado != null)
-            "racaAnimal": {"id": int.parse(valorRacaSelecionado!)},
-          "coresAnimal": cores,
-          if (valorSexoMarcado.isNotEmpty) "sexoAnimal": valorSexoMarcado,
-          "tipoPost": "ANIMAL_AVISTADO",
-          //ajustar quando pegar usuario
-          "usuario": usuarioLogado,
-        }));
+    post.coleira = valorColeiraMarcado;
+    post.coresAnimal = cores;
+    post.especieAnimal = EspecieModel(id:int.parse(valorEspecieSelecionado!));
+    if(valorRacaSelecionado!=null) post.racaAnimal = RacaModel(id:int.parse(valorRacaSelecionado!));
+    post.latitude = valorLatitude;
+    post.longitude = valorLongitude;
+    if(outrasinformacoesController.text.isNotEmpty) post.outrasInformacoes = outrasinformacoesController.text;
+    post.larTemporario = valorLarTemporario;
+    if(valorSexoMarcado.isNotEmpty) post.sexoAnimal = valorSexoMarcado;
+    post.tipoPost = "ANIMAL_AVISTADO";
+    post.usuario = usuarioLogado;
 
-    if (response.statusCode == 200) {
-      showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (BuildContext dialogContext) {
-          return CaixaDialogoAlerta(
-              titulo: "Mensagem do servidor",
-              conteudo: response.body,
-              funcao: _redirecionarPaginaAposSalvar);
-        },
-      );
-    }
+    var response = await post.salvar();
+
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext dialogContext) {
+        return CaixaDialogoAlerta(
+            titulo: "Mensagem do servidor",
+            conteudo: response.body,
+            funcao: _redirecionarPaginaAposSalvar);
+      },
+    );
+
   }
 
   void _redirecionarPaginaAposSalvar() {
@@ -356,39 +346,6 @@ class _CadastroPostAvistadoState extends State<CadastroPostAvistado> {
       valorRacaSelecionado = null;
     });
     getRacas();
-  }
-
-  Widget campoSelect(String label, var valorSelecionado, var listaItens,
-      Function funcaoOnChange) {
-    return Padding(
-        padding: const EdgeInsets.fromLTRB(0, 20.0, 0, 20.0),
-        child: DropdownButtonFormField<String>(
-          hint: const Text("Selecione"),
-          value: valorSelecionado,
-          icon: const Icon(Icons.arrow_drop_down_rounded),
-          elevation: 16,
-          validator: (value) {
-            if (label == "Espécie" && valorEspecieSelecionado == null) {
-              return "O campo deve ser preenchido";
-            }
-          },
-          decoration: InputDecoration(
-            labelText: label,
-            labelStyle:
-                const TextStyle(fontSize: 21, color: estilo.corprimaria),
-            border: OutlineInputBorder(),
-          ),
-          style: const TextStyle(color: estilo.corprimaria),
-          onChanged: (String? valor) {
-            funcaoOnChange(valor);
-          },
-          items: listaItens.map<DropdownMenuItem<String>>((mapa) {
-            return DropdownMenuItem<String>(
-              value: mapa["id"].toString(),
-              child: Text(mapa["nome"]),
-            );
-          }).toList(),
-        ));
   }
 
 }
