@@ -35,7 +35,7 @@ class _CadastroNotificacaoAvistadoState
 
   UsuarioModel usuarioLogado = UsuarioModel();
 
-  File? imageTest;
+  File? imagem;
 
   @override
   void initState() {
@@ -54,8 +54,8 @@ class _CadastroNotificacaoAvistadoState
   @override
   Widget build(BuildContext context) {
     ImageProvider fotoNotificacao;
-    if ((imageTest != null)) {
-      fotoNotificacao = FileImage(imageTest!);
+    if ((imagem != null)) {
+      fotoNotificacao = FileImage(imagem!);
     } else {
       fotoNotificacao = const NetworkImage(
           'https://buspatas.blob.core.windows.net/buscapatas/notificacao-foto-padrao.png');
@@ -162,16 +162,16 @@ class _CadastroNotificacaoAvistadoState
     var length = 1;
     var fileType;
 
-    if (imageTest != null) {
-      length = await imageTest!.length();
+    if (imagem != null) {
+      length = await imagem!.length();
 
-      var stream = new http.ByteStream(imageTest!.openRead());
+      var stream = new http.ByteStream(imagem!.openRead());
       stream.cast();
 
-      String? mimeStr = lookupMimeType(imageTest!.path);
+      String? mimeStr = lookupMimeType(imagem!.path);
       fileType = mimeStr!.split('/');
 
-      var multipart = await http.MultipartFile.fromPath('file', imageTest!.path,
+      var multipart = await http.MultipartFile.fromPath('file', imagem!.path,
           contentType: new MediaType('image', fileType[0]));
       request.files.add(multipart);
     }
@@ -216,7 +216,7 @@ class _CadastroNotificacaoAvistadoState
     if (imagem == null) return;
 
     final imagemTemporaria = File(imagem.path);
-    setState(() => imageTest = imagemTemporaria);
+    setState(() => this.imagem = imagemTemporaria);
   }
 
   void mostrarDialogo(BuildContext context) => showDialog(
