@@ -388,7 +388,7 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
   }
 
   Future pegarImagem(ImageSource source) async {
-    final imagem = await ImagePicker.pickImage(source: source);
+    final imagem = await ImagePicker.pickImage(source: source, maxHeight: 350, maxWidth: 400);
     if (imagem == null) return;
 
     final imagemTemporaria = File(imagem.path);
