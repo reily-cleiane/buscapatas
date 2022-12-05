@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:buscapatas/components/caixa_dialogo_alerta.dart';
 import 'package:buscapatas/components/campo_texto.dart';
+import 'package:buscapatas/components/campo_texto_email.dart';
 import 'package:buscapatas/components/campo_texto_senha.dart';
 import 'package:buscapatas/components/imagem_dialogo.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
@@ -32,6 +33,8 @@ class EditarPerfil extends StatefulWidget {
 }
 
 class _EditarPerfilState extends State<EditarPerfil> {
+  TextEditingController controladorEmail = TextEditingController();
+  bool _emailUnico = false;
   final _formKey = GlobalKey<FormState>();
 
   File? imageTest;
@@ -43,7 +46,7 @@ class _EditarPerfilState extends State<EditarPerfil> {
   @override
   void initState() {
     usuarioLogado = widget.usuario;
-
+    controladorEmail = TextEditingController(text: usuarioLogado.email);
     fotoUsuario = (usuarioLogado.caminhoImagem != null)
         ? NetworkImage(
             'https://buspatas.blob.core.windows.net/buscapatas/${usuarioLogado.caminhoImagem}')
@@ -106,13 +109,15 @@ class _EditarPerfilState extends State<EditarPerfil> {
                         tipoCampo: TextInputType.name,
                         onChanged: (nome) =>
                             usuarioLogado = usuarioLogado.copy(nome: nome)),
-                    CampoTexto(
+                    CampoTextoEmail(
                         usuarioId: usuarioLogado.id!,
                         label: 'Email',
                         text: usuarioLogado.email!,
+                        controlador: controladorEmail,
                         tipoCampo: TextInputType.emailAddress,
                         onChanged: (email) =>
-                            usuarioLogado = usuarioLogado.copy(email: email)),
+                            usuarioLogado = usuarioLogado.copy(email: email),
+                        validador: (_) => validarEmail(context)),
                     const SizedBox(height: 20),
                     TextFormField(
                       initialValue: usuarioLogado.telefone,
@@ -152,7 +157,17 @@ class _EditarPerfilState extends State<EditarPerfil> {
                       backgroundColor:
                           MaterialStatePropertyAll<Color>(estilo.corprimaria),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
+                      if(controladorEmail.text.isNotEmpty) {
+                        List<UsuarioModel> listaTemp =
+                            await UsuarioModel.getUsuariosByEmail(controladorEmail.text);
+                        bool mesmoIdLogado = listaTemp.any((element) => element.id == usuarioLogado.id);
+                        if (listaTemp.isEmpty || mesmoIdLogado) {
+                              _emailUnico = true;
+                        } else {
+                            _emailUnico = false;
+                        }
+                      }
                       if (_formKey.currentState!.validate()) {
                         usuarioSessao.setUsuarioLogado(usuarioLogado);
                         _atualizarUsuario(context);
@@ -168,6 +183,19 @@ class _EditarPerfilState extends State<EditarPerfil> {
         ),
       ),
     );
+  }
+
+  String? validarEmail(BuildContext context) {
+    if (!_emailUnico) {
+      return "Já existe usuário cadastrado com esse e-mail";
+    }
+    String padraoEmail =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regExp = RegExp(padraoEmail);
+    if (!regExp.hasMatch(controladorEmail.text)) {
+      return "O campo E-mail deve ser preenchido com um e-mail válido";
+    }
+    return null;
   }
 
   void _atualizarUsuario(BuildContext context) async {
