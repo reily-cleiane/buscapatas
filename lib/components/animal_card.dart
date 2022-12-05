@@ -21,7 +21,7 @@ class AnimalCard extends StatefulWidget {
     outrasInformacoes = post?.outrasInformacoes;
     orientacoesGerais = post?.orientacoesGerais;
 
-    image = 'imagens/animal.jpg';
+    image = post?.caminhoImagem;
   }
 
   AnimalCard.notificacao({super.key, notificacao}) {
@@ -37,7 +37,7 @@ class AnimalCard extends StatefulWidget {
     longitude = notificacao?.longitude;
     outrasInformacoes = notificacao?.mensagem;
 
-    image = 'imagens/animal.jpg';
+    image = notificacao?.caminhoImagem;
   }
 
   String? especie;
@@ -102,7 +102,8 @@ class AnimalCardState extends State<AnimalCard> {
                   flex: 2,
                   child: CircleAvatar(
                     radius: 40,
-                    backgroundImage: AssetImage(widget.image!),
+                    backgroundImage: NetworkImage(
+                        'https://buspatas.blob.core.windows.net/buscapatas/${widget.image}'),
                   ),
                 ),
                 const SizedBox(width: 10),

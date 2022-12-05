@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:buscapatas/components/campo_select.dart';
+import 'package:buscapatas/components/imagem_dialogo.dart';
 import 'package:buscapatas/model/EspecieModel.dart';
 import 'package:flutter/material.dart';
 import 'package:buscapatas/home.dart';
@@ -12,6 +15,7 @@ import 'package:buscapatas/components/campo_texto_curto.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 import 'package:buscapatas/utils/localizacao.dart' as localizacao;
 import 'package:buscapatas/utils/usuario_logado.dart' as usuario_sessao;
+import 'package:image_picker/image_picker.dart';
 
 class CadastroPostPerdido extends StatefulWidget {
   const CadastroPostPerdido({super.key, required this.title});
@@ -29,6 +33,8 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
   TextEditingController orientacoesController = TextEditingController();
   TextEditingController recompensaController = TextEditingController();
   String _mensagemValidacao = "";
+
+  File? imagem;
 
   bool valorColeiraMarcado = false;
   String valorSexoMarcado = "";
@@ -60,6 +66,14 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
 
   @override
   Widget build(BuildContext context) {
+    ImageProvider fotoNotificacao;
+    if ((imagem != null)) {
+      fotoNotificacao = FileImage(imagem!);
+    } else {
+      fotoNotificacao = const NetworkImage(
+          'https://buspatas.blob.core.windows.net/buscapatas/post-foto-padrao.png');
+    }
+
     return Scaffold(
       appBar: AppBar(
           title: const Text("Cadastro de Animal Perdido"),
@@ -73,15 +87,49 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Center(
+                  child: Stack(
+                    children: [
+                      ClipOval(
+                        child: Material(
+                          color: Colors.transparent,
+                          child: Ink.image(
+                            image: fotoNotificacao,
+                            fit: BoxFit.cover,
+                            width: 128,
+                            height: 128,
+                            child: InkWell(onTap: () async {
+                              await showDialog(
+                                  context: context,
+                                  builder: (_) =>
+                                      ImagemDialogo(foto: fotoNotificacao));
+                            }),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                          bottom: 0, right: 4, child: construirBotaoEdicao()),
+                    ],
+                  ),
+                ),
                 CampoTextoCurto(
                     rotulo: "Nome do pet",
                     controlador: nomeController,
                     tipoCampo: TextInputType.name,
                     rotuloSuperior: true,
                     placeholder: "Nome/apelido"),
-                CampoSelect(rotulo: "Espécie", valorSelecionado: valorEspecieSelecionado, funcaoOnChange: selecionarEspecie, listaItens: listaEspecies, obrigatorio: true),
-                if(listaRacas.isNotEmpty)
-                CampoSelect(rotulo: "Raça", valorSelecionado: valorRacaSelecionado, funcaoOnChange: selecionarRaca, listaItens: listaRacas),
+                CampoSelect(
+                    rotulo: "Espécie",
+                    valorSelecionado: valorEspecieSelecionado,
+                    funcaoOnChange: selecionarEspecie,
+                    listaItens: listaEspecies,
+                    obrigatorio: true),
+                if (listaRacas.isNotEmpty)
+                  CampoSelect(
+                      rotulo: "Raça",
+                      valorSelecionado: valorRacaSelecionado,
+                      funcaoOnChange: selecionarRaca,
+                      listaItens: listaRacas),
                 const Text("Sexo:",
                     style: TextStyle(color: estilo.corprimaria, fontSize: 16)),
                 RadioListTile(
@@ -270,7 +318,6 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
   }
 
   void _salvarPost() async {
-
     PostModel post = PostModel();
 
     double valorLatitude = 0;
@@ -287,21 +334,25 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
       cores.add(corSelecionada);
     }
 
-    if(nomeController.text.isNotEmpty) post.nomeAnimal = nomeController.text;
+    if (nomeController.text.isNotEmpty) post.nomeAnimal = nomeController.text;
     post.coleira = valorColeiraMarcado;
     post.coresAnimal = cores;
-    post.especieAnimal = EspecieModel(id:int.parse(valorEspecieSelecionado!));
-    if(valorRacaSelecionado!=null) post.racaAnimal = RacaModel(id:int.parse(valorRacaSelecionado!));
+    post.especieAnimal = EspecieModel(id: int.parse(valorEspecieSelecionado!));
+    if (valorRacaSelecionado != null)
+      post.racaAnimal = RacaModel(id: int.parse(valorRacaSelecionado!));
     post.latitude = valorLatitude;
     post.longitude = valorLongitude;
-    if(orientacoesController.text.isNotEmpty) post.orientacoesGerais = orientacoesController.text;
-    if(outrasinformacoesController.text.isNotEmpty) post.outrasInformacoes = outrasinformacoesController.text;
-    if(recompensaController.text.isNotEmpty) post.recompensa = int.parse(recompensaController.text);
-    if(valorSexoMarcado.isNotEmpty) post.sexoAnimal = valorSexoMarcado;
+    if (orientacoesController.text.isNotEmpty)
+      post.orientacoesGerais = orientacoesController.text;
+    if (outrasinformacoesController.text.isNotEmpty)
+      post.outrasInformacoes = outrasinformacoesController.text;
+    if (recompensaController.text.isNotEmpty)
+      post.recompensa = int.parse(recompensaController.text);
+    if (valorSexoMarcado.isNotEmpty) post.sexoAnimal = valorSexoMarcado;
     post.tipoPost = "ANIMAL_PERDIDO";
     post.usuario = usuarioLogado;
 
-    var response = await post.salvar();
+    var response = await post.salvar(imagem);
 
     showDialog(
       context: context,
@@ -313,7 +364,6 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
             funcao: _redirecionarPaginaAposSalvar);
       },
     );
-
   }
 
   void _redirecionarPaginaAposSalvar() {
@@ -337,4 +387,113 @@ class _CadastroPostPerdidoState extends State<CadastroPostPerdido> {
     getRacas();
   }
 
+  Future pegarImagem(ImageSource source) async {
+    final imagem = await ImagePicker.pickImage(source: source);
+    if (imagem == null) return;
+
+    final imagemTemporaria = File(imagem.path);
+    setState(() => this.imagem = imagemTemporaria);
+  }
+
+  void mostrarDialogo(BuildContext context) => showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: const Text("Selecione uma das opções"),
+          children: <Widget>[
+            SimpleDialogOption(
+              onPressed: () {
+                pegarImagem(ImageSource.camera);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  const Icon(
+                    Icons.add_a_photo,
+                    size: 18,
+                    color: estilo.corprimaria,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 0, 0, 0.0),
+                    child: InkWell(
+                        child: Ink(
+                      child: RichText(
+                        text: const TextSpan(
+                          text: "Tirar Foto",
+                          style: TextStyle(
+                            decoration: TextDecoration.none,
+                            color: Colors.black,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    )),
+                  ),
+                ],
+              ),
+            ),
+            SimpleDialogOption(
+              onPressed: () {
+                pegarImagem(ImageSource.gallery);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  const Icon(
+                    Icons.add_photo_alternate,
+                    size: 18,
+                    color: estilo.corprimaria,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 0, 0, 0.0),
+                    child: InkWell(
+                        child: Ink(
+                      child: RichText(
+                        text: const TextSpan(
+                          text: "Selecionar da galeria",
+                          style: TextStyle(
+                            decoration: TextDecoration.none,
+                            color: Colors.black,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    )),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      });
+
+  Widget construirBotaoEdicao() => construirCirculo(
+        color: Colors.white,
+        all: 3,
+        child: InkWell(
+          onTap: () => {mostrarDialogo(context)},
+          child: construirCirculo(
+            color: estilo.corprimaria,
+            all: 8,
+            child: const Icon(
+              Icons.edit,
+              color: Colors.white,
+              size: 15,
+            ),
+          ),
+        ),
+      );
+
+  Widget construirCirculo({
+    required Widget child,
+    required double all,
+    required Color color,
+  }) =>
+      ClipOval(
+        child: Container(
+          padding: EdgeInsets.all(all),
+          color: color,
+          child: child,
+        ),
+      );
 }

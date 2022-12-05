@@ -1,9 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:buscapatas/model/UsuarioModel.dart';
 import 'package:buscapatas/model/CorModel.dart';
 import 'package:buscapatas/model/EspecieModel.dart';
 import 'package:buscapatas/model/RacaModel.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:mime/mime.dart';
 
 PostModel postModelJson(String str) => PostModel.fromJson(json.decode(str));
 
@@ -29,6 +32,7 @@ class PostModel {
   //AJUSTAR QUANDO CRIAR O CORMODEL
   List<CorModel>? coresAnimal;
   String? sexoAnimal;
+  String? caminhoImagem;
 
   PostModel(
       {this.id,
@@ -46,12 +50,13 @@ class PostModel {
       this.coresAnimal,
       this.sexoAnimal,
       this.tipoPost,
-      this.usuario});
+      this.usuario,
+      this.caminhoImagem});
 
   EspecieModel? getEspecie() {
     return this.especieAnimal;
   }
-  
+
   factory PostModel.fromJson(Map<String, dynamic> json) {
     return PostModel(
         id: json["id"],
@@ -70,7 +75,8 @@ class PostModel {
             json["coresAnimal"]!.map((x) => CorModel.fromJson(x))),
         sexoAnimal: json["sexo"],
         tipoPost: json["tipoPost"],
-        usuario: UsuarioModel.fromJson(json["usuario"]));
+        usuario: UsuarioModel.fromJson(json["usuario"]),
+        caminhoImagem: json["caminhoImagem"]);
   }
 
   Map<String, dynamic> toJson() => {
@@ -90,9 +96,10 @@ class PostModel {
         "sexoAnimal": sexoAnimal,
         "tipoPost": tipoPost,
         "usuario": jsonEncode(usuario),
+        "caminhoImagem": caminhoImagem,
       };
 
-      Map<String, dynamic> toJsonData() => {
+  Map<String, dynamic> toJsonData() => {
         "id": id,
         "outrasInformacoes": outrasInformacoes,
         "orientacoesGerais": orientacoesGerais,
@@ -109,15 +116,33 @@ class PostModel {
         "sexoAnimal": sexoAnimal,
         "tipoPost": tipoPost,
         "usuario": usuario,
+        "caminhoImagem": caminhoImagem,
       };
 
-  Future<http.Response> salvar() async {
+  Future<http.Response> salvar(File? imagem) async {
     var url =
         "http://buscapatasbackend-env.eba-qtcpmdpp.sa-east-1.elasticbeanstalk.com/posts";
 
     var request = new http.MultipartRequest("POST", Uri.parse(url));
 
     request.fields['jsondata'] = json.encode(this.toJsonData());
+
+    var length = 1;
+    var fileType;
+
+    if (imagem != null) {
+      length = await imagem!.length();
+
+      var stream = new http.ByteStream(imagem!.openRead());
+      stream.cast();
+
+      String? mimeStr = lookupMimeType(imagem!.path);
+      fileType = mimeStr!.split('/');
+
+      var multipart = await http.MultipartFile.fromPath('file', imagem!.path,
+          contentType: new MediaType('image', fileType[0]));
+      request.files.add(multipart);
+    }
 
     var response = await request.send();
     var responsed = await http.Response.fromStream(response);
