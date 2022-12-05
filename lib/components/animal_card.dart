@@ -24,13 +24,12 @@ class AnimalCard extends StatefulWidget {
     image = post?.caminhoImagem;
   }
 
-  AnimalCard.notificacao({super.key, notificacao}) {
+  AnimalCard.notificacao({super.key, notificacao, postNotificacao}) {
     super.key;
     tipoPost = "visto";
     backgroundColor = estilo.coravistado;
 
-    especie =
-        "Seu ${notificacao.post.getEspecie().getNome().toLowerCase()} foi";
+    especie = "Seu ${postNotificacao?.especieAnimal?.getNome()} foi";
     dataHora = notificacao?.dataHora;
     dataHora = dataHora!.subtract(const Duration(hours: 3));
     latitude = notificacao?.latitude;

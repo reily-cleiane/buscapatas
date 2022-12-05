@@ -170,6 +170,23 @@ class PostModel {
     }
   }
 
+  static Future<PostModel> getPostsAnimaisPerdidoById(int idPost) async {
+    var request =
+        "http://buscapatasbackend-env.eba-qtcpmdpp.sa-east-1.elasticbeanstalk.com/posts/${idPost}";
+
+    http.Response response = await http.get(Uri.parse(request));
+
+    if (response.statusCode == 200) {
+      var resposta = json.decode(utf8.decode(response.bodyBytes));
+
+      PostModel post = PostModel.fromJson(resposta);
+
+      return post;
+    } else {
+      throw Exception('Falha no servidor ao carregar posts');
+    }
+  }
+
   static Future<List<PostModel>> getPostsAnimaisAvistados() async {
     const request =
         "http://buscapatasbackend-env.eba-qtcpmdpp.sa-east-1.elasticbeanstalk.com/posts/avistados";

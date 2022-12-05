@@ -15,7 +15,6 @@ class NotificacaoAvistamentoModel {
   double? latitude;
   double? longitude;
   DateTime? dataHora = DateTime.now();
-  PostModel? post;
   UsuarioModel? usuario;
   String? caminhoImagem;
 
@@ -25,7 +24,6 @@ class NotificacaoAvistamentoModel {
       this.latitude,
       this.longitude,
       this.dataHora,
-      this.post,
       this.usuario,
       this.caminhoImagem});
 
@@ -36,7 +34,6 @@ class NotificacaoAvistamentoModel {
         dataHora: DateTime.parse(json["dataHora"]),
         latitude: json["latitude"],
         longitude: json["longitude"],
-        post: PostModel.fromJson(json["post"]),
         usuario: UsuarioModel.fromJson(json["usuario"]),
         caminhoImagem: json["caminhoImagem"]);
   }
@@ -46,7 +43,6 @@ class NotificacaoAvistamentoModel {
         "mensagem": mensagem,
         "latitude": latitude,
         "longitude": longitude,
-        "post": jsonEncode(post),
         "usuario": jsonEncode(usuario),
         "caminhoImagem": jsonEncode(caminhoImagem),
       };
