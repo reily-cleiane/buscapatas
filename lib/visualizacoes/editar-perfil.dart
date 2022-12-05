@@ -119,27 +119,13 @@ class _EditarPerfilState extends State<EditarPerfil> {
                         onChanged: (email) =>
                             usuarioLogado = usuarioLogado.copy(email: email),
                         validador: (_) => validarEmail(context)),
-                    const SizedBox(height: 20),
-                    TextFormField(
-                      initialValue: usuarioLogado.telefone,
-                      decoration: InputDecoration(
-                          labelText: "Telefone",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          suffixIcon: IconButton(
-                              icon: const Icon(Icons.edit),
-                              color: estilo.corprimaria,
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const EditarNumero(
-                                          title: 'Mudar número')),
-                                );
-                              })),
-                      readOnly: true,
-                    ),
+                    CampoTexto(
+                        usuarioId: usuarioLogado.id!,
+                        label: 'Telefone',
+                        text: usuarioLogado.telefone!,
+                        tipoCampo: TextInputType.phone,
+                        onChanged: (telefone) =>
+                            usuarioLogado = usuarioLogado.copy(telefone: telefone)),
                     CampoTextoSenha(
                         label: 'Senha',
                         text: usuarioLogado.senha!,
@@ -277,13 +263,11 @@ class _EditarPerfilState extends State<EditarPerfil> {
   }
 
   void _redirecionarPaginaAposSalvar() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-          builder: (context) => VisualizarPerfil(title: 'Perfil')),
+    Navigator.pushAndRemoveUntil(
+    context,
+    MaterialPageRoute(builder: (context) => VisualizarPerfil(title: 'Perfil')),
+    (Route<dynamic> route) => route.isFirst
     );
-    // int count = 0;
-    // Navigator.of(context).popUntil((_) => count++ >= 2);
   }
 
   void mostrarDialogo(BuildContext context) => showDialog(
