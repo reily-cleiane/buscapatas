@@ -48,7 +48,8 @@ class _InfoNotificacaoAvistadoState extends State<InfoNotificacaoAvistado> {
               Center(
                 child: CircleAvatar(
                   radius: 100,
-                  backgroundImage: AssetImage('imagens/animal.jpg'),
+                  backgroundImage: NetworkImage(
+                      'https://buspatas.blob.core.windows.net/buscapatas/${notificacao.caminhoImagem}'),
                 ),
               ),
               Padding(padding: const EdgeInsets.fromLTRB(0, 20, 0, 5)),
@@ -89,11 +90,11 @@ class _InfoNotificacaoAvistadoState extends State<InfoNotificacaoAvistado> {
                           size: 20,
                           color: estilo.corprimaria,
                         ),
-                        Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
-                        Expanded(child:   
-                        Text("Mensagem: ${notificacao.mensagem!}",
-                            style: TextStyle(color: Colors.black, fontSize: 20)))
+                        Padding(padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
+                        Expanded(
+                            child: Text("Mensagem: ${notificacao.mensagem!}",
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 20)))
                       ])),
                   Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 20)),
                   Row(
@@ -136,11 +137,13 @@ class _InfoNotificacaoAvistadoState extends State<InfoNotificacaoAvistado> {
             ])));
   }
 
-  void formatarDados() async{
+  void formatarDados() async {
     dataHora =
         "${notificacao.dataHora!.day.toString().padLeft(2, '0')}/${notificacao.dataHora!.month.toString().padLeft(2, '0')}/${notificacao.dataHora!.year.toString()} às ${notificacao.dataHora!.hour.toString()}:${notificacao.dataHora!.minute.toString()}";
-    
-    await localizacao.calcularDistanciaPosicaoAtual(notificacao.latitude, notificacao.longitude)
+
+    await localizacao
+        .calcularDistanciaPosicaoAtual(
+            notificacao.latitude, notificacao.longitude)
         .then((value) => distancia = value);
     setState(() {});
   }
