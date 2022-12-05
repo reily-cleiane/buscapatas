@@ -1,5 +1,6 @@
 import 'package:buscapatas/components/animal_card.dart';
 import 'package:buscapatas/components/navbar_extra.dart';
+import 'package:buscapatas/model/PostModel.dart';
 import 'package:buscapatas/visualizacoes/info-notificacao-avistado.dart';
 import 'package:buscapatas/model/NotificacaoAvistamentoModel.dart';
 import 'package:flutter/material.dart';
@@ -23,10 +24,12 @@ class ListaNotificoesAvistado extends StatefulWidget {
 class _ListaNotificoesAvistadoState extends State<ListaNotificoesAvistado> {
   TextEditingController buscaController = TextEditingController();
   List<NotificacaoAvistamentoModel> notificacoes = [];
+  PostModel? postNotificacao;
 
   @override
   void initState() {
     _getNotificacoesByPost(widget.postId);
+    _getPostNotificacao(widget.postId);
     //Para pegar o valor da sessao
   }
 
@@ -70,8 +73,9 @@ class _ListaNotificoesAvistadoState extends State<ListaNotificoesAvistado> {
                       onPressed: () {
                         _infoNotificacaoAvistado(notificacaoAtual!);
                       },
-                      child:
-                          AnimalCard.notificacao(notificacao: notificacaoAtual),
+                      child: AnimalCard.notificacao(
+                          notificacao: notificacaoAtual,
+                          postNotificacao: this.postNotificacao),
                     )));
                   }),
             ),
@@ -87,13 +91,19 @@ class _ListaNotificoesAvistadoState extends State<ListaNotificoesAvistado> {
     });
   }
 
-  void _infoNotificacaoAvistado(NotificacaoAvistamentoModel notificacaoAtual) {
+  void _getPostNotificacao(int postId) async {
+    PostModel post = await PostModel.getPostsAnimaisPerdidoById(postId);
+    setState(() {
+      postNotificacao = post;
+    });
+  }
 
+  void _infoNotificacaoAvistado(NotificacaoAvistamentoModel notificacaoAtual) {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) =>
-              InfoNotificacaoAvistado(title: "Notificação do Post", notificacao: notificacaoAtual)),
+          builder: (context) => InfoNotificacaoAvistado(
+              title: "Notificação do Post", notificacao: notificacaoAtual)),
     );
   }
 }
