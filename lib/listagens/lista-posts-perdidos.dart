@@ -8,9 +8,10 @@ import 'package:buscapatas/model/PostModel.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 
 class ListaPostsPerdidos extends StatefulWidget {
-  const ListaPostsPerdidos({super.key, required this.title});
+  ListaPostsPerdidos({super.key, required this.title, this.listaPostsFiltrada});
 
   final String title;
+  List<PostModel>? listaPostsFiltrada;
 
   @override
   State<ListaPostsPerdidos> createState() => _ListaPostsPerdidos();
@@ -22,7 +23,11 @@ class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
 
   @override
   void initState() {
-    _getPostsAnimaisPerdidos();
+    if(widget.listaPostsFiltrada != null){
+      postsPerdidos = widget.listaPostsFiltrada!;
+    }else{
+      _getPostsAnimaisPerdidos();
+    }   
   }
 
   @override
@@ -39,41 +44,49 @@ class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
       body: Padding(
           padding: const EdgeInsets.fromLTRB(30.0, 10, 30.0, 10.0),
           child: Column(children: <Widget>[
-            SizedBox(
-              width: 250,
-              height: 50,
-              child:
-            Row(
-              mainAxisSize: MainAxisSize.max,
+            Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10.0)),
+            Container(
+                height: 50,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                SizedBox(
-                  width: 200,
-                  height: 50,
-                  child:
-                TextFormField(
-                  decoration: InputDecoration(
-                      labelText: "Buscar",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      suffixIcon: IconButton(
-                          icon: const Icon(Icons.search),
-                          color: estilo.corprimaria,
-                          onPressed: () {
-                            //COLOCAR AQUI A FUNÇÃO DE BUSCA
-                          })),
-                  readOnly: true,
+                  children: [
+                    Expanded(
+                        flex: 8,
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                              labelText: "Buscar",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              suffixIcon: IconButton(
+                                  icon: const Icon(Icons.search),
+                                  color: estilo.corprimaria,
+                                  onPressed: () {
+                                    //COLOCAR AQUI A FUNÇÃO DE BUSCA
+                                  })),
+                          readOnly: true,
+                        )),
+                    Expanded(
+                        flex: 1,
+                        child:
+                            Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 0))),
+                    Expanded(
+                        flex: 1,
+                        child: IconButton(
+                            icon: const Icon(Icons.filter_alt),
+                            color: estilo.corprimaria,
+                            onPressed: () {
+                              showModalBottomSheet<void>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return ModalBusca(listaPosts: postsPerdidos);
+                                  });
+                            })),
+                  ],
                 )),
-                IconButton(
-                    icon: const Icon(Icons.filter_alt),
-                    color: estilo.corprimaria,
-                    onPressed: () {
-                      //COLOCAR AQUI A FUNÇÃO DE BUSCA
-                    })
-              ],
-            )),
+            Padding(padding: const EdgeInsets.fromLTRB(0, 15, 0, 15)),
             Expanded(
               child: ListView.builder(
                   itemCount: postsPerdidos.length,
