@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:buscapatas/components/caixa_dialogo_alerta.dart';
 import 'package:buscapatas/components/campo_texto.dart';
+import 'package:buscapatas/components/campo_texto_email.dart';
 import 'package:buscapatas/components/campo_texto_senha.dart';
 import 'package:buscapatas/components/imagem_dialogo.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
@@ -33,6 +34,8 @@ class EditarPerfil extends StatefulWidget {
 }
 
 class _EditarPerfilState extends State<EditarPerfil> {
+  TextEditingController controladorEmail = TextEditingController();
+  bool _emailUnico = false;
   final _formKey = GlobalKey<FormState>();
 
   File? imageTest;
@@ -44,7 +47,7 @@ class _EditarPerfilState extends State<EditarPerfil> {
   @override
   void initState() {
     usuarioLogado = widget.usuario;
-
+    controladorEmail = TextEditingController(text: usuarioLogado.email);
     fotoUsuario = (usuarioLogado.caminhoImagem != null)
         ? NetworkImage(
             'https://buspatas.blob.core.windows.net/buscapatas/${usuarioLogado.caminhoImagem}')
@@ -107,34 +110,22 @@ class _EditarPerfilState extends State<EditarPerfil> {
                         tipoCampo: TextInputType.name,
                         onChanged: (nome) =>
                             usuarioLogado = usuarioLogado.copy(nome: nome)),
-                    CampoTexto(
+                    CampoTextoEmail(
                         usuarioId: usuarioLogado.id!,
                         label: 'Email',
                         text: usuarioLogado.email!,
+                        controlador: controladorEmail,
                         tipoCampo: TextInputType.emailAddress,
                         onChanged: (email) =>
-                            usuarioLogado = usuarioLogado.copy(email: email)),
-                    const SizedBox(height: 20),
-                    TextFormField(
-                      initialValue: usuarioLogado.telefone,
-                      decoration: InputDecoration(
-                          labelText: "Telefone",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          suffixIcon: IconButton(
-                              icon: const Icon(Icons.edit),
-                              color: estilo.corprimaria,
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const EditarNumero(
-                                          title: 'Mudar número')),
-                                );
-                              })),
-                      readOnly: true,
-                    ),
+                            usuarioLogado = usuarioLogado.copy(email: email),
+                        validador: (_) => validarEmail(context)),
+                    CampoTexto(
+                        usuarioId: usuarioLogado.id!,
+                        label: 'Telefone',
+                        text: usuarioLogado.telefone!,
+                        tipoCampo: TextInputType.phone,
+                        onChanged: (telefone) =>
+                            usuarioLogado = usuarioLogado.copy(telefone: telefone)),
                     CampoTextoSenha(
                         label: 'Senha',
                         text: usuarioLogado.senha!,
@@ -153,7 +144,17 @@ class _EditarPerfilState extends State<EditarPerfil> {
                       backgroundColor:
                           MaterialStatePropertyAll<Color>(estilo.corprimaria),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
+                      if(controladorEmail.text.isNotEmpty) {
+                        List<UsuarioModel> listaTemp =
+                            await UsuarioModel.getUsuariosByEmail(controladorEmail.text);
+                        bool mesmoIdLogado = listaTemp.any((element) => element.id == usuarioLogado.id);
+                        if (listaTemp.isEmpty || mesmoIdLogado) {
+                              _emailUnico = true;
+                        } else {
+                            _emailUnico = false;
+                        }
+                      }
                       if (_formKey.currentState!.validate()) {
                         usuarioSessao.setUsuarioLogado(usuarioLogado);
                         _atualizarUsuario(context);
@@ -187,6 +188,20 @@ class _EditarPerfilState extends State<EditarPerfil> {
     }
 
     await FlutterSession().set("sessao_usuarioLogado", usuarioLogado);
+
+  }
+
+  String? validarEmail(BuildContext context) {
+    if (!_emailUnico) {
+      return "Já existe usuário cadastrado com esse e-mail";
+    }
+    String padraoEmail =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regExp = RegExp(padraoEmail);
+    if (!regExp.hasMatch(controladorEmail.text)) {
+      return "Insira um e-mail válido";
+    }
+    return null;
   }
 
   void _atualizarUsuario(BuildContext context) async {
@@ -248,13 +263,11 @@ class _EditarPerfilState extends State<EditarPerfil> {
   }
 
   void _redirecionarPaginaAposSalvar() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-          builder: (context) => VisualizarPerfil(title: 'Perfil')),
+    Navigator.pushAndRemoveUntil(
+    context,
+    MaterialPageRoute(builder: (context) => VisualizarPerfil(title: 'Perfil')),
+    (Route<dynamic> route) => route.isFirst
     );
-    // int count = 0;
-    // Navigator.of(context).popUntil((_) => count++ >= 2);
   }
 
   void mostrarDialogo(BuildContext context) => showDialog(
