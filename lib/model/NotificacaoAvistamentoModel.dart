@@ -17,6 +17,7 @@ class NotificacaoAvistamentoModel {
   DateTime? dataHora = DateTime.now();
   PostModel? post;
   UsuarioModel? usuario;
+  String? caminhoImagem;
 
   NotificacaoAvistamentoModel(
       {this.id,
@@ -25,7 +26,8 @@ class NotificacaoAvistamentoModel {
       this.longitude,
       this.dataHora,
       this.post,
-      this.usuario});
+      this.usuario,
+      this.caminhoImagem});
 
   factory NotificacaoAvistamentoModel.fromJson(Map<String, dynamic> json) {
     return NotificacaoAvistamentoModel(
@@ -35,7 +37,8 @@ class NotificacaoAvistamentoModel {
         latitude: json["latitude"],
         longitude: json["longitude"],
         post: PostModel.fromJson(json["post"]),
-        usuario: UsuarioModel.fromJson(json["usuario"]));
+        usuario: UsuarioModel.fromJson(json["usuario"]),
+        caminhoImagem: json["caminhoImagem"]);
   }
 
   Map<String, dynamic> toJson() => {
@@ -45,6 +48,7 @@ class NotificacaoAvistamentoModel {
         "longitude": longitude,
         "post": jsonEncode(post),
         "usuario": jsonEncode(usuario),
+        "caminhoImagem": jsonEncode(caminhoImagem),
       };
 
   static Future<List<NotificacaoAvistamentoModel>> getNotificacoesByPost(
