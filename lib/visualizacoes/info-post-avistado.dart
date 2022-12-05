@@ -71,7 +71,8 @@ class _InfoPostAvistadoState extends State<InfoPostAvistado> {
               Center(
                 child: CircleAvatar(
                   radius: 100,
-                  backgroundImage: AssetImage('imagens/animal.jpg'),
+                  backgroundImage: NetworkImage(
+                      'https://buspatas.blob.core.windows.net/buscapatas/${post.caminhoImagem}'),
                 ),
               ),
               Padding(padding: const EdgeInsets.fromLTRB(0, 20, 0, 5)),

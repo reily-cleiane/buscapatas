@@ -32,6 +32,7 @@ class PostModel {
   //AJUSTAR QUANDO CRIAR O CORMODEL
   List<CorModel>? coresAnimal;
   String? sexoAnimal;
+  String? caminhoImagem;
 
   PostModel(
       {this.id,
@@ -49,7 +50,8 @@ class PostModel {
       this.coresAnimal,
       this.sexoAnimal,
       this.tipoPost,
-      this.usuario});
+      this.usuario,
+      this.caminhoImagem});
 
   EspecieModel? getEspecie() {
     return this.especieAnimal;
@@ -73,7 +75,8 @@ class PostModel {
             json["coresAnimal"]!.map((x) => CorModel.fromJson(x))),
         sexoAnimal: json["sexo"],
         tipoPost: json["tipoPost"],
-        usuario: UsuarioModel.fromJson(json["usuario"]));
+        usuario: UsuarioModel.fromJson(json["usuario"]),
+        caminhoImagem: json["caminhoImagem"]);
   }
 
   Map<String, dynamic> toJson() => {
@@ -93,6 +96,7 @@ class PostModel {
         "sexoAnimal": sexoAnimal,
         "tipoPost": tipoPost,
         "usuario": jsonEncode(usuario),
+        "caminhoImagem": caminhoImagem,
       };
 
   Map<String, dynamic> toJsonData() => {
@@ -112,6 +116,7 @@ class PostModel {
         "sexoAnimal": sexoAnimal,
         "tipoPost": tipoPost,
         "usuario": usuario,
+        "caminhoImagem": caminhoImagem,
       };
 
   Future<http.Response> salvar(File? imagem) async {
