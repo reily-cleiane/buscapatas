@@ -36,8 +36,7 @@ class _LoginState extends State<Login> {
 
   void carregarUsuarioLocal() async {
     preferencias = await SharedPreferences.getInstance();
-    setState(() {      
-    });
+    setState(() {});
   }
 
   @override
@@ -100,32 +99,37 @@ class _LoginState extends State<Login> {
                         style: TextStyle(color: Colors.white, fontSize: 20.0),
                       ),
                     )),
-                const Padding(padding: EdgeInsets.fromLTRB(0, 10.0, 0, 10.0)),
-                if (preferencias != null &&
-                    preferencias!.containsKey('buscapatas.usuarioEmail') &&
-                    preferencias!.containsKey('buscapatas.usuarioSenha'))
-                  SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: ElevatedButton(
-                        style: const ButtonStyle(
-                          backgroundColor: MaterialStatePropertyAll<Color>(
-                              estilo.corprimaria),
-                        ),
-                        onPressed: () {
-                          autenticarBiometria();
-                        },
-                        child: const Text(
-                          "Entrar com biometria",
-                          style: TextStyle(color: Colors.white, fontSize: 20.0),
-                        ),
-                      )),
+                const Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 10.0)),
               ])),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(0, 20.0, 0, 15.0),
-            child: Text("OU",
-                style: TextStyle(color: estilo.corprimaria, fontSize: 20)),
-          ),
+          if (preferencias != null &&
+              preferencias!.containsKey('buscapatas.usuarioEmail') &&
+              preferencias!.containsKey('buscapatas.usuarioSenha'))
+            const Padding(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 20.0),
+              child: Text("OU",
+                  style: TextStyle(color: estilo.corprimaria, fontSize: 20)),
+            ),
+          if (preferencias != null &&
+              preferencias!.containsKey('buscapatas.usuarioEmail') &&
+              preferencias!.containsKey('buscapatas.usuarioSenha'))
+            SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  style: const ButtonStyle(
+                    backgroundColor:
+                        MaterialStatePropertyAll<Color>(estilo.corprimaria),
+                  ),
+                  onPressed: () {
+                    autenticarBiometria();
+                  },
+                  child: const Text(
+                    "Entrar com biometria",
+                    style: TextStyle(color: Colors.white, fontSize: 20.0),
+                  ),
+                )),
+
+          /*
           FractionallySizedBox(
               widthFactor: 1,
               child: InkWell(
@@ -144,6 +148,7 @@ class _LoginState extends State<Login> {
                   width: 180,
                 ),
               )),
+              */
           Padding(
               padding: const EdgeInsets.fromLTRB(0, 50.0, 0, 40.0),
               child: InkWell(
