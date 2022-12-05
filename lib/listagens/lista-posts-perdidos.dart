@@ -19,15 +19,12 @@ class ListaPostsPerdidos extends StatefulWidget {
 
 class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
   List<PostModel> postsPerdidos = [];
+  List<PostModel> postsPerdidosSemFiltro = [];
   TextEditingController buscaController = TextEditingController();
 
   @override
   void initState() {
-    if(widget.listaPostsFiltrada != null){
-      postsPerdidos = widget.listaPostsFiltrada!;
-    }else{
-      _getPostsAnimaisPerdidos();
-    }   
+    _getPostsAnimaisPerdidos();
   }
 
   @override
@@ -55,6 +52,7 @@ class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
                     Expanded(
                         flex: 8,
                         child: TextFormField(
+                          controller: buscaController,
                           decoration: InputDecoration(
                               labelText: "Buscar",
                               border: OutlineInputBorder(
@@ -64,14 +62,9 @@ class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
                                   icon: const Icon(Icons.search),
                                   color: estilo.corprimaria,
                                   onPressed: () {
-                                    //COLOCAR AQUI A FUNÇÃO DE BUSCA
+                                    _buscarTermo();
                                   })),
-                          readOnly: true,
                         )),
-                    Expanded(
-                        flex: 1,
-                        child:
-                            Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 0))),
                     Expanded(
                         flex: 1,
                         child: IconButton(
@@ -81,11 +74,36 @@ class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
                               showModalBottomSheet<void>(
                                   context: context,
                                   builder: (BuildContext context) {
-                                    return ModalBusca(listaPosts: postsPerdidos);
+                                    return ModalBusca(
+                                        listaPosts: postsPerdidosSemFiltro);
                                   });
                             })),
                   ],
                 )),
+            if (widget.listaPostsFiltrada != null)
+              Padding(padding: const EdgeInsets.fromLTRB(0, 5, 0, 5)),
+            if (widget.listaPostsFiltrada != null)
+              Align(
+                  alignment: Alignment.centerRight,
+                  child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          postsPerdidos = postsPerdidosSemFiltro;
+                          widget.listaPostsFiltrada = null;
+                        });
+                      },
+                      child: Ink(
+                        child: RichText(
+                          text: const TextSpan(
+                            text: "Limpar filtros",
+                            style: TextStyle(
+                              decoration: TextDecoration.none,
+                              color: estilo.corprimaria,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      ))),
             Padding(padding: const EdgeInsets.fromLTRB(0, 15, 0, 15)),
             Expanded(
               child: ListView.builder(
@@ -119,6 +137,42 @@ class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
     );
   }
 
+  void _buscarTermo() {
+    List<PostModel> listaTemp = [];
+    for (var post in postsPerdidos) {
+      if (buscaController.text.isNotEmpty) {
+        bool achouTermo = false;
+        if ((post.outrasInformacoes == null ||
+                post.outrasInformacoes!.isEmpty) &&
+            (post.orientacoesGerais == null ||
+                post.orientacoesGerais!.isEmpty)) {
+          continue;
+        }
+        if (post.outrasInformacoes != null &&
+            post.outrasInformacoes!.isNotEmpty) {
+          if (post.outrasInformacoes!.contains(buscaController.text)) {
+            achouTermo = true;
+          }
+        }
+        if (post.orientacoesGerais != null &&
+            post.orientacoesGerais!.isNotEmpty &&
+            !achouTermo) {
+          if (post.orientacoesGerais!.contains(buscaController.text)) {
+            achouTermo = true;
+          }
+        }
+        if (!achouTermo) {
+          continue;
+        }
+      }
+      listaTemp.add(post);
+    }
+    setState(() {
+      postsPerdidos = listaTemp;
+      widget.listaPostsFiltrada = listaTemp;
+    });
+  }
+
   void _infoPostPerdido(PostModel? postAtual) {
     Navigator.push(
       context,
@@ -131,7 +185,12 @@ class _ListaPostsPerdidos extends State<ListaPostsPerdidos> {
   void _getPostsAnimaisPerdidos() async {
     List<PostModel> posts = await PostModel.getPostsAnimaisPerdidos();
     setState(() {
-      postsPerdidos = posts;
+      if (widget.listaPostsFiltrada != null) {
+        postsPerdidos = widget.listaPostsFiltrada!;
+      } else {
+        postsPerdidos = posts;
+      }
+      postsPerdidosSemFiltro = posts;
     });
   }
 

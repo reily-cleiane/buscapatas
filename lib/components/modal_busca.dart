@@ -2,6 +2,7 @@ import 'package:buscapatas/components/campo_select.dart';
 import 'package:buscapatas/components/campo_texto_curto.dart';
 import 'package:buscapatas/components/campo_texto_longo.dart';
 import 'package:buscapatas/listagens/lista-posts-perdidos.dart';
+import 'package:buscapatas/listagens/lista-posts-avistados.dart';
 import 'package:buscapatas/model/EspecieModel.dart';
 import 'package:buscapatas/model/PostModel.dart';
 import 'package:flutter/material.dart';
@@ -218,51 +219,90 @@ class _ModalBuscaState extends State<ModalBusca> {
 
   void _filtrarPosts() {
     List<PostModel> listaTemp = [];
-    for(var post in widget.listaPosts){
-      if(valorEspecieSelecionado!= null){
-        if(post.especieAnimal!.id != int.parse(valorEspecieSelecionado!)){
+    String tipoPost = "";
+    for (var post in widget.listaPosts) {
+      tipoPost = post.tipoPost!;
+      if (outrasinformacoesController.text.isNotEmpty) {
+        bool achouTermo = false;
+        if ((post.outrasInformacoes == null ||
+                post.outrasInformacoes!.isEmpty) &&
+            (post.orientacoesGerais == null ||
+                post.orientacoesGerais!.isEmpty)) {
+          continue;
+        }
+        if (post.outrasInformacoes != null &&
+            post.outrasInformacoes!.isNotEmpty) {
+          if (post.outrasInformacoes!
+              .contains(outrasinformacoesController.text)) {
+            achouTermo = true;
+          }
+        }
+        if (post.orientacoesGerais != null &&
+            post.orientacoesGerais!.isNotEmpty &&
+            !achouTermo) {
+          if (post.orientacoesGerais!
+              .contains(outrasinformacoesController.text)) {
+            achouTermo = true;
+          }
+        }
+        if (!achouTermo) {
           continue;
         }
       }
-      if(valorRacaSelecionado!= null){
-        if(post.racaAnimal!.id != int.parse(valorRacaSelecionado!)){
+      if (valorEspecieSelecionado != null) {
+        if (post.especieAnimal!.id != int.parse(valorEspecieSelecionado!)) {
           continue;
         }
       }
-      if(valorSexoMarcado.isNotEmpty){
-        if(post.sexoAnimal != valorSexoMarcado){
+      if (valorRacaSelecionado != null) {
+        if (post.racaAnimal!.id != int.parse(valorRacaSelecionado!)) {
+          continue;
+        }
+      }
+      if (valorSexoMarcado.isNotEmpty) {
+        if (post.sexoAnimal != valorSexoMarcado) {
           continue;
         }
       }
 
-      if(valorColeiraMarcado.isNotEmpty){
-        if(post.coleira == true && valorColeiraMarcado=="Não"){
+      if (valorColeiraMarcado.isNotEmpty) {
+        if (post.coleira == true && valorColeiraMarcado == "Não") {
           continue;
-        }else if(post.coleira == false && valorColeiraMarcado=="Sim"){
+        } else if (post.coleira == false && valorColeiraMarcado == "Sim") {
           continue;
         }
       }
-      if(listaCoresSelecionadas.isNotEmpty){
+      if (listaCoresSelecionadas.isNotEmpty) {
         bool corEncontrada = false;
 
-        for(var cor in post.coresAnimal!){
-          corEncontrada = listaCoresSelecionadas.any((element) => element == cor.id);
-          if(corEncontrada){
+        for (var cor in post.coresAnimal!) {
+          corEncontrada =
+              listaCoresSelecionadas.any((element) => element == cor.id);
+          if (corEncontrada) {
             break;
           }
         }
-        if(!corEncontrada){
+        if (!corEncontrada) {
           continue;
         }
       }
       listaTemp.add(post);
-
     }
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => ListaPostsPerdidos(title: 'Animais Perdidos', listaPostsFiltrada: listaTemp)));
-
+    if (tipoPost == "ANIMAL_PERDIDO") {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ListaPostsPerdidos(
+                  title: 'Animais Perdidos', listaPostsFiltrada: listaTemp)));
+    } else if (tipoPost == "ANIMAL_AVISTADO") {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ListaPostsAvistados(
+                  title: 'Animais Avistados', listaPostsFiltrada: listaTemp)));
+    } else {
+      Navigator.pop(context);
+    }
   }
 
   void cargaInicialBD() async {
