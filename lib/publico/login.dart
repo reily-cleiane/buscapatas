@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:buscapatas/componentes-interface/estilo.dart' as estilo;
 import 'package:buscapatas/publico/esqueceu-senha.dart';
-import 'package:buscapatas/publico/nao_implementado.dart';
 import 'package:buscapatas/publico/cadastro-usuario.dart';
 import 'package:buscapatas/home.dart';
 import 'package:buscapatas/model/UsuarioModel.dart';
@@ -128,27 +127,6 @@ class _LoginState extends State<Login> {
                     style: TextStyle(color: Colors.white, fontSize: 20.0),
                   ),
                 )),
-
-          /*
-          FractionallySizedBox(
-              widthFactor: 1,
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => NaoImplementado(
-                            title:
-                                'Busca Patas - Funcionalidade ainda não implementada')),
-                  );
-                },
-                child: Image.asset(
-                  "imagens/entrar-com-google.png",
-                  fit: BoxFit.contain,
-                  width: 180,
-                ),
-              )),
-              */
           Padding(
               padding: const EdgeInsets.fromLTRB(0, 50.0, 0, 40.0),
               child: InkWell(
